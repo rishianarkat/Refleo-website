@@ -211,7 +211,7 @@ export default function Navbar() {
             <div className="flex items-center gap-3 ml-2">
               {/* Book a Demo — apricot fill */}
               <a
-                href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
+                href="mailto:info@refleohealth.com?subject=Demo Request"
                 className="inline-flex items-center px-5 py-2 rounded-full bg-apricot text-teal-dark text-sm font-medium hover:bg-apricot-light transition-all duration-200 ease-out whitespace-nowrap hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
               >
                 Book a Demo
@@ -309,7 +309,7 @@ export default function Navbar() {
         {/* Mobile CTAs */}
         <div className="flex flex-col items-center gap-4">
           <a
-            href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
+            href="mailto:info@refleohealth.com?subject=Demo Request"
             onClick={closeMenu}
             className="inline-flex items-center px-8 py-3 rounded-full bg-apricot text-teal-dark text-base font-medium hover:bg-apricot-light transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
           >

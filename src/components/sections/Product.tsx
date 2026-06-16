@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const SECTION_NUMBER = "04";
 const SECTION_LABEL = "Product";
 const HEADLINE = "See it in action.";
-const DEMO_HREF = "mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request";
+const DEMO_HREF = "mailto:info@refleohealth.com?subject=Demo Request";
 const DEMO_LABEL = "Book a Demo";
 
 const CALLOUTS = [

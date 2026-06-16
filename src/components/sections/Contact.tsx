@@ -13,12 +13,12 @@ const HEADLINE = "Let's Talk";
 const DEMO_TITLE = "Book a Demo";
 const DEMO_DESC =
   "See how Refleo fits into the way you already work — we'll walk you through it.";
-const DEMO_HREF = "mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request";
+const DEMO_HREF = "mailto:info@refleohealth.com?subject=Demo Request";
 
 const INVEST_TITLE = "Invest in Refleo";
 const INVEST_DESC =
   "We'd love to share where we're headed and how you can be part of it.";
-const INVEST_HREF = "mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Investment Inquiry";
+const INVEST_HREF = "mailto:info@refleohealth.com?subject=Investment Inquiry";
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);

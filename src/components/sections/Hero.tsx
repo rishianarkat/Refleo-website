@@ -146,7 +146,7 @@ export default function Hero() {
         >
           {/* Book a Demo — apricot FILL pill */}
           <a
-            href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
+            href="mailto:info@refleohealth.com?subject=Demo Request"
             className="flex w-full items-center justify-center rounded-full bg-apricot px-8 py-3 text-center text-sm font-semibold text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot sm:w-auto"
           >
             Book a Demo

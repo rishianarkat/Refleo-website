@@ -1,7 +1,6 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, useCallback, type RefObject } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -111,16 +110,17 @@ function ExpandableCard({
   return (
     <div
       ref={cardRef}
-      className="group flex flex-col rounded-2xl bg-white/5 border border-teal-light/15 p-6 transition-colors duration-300 hover:bg-white/10"
+      className="group flex flex-col rounded-2xl bg-white/5 border border-teal-light/15 p-6 transition-all duration-300 hover:bg-white/10 hover:-translate-y-1.5 hover:shadow-2xl"
     >
       {/* Photo */}
       <div className="relative mb-6 aspect-[4/5] w-full overflow-hidden rounded-xl">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={photo}
           alt={photoAlt}
-          fill
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-          sizes="(min-width: 768px) 50vw, 100vw"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
@@ -135,7 +135,7 @@ function ExpandableCard({
         onClick={toggle}
         aria-expanded={isOpen}
         aria-controls={bioId}
-        className="mt-auto flex items-center gap-2 self-start rounded-lg px-3 py-1.5 text-sm font-medium text-cream/80 ring-1 ring-teal-light/20 transition-all duration-200 hover:bg-white/10 hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apricot"
+        className="mt-auto flex min-h-[44px] items-center gap-2 self-start rounded-lg px-4 py-2.5 text-sm font-medium text-cream/80 ring-1 ring-teal-light/20 transition-all duration-200 hover:bg-white/10 hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-apricot"
       >
         <span>{isOpen ? CLOSE_BIO_LABEL : READ_BIO_LABEL}</span>
         <svg
@@ -173,14 +173,14 @@ function ExpandableCard({
         }
       >
         <ul className="mt-4 space-y-2">
-          <li className="flex gap-2.5 text-sm leading-relaxed text-cream/80">
+          <li className="flex gap-2.5 text-base leading-relaxed text-cream/80 sm:text-sm">
             <span
               className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-apricot"
               aria-hidden="true"
             />
             {bullet1}
           </li>
-          <li className="flex gap-2.5 text-sm leading-relaxed text-cream/80">
+          <li className="flex gap-2.5 text-base leading-relaxed text-cream/80 sm:text-sm">
             <span
               className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-apricot"
               aria-hidden="true"

@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useLayoutEffect } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -241,6 +240,7 @@ function ArrowRight() {
 export default function Product() {
   const rootRef = useRef<HTMLElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
+  const browserRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const prefersReduced =
@@ -290,13 +290,32 @@ export default function Product() {
         },
       });
 
-      // Parallax on phone mockup — scrub across section scroll
+      // Parallax on phone mockup — scrub across section scroll (faster, y 50→-50)
       if (phoneRef.current) {
         gsap.fromTo(
           phoneRef.current,
           { y: 50 },
           {
             y: -50,
+            ease: "none",
+            scrollTrigger: {
+              trigger: rootRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }
+
+      // Parallax on browser frame — gentler, opposite direction (y -24→24)
+      // gives the two layers slightly different depths as you scroll
+      if (browserRef.current) {
+        gsap.fromTo(
+          browserRef.current,
+          { y: -24 },
+          {
+            y: 24,
             ease: "none",
             scrollTrigger: {
               trigger: rootRef.current,
@@ -343,7 +362,7 @@ export default function Product() {
             href={DEMO_HREF}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 self-start sm:self-auto bg-apricot text-teal-dark font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-apricot-light transition-colors duration-200 shrink-0"
+            className="inline-flex items-center gap-2 self-start sm:self-auto bg-apricot text-teal-dark font-semibold text-sm px-5 py-3 min-h-[44px] rounded-full hover:bg-apricot-light transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] shrink-0"
           >
             {DEMO_LABEL}
             <ArrowRight />
@@ -367,7 +386,7 @@ export default function Product() {
                   <p className="font-semibold text-cream text-base leading-snug mb-1">
                     {callout.title}
                   </p>
-                  <p className="text-cream/70 text-sm leading-relaxed">
+                  <p className="text-cream/70 text-base sm:text-sm leading-relaxed">
                     {callout.body}
                   </p>
                 </div>
@@ -379,7 +398,7 @@ export default function Product() {
           <div className="prod-mockups relative w-full pb-20 lg:pb-16">
 
             {/* Browser frame — clinician pre-session brief */}
-            <div className="relative w-full rounded-xl overflow-hidden border border-teal-light/20 shadow-2xl shadow-black/40 bg-[#1a2e2e]">
+            <div ref={browserRef} className="relative w-full rounded-xl overflow-hidden border border-teal-light/20 shadow-2xl shadow-black/40 bg-[#1a2e2e]">
               {/* Browser chrome top bar */}
               <div className="flex items-center gap-1.5 px-3 py-2.5 bg-[#243636] border-b border-teal-light/10 shrink-0">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" aria-hidden="true" />
@@ -390,13 +409,13 @@ export default function Product() {
 
               {/* Screenshot — cropped to top */}
               <div className="relative w-full aspect-[16/10] overflow-hidden">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/images/demo-brief.png"
                   alt="Clinician pre-session brief showing recurring themes and keyword matches"
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority={false}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
                 />
               </div>
             </div>
@@ -415,13 +434,13 @@ export default function Product() {
 
                 {/* Screenshot */}
                 <div className="relative w-full" style={{ aspectRatio: "780 / 1688" }}>
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src="/images/demo-journaling.png"
                     alt="Teen voice journaling screen with mood picker and audio entry"
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 640px) 112px, (max-width: 768px) 144px, 176px"
-                    priority={false}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                   />
                 </div>
 

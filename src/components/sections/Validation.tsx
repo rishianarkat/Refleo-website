@@ -1,7 +1,6 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -149,19 +148,24 @@ export default function Validation() {
         },
       });
 
-      // Quote cards stagger in
-      gsap.from(".val-quote-card", {
-        opacity: 0,
-        y: 28,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.18,
-        scrollTrigger: {
-          trigger: ".val-quotes",
-          start: "top 78%",
-          toggleActions: "play none none none",
-        },
-      });
+      // Quote cards entrance: fade up + slide from left (spec), staggered
+      gsap.fromTo(
+        ".val-quote-card",
+        { opacity: 0, x: -24, y: 16 },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.18,
+          scrollTrigger: {
+            trigger: ".val-quotes",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
 
       // Tagline fade in
       gsap.from(".val-tagline", {
@@ -217,7 +221,7 @@ export default function Validation() {
                 >
                   {STAT_1_VALUE}{STAT_1_SUFFIX}
                 </span>
-                <p className="text-sm text-teal-dark/70 leading-snug mt-1">
+                <p className="text-base sm:text-sm text-teal-dark/70 leading-snug mt-1">
                   {STAT_1_LABEL}
                 </p>
               </div>
@@ -230,7 +234,7 @@ export default function Validation() {
                 >
                   {STAT_2_VALUE}{STAT_2_SUFFIX}
                 </span>
-                <p className="text-sm text-teal-dark/70 leading-snug mt-1">
+                <p className="text-base sm:text-sm text-teal-dark/70 leading-snug mt-1">
                   {STAT_2_LABEL}
                 </p>
               </div>
@@ -243,7 +247,7 @@ export default function Validation() {
                 >
                   {STAT_3_VALUE}{STAT_3_SUFFIX}
                 </span>
-                <p className="text-sm text-teal-dark/70 leading-snug mt-1">
+                <p className="text-base sm:text-sm text-teal-dark/70 leading-snug mt-1">
                   {STAT_3_LABEL}
                 </p>
               </div>
@@ -253,12 +257,13 @@ export default function Validation() {
           {/* Right: clinic photo */}
           <div className="val-image flex flex-col gap-2">
             <div className="relative w-full rounded-2xl overflow-hidden aspect-[4/3]">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/images/validation-clinic.jpg"
                 alt="A calm therapy room"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
             </div>
             {/* Unsplash credit */}

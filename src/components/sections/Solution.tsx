@@ -297,11 +297,11 @@ export default function Solution() {
         </div>
 
         {/* Three columns */}
-        <div className="sol-cols grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="sol-cols grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10">
           {COLUMNS.map((col) => (
             <div
               key={col.label}
-              className="sol-col flex flex-col gap-5"
+              className="sol-col flex flex-col gap-5 rounded-2xl border border-teal-dark/10 bg-white/50 p-6 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0"
             >
               {/* Icon in an apricot-tinted circle */}
               <div className="w-14 h-14 rounded-full bg-apricot/10 flex items-center justify-center text-teal shrink-0">

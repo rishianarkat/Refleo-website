@@ -172,7 +172,7 @@ export default function Navbar() {
           <a
             href="#top"
             aria-label="Refleo home"
-            className="flex items-center shrink-0"
+            className="inline-flex min-h-[44px] items-center py-2.5 -my-2.5 shrink-0"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -199,7 +199,7 @@ export default function Navbar() {
                   <a
                     href={href}
                     onClick={(e) => handleSmoothScroll(e, href)}
-                    className="text-sm text-cream/80 hover:text-cream tracking-wide transition-colors duration-200"
+                    className="relative text-sm text-cream/80 hover:text-cream tracking-wide transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-apricot after:transition-transform after:duration-300 hover:after:scale-x-100"
                   >
                     {label}
                   </a>
@@ -212,7 +212,7 @@ export default function Navbar() {
               {/* Book a Demo — apricot fill */}
               <a
                 href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
-                className="inline-flex items-center px-5 py-2 rounded-full bg-apricot text-teal-dark text-sm font-medium hover:bg-apricot-light transition-colors duration-200 whitespace-nowrap"
+                className="inline-flex items-center px-5 py-2 rounded-full bg-apricot text-teal-dark text-sm font-medium hover:bg-apricot-light transition-all duration-200 ease-out whitespace-nowrap hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
               >
                 Book a Demo
               </a>
@@ -220,7 +220,7 @@ export default function Navbar() {
               <a
                 href="#contact"
                 onClick={handleContactScroll}
-                className="inline-flex items-center px-5 py-2 rounded-full border border-apricot text-apricot bg-transparent text-sm font-medium hover:bg-apricot/10 transition-colors duration-200 whitespace-nowrap"
+                className="inline-flex items-center px-5 py-2 rounded-full border border-apricot text-apricot bg-transparent text-sm font-medium hover:bg-apricot/10 transition-all duration-200 ease-out whitespace-nowrap hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
               >
                 Contact Us
               </a>
@@ -229,7 +229,7 @@ export default function Navbar() {
 
           {/* Hamburger (mobile only) */}
           <button
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-apricot"
+            className="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-apricot"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             aria-controls={OVERLAY_ID}
@@ -268,7 +268,7 @@ export default function Navbar() {
       >
         {/* Close button */}
         <button
-          className="absolute top-5 right-6 w-10 h-10 flex items-center justify-center text-cream/70 hover:text-cream transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-apricot rounded"
+          className="absolute top-5 right-6 w-11 h-11 flex items-center justify-center text-cream/70 hover:text-cream transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-apricot rounded"
           aria-label="Close menu"
           onClick={closeMenu}
         >
@@ -298,7 +298,7 @@ export default function Navbar() {
               <a
                 href={href}
                 onClick={(e) => handleSmoothScroll(e, href)}
-                className="text-3xl font-light text-cream/80 hover:text-cream tracking-wide transition-colors duration-200"
+                className="relative text-3xl font-light text-cream/80 hover:text-cream tracking-wide transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-apricot after:transition-transform after:duration-300 hover:after:scale-x-100"
               >
                 {label}
               </a>
@@ -311,14 +311,14 @@ export default function Navbar() {
           <a
             href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
             onClick={closeMenu}
-            className="inline-flex items-center px-8 py-3 rounded-full bg-apricot text-teal-dark text-base font-medium hover:bg-apricot-light transition-colors duration-200"
+            className="inline-flex items-center px-8 py-3 rounded-full bg-apricot text-teal-dark text-base font-medium hover:bg-apricot-light transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
           >
             Book a Demo
           </a>
           <a
             href="#contact"
             onClick={handleContactScroll}
-            className="inline-flex items-center px-8 py-3 rounded-full border border-apricot text-apricot bg-transparent text-base font-medium hover:bg-apricot/10 transition-colors duration-200"
+            className="inline-flex items-center px-8 py-3 rounded-full border border-apricot text-apricot bg-transparent text-base font-medium hover:bg-apricot/10 transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
           >
             Get in Touch
           </a>

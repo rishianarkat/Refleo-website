@@ -27,12 +27,12 @@ export default function MissionCloser() {
 
       gsap.fromTo(
         statementRef.current,
-        { y: 36, opacity: 0 },
+        { y: 28, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
+          duration: 1.3,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: statementRef.current,
             start: "top 80%",
@@ -49,19 +49,19 @@ export default function MissionCloser() {
     <section
       id="mission"
       ref={rootRef}
-      className="bg-teal-dark text-cream py-32 md:py-44"
+      className="bg-teal-dark text-cream py-40 md:py-56"
     >
       <div className="mx-auto max-w-4xl px-6 text-center lg:px-12">
         {/* Mission statement + resolution */}
         <div ref={statementRef}>
           {/* Big statement */}
-          <p className="text-3xl font-semibold leading-snug sm:text-4xl lg:text-5xl text-balance text-cream">
+          <p className="text-4xl font-semibold leading-relaxed sm:text-5xl lg:text-6xl lg:leading-snug text-balance text-cream">
             {STATEMENT_PART_1}{" "}
             <span className="text-apricot">{STATEMENT_HIGHLIGHT}</span>
           </p>
 
           {/* Resolution row: logo + "fixes that." */}
-          <div className="mt-10 inline-flex items-center justify-center gap-4">
+          <div className="mt-16 inline-flex items-center justify-center gap-4 md:mt-20">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/svg/refleo-logo-dark.svg"
@@ -75,7 +75,7 @@ export default function MissionCloser() {
         </div>
 
         {/* Footer */}
-        <div className="mt-20 border-t border-white/10 pt-10">
+        <div className="mt-28 border-t border-white/10 pt-10 md:mt-36">
           <div className="flex flex-wrap items-center justify-between gap-4 text-sm">
             <span className="text-cream/50">{COPYRIGHT}</span>
             <a

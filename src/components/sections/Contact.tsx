@@ -131,7 +131,7 @@ export default function Contact() {
             <p className="mb-6 text-cream/70">{DEMO_DESC}</p>
             <a
               href={DEMO_HREF}
-              className="inline-block rounded-full bg-apricot px-7 py-3 text-sm font-semibold text-teal-dark transition-colors duration-200 hover:bg-apricot-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot"
+              className="inline-block rounded-full bg-apricot px-7 py-3 text-sm font-semibold text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot"
             >
               {DEMO_TITLE}
             </a>
@@ -145,7 +145,7 @@ export default function Contact() {
             <p className="mb-6 text-cream/70">{INVEST_DESC}</p>
             <a
               href={INVEST_HREF}
-              className="inline-block rounded-full border border-apricot px-7 py-3 text-sm font-semibold text-apricot transition-colors duration-200 hover:bg-apricot/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot"
+              className="inline-block rounded-full border border-apricot px-7 py-3 text-sm font-semibold text-apricot transition-all duration-200 ease-out hover:bg-apricot/10 hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot"
             >
               {INVEST_TITLE}
             </a>

@@ -20,6 +20,7 @@ const QUOTE_ATTRIBUTION = "— LPC, Private Practice";
 export default function Problem() {
   const rootRef = useRef<HTMLElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
+  const quoteCardRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const prefersReduced =
@@ -78,6 +79,24 @@ export default function Problem() {
           });
         },
       });
+
+      // Quote card entrance: fade up + slide from left (spec)
+      gsap.fromTo(
+        quoteCardRef.current,
+        { opacity: 0, x: -24, y: 16 },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: quoteCardRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     }, rootRef);
 
     return () => ctx.revert();
@@ -117,7 +136,7 @@ export default function Problem() {
             >
               {COUNTER_FINAL.toLocaleString("en-US")}
             </span>
-            <p className="mt-3 text-cream/70 text-sm sm:text-base tracking-wide">
+            <p className="mt-3 text-cream/70 text-base tracking-wide">
               {COUNTER_CAPTION}
             </p>
           </div>
@@ -133,8 +152,8 @@ export default function Problem() {
 
         {/* Quote card */}
         <div
+          ref={quoteCardRef}
           className="relative bg-teal-dark/40 border border-white/10 rounded-2xl p-8 sm:p-10 max-w-2xl"
-          data-animate
         >
           {/* Apricot left accent */}
           <div className="absolute left-0 top-8 bottom-8 w-1 bg-apricot rounded-full" />

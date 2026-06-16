@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,17 +9,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const SECTION_LABEL = "Contact";
 const SECTION_NUMBER = "07";
-const HEADLINE = "Let's Talk";
+const HEADLINE = "Let’s Talk.";
 
 const DEMO_TITLE = "Book a Demo";
-const DEMO_DESC =
-  "See how Refleo fits into the way you already work — we'll walk you through it.";
-const DEMO_HREF = "mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request";
+const DEMO_COPY = "See how Refleo fits into the way you already work.";
+const DEMO_LABEL = "Book a Demo";
 
 const INVEST_TITLE = "Invest in Refleo";
-const INVEST_DESC =
-  "We'd love to share where we're headed and how you can be part of it.";
-const INVEST_HREF = "mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Investment Inquiry";
+const INVEST_COPY = "We’d love to share where we’re headed.";
+const INVEST_LABEL = "Invest in Refleo";
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -49,27 +48,22 @@ export default function Contact() {
         }
       );
 
-      const cards = cardsRef.current
-        ? Array.from(cardsRef.current.children)
-        : [];
-      if (cards.length > 0) {
-        gsap.fromTo(
-          cards,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 80%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
-      }
+      gsap.fromTo(
+        cardsRef.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.1,
+          scrollTrigger: {
+            trigger: cardsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -81,7 +75,7 @@ export default function Contact() {
       ref={sectionRef}
       className="relative overflow-hidden bg-teal-dark py-28 text-cream md:py-40"
     >
-      {/* Ripple background — global classes from globals.css */}
+      {/* Ripple background rings */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 flex items-center justify-center"
@@ -118,37 +112,45 @@ export default function Contact() {
           </h2>
         </div>
 
-        {/* Two-path cards */}
+        {/* Two cards */}
         <div
           ref={cardsRef}
           className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8"
         >
-          {/* LEFT — Book a Demo */}
-          <div className="rounded-2xl border border-teal-light/20 bg-white/5 p-8">
-            <h3 className="mb-2 text-xl font-semibold text-cream">
-              {DEMO_TITLE}
-            </h3>
-            <p className="mb-6 text-cream/70">{DEMO_DESC}</p>
-            <a
-              href={DEMO_HREF}
-              className="inline-block rounded-full bg-apricot px-7 py-3 text-sm font-semibold text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot"
-            >
-              {DEMO_TITLE}
-            </a>
+          {/* Left card — Book a Demo */}
+          <div className="flex flex-col gap-6 rounded-2xl border border-teal-light/20 bg-white/5 p-8">
+            <div className="flex flex-col gap-3">
+              <h3 className="text-xl font-semibold text-cream sm:text-2xl">
+                {DEMO_TITLE}
+              </h3>
+              <p className="text-base text-cream/70">{DEMO_COPY}</p>
+            </div>
+            <div>
+              <Link
+                href="/contact?intent=demo"
+                className="inline-flex items-center justify-center rounded-full bg-apricot px-8 py-3 text-base font-semibold text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot min-h-[44px]"
+              >
+                {DEMO_LABEL}
+              </Link>
+            </div>
           </div>
 
-          {/* RIGHT — Invest in Refleo */}
-          <div className="rounded-2xl border border-teal-light/20 bg-white/5 p-8">
-            <h3 className="mb-2 text-xl font-semibold text-cream">
-              {INVEST_TITLE}
-            </h3>
-            <p className="mb-6 text-cream/70">{INVEST_DESC}</p>
-            <a
-              href={INVEST_HREF}
-              className="inline-block rounded-full border border-apricot px-7 py-3 text-sm font-semibold text-apricot transition-all duration-200 ease-out hover:bg-apricot/10 hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot"
-            >
-              {INVEST_TITLE}
-            </a>
+          {/* Right card — Invest in Refleo */}
+          <div className="flex flex-col gap-6 rounded-2xl border border-teal-light/20 bg-white/5 p-8">
+            <div className="flex flex-col gap-3">
+              <h3 className="text-xl font-semibold text-cream sm:text-2xl">
+                {INVEST_TITLE}
+              </h3>
+              <p className="text-base text-cream/70">{INVEST_COPY}</p>
+            </div>
+            <div>
+              <Link
+                href="/contact?intent=invest"
+                className="inline-flex items-center justify-center rounded-full border border-apricot bg-transparent px-8 py-3 text-base font-semibold text-apricot transition-all duration-200 ease-out hover:bg-apricot/10 hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot min-h-[44px]"
+              >
+                {INVEST_LABEL}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

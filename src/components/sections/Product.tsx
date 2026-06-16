@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const SECTION_NUMBER = "04";
 const SECTION_LABEL = "Product";
 const HEADLINE = "See it in action.";
-const DEMO_HREF = "mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request";
+const DEMO_HREF = "/contact?intent=demo";
 const DEMO_LABEL = "Book a Demo";
 
 const CALLOUTS = [
@@ -358,15 +359,13 @@ export default function Product() {
           </div>
 
           {/* Demo CTA pill */}
-          <a
+          <Link
             href={DEMO_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 self-start sm:self-auto bg-apricot text-teal-dark font-semibold text-sm px-5 py-3 min-h-[44px] rounded-full hover:bg-apricot-light transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] shrink-0"
           >
             {DEMO_LABEL}
             <ArrowRight />
-          </a>
+          </Link>
         </div>
 
         {/* Two-column layout: callouts left, mockups right */}

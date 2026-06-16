@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -22,6 +24,8 @@ export default function Navbar() {
   const linksRef = useRef<HTMLUListElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   // GSAP scroll-triggered background change
   useLayoutEffect(() => {
@@ -142,17 +146,11 @@ export default function Navbar() {
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string
   ) {
-    if (href.startsWith("#")) {
+    if (isHome && href.startsWith("#")) {
       e.preventDefault();
       const target = document.getElementById(href.slice(1));
       target?.scrollIntoView({ behavior: "smooth" });
     }
-    closeMenu();
-  }
-
-  function handleContactScroll(e: React.MouseEvent<HTMLAnchorElement>) {
-    e.preventDefault();
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
     closeMenu();
   }
 
@@ -169,24 +167,41 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-16 md:h-[72px]">
           {/* Logo */}
-          <a
-            href="#top"
-            aria-label="Refleo home"
-            className="inline-flex min-h-[44px] items-center py-2.5 -my-2.5 shrink-0"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/svg/refleo-logo-dark.svg"
-              alt="Refleo"
-              width={132}
-              height={40}
-              className="h-8 w-auto"
-            />
-          </a>
+          {isHome ? (
+            <a
+              href="#top"
+              aria-label="Refleo home"
+              className="inline-flex min-h-[44px] items-center py-2.5 -my-2.5 shrink-0"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/svg/refleo-logo-dark.svg"
+                alt="Refleo"
+                width={132}
+                height={40}
+                className="h-8 w-auto"
+              />
+            </a>
+          ) : (
+            <Link
+              href="/"
+              aria-label="Refleo home"
+              className="inline-flex min-h-[44px] items-center py-2.5 -my-2.5 shrink-0"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/svg/refleo-logo-dark.svg"
+                alt="Refleo"
+                width={132}
+                height={40}
+                className="h-8 w-auto"
+              />
+            </Link>
+          )}
 
           {/* Desktop nav */}
           <nav
@@ -194,36 +209,38 @@ export default function Navbar() {
             aria-label="Main navigation"
           >
             <ul className="flex items-center gap-6 list-none m-0 p-0">
-              {NAV_LINKS.map(({ label, href }) => (
-                <li key={href}>
-                  <a
-                    href={href}
-                    onClick={(e) => handleSmoothScroll(e, href)}
-                    className="relative text-sm text-cream/80 hover:text-cream tracking-wide transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-apricot after:transition-transform after:duration-300 hover:after:scale-x-100"
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
+              {NAV_LINKS.map(({ label, href }) => {
+                const resolvedHref = isHome ? href : `/${href}`;
+                return (
+                  <li key={href}>
+                    <a
+                      href={resolvedHref}
+                      onClick={(e) => handleSmoothScroll(e, href)}
+                      className="relative text-sm text-cream/80 hover:text-cream tracking-wide transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-apricot after:transition-transform after:duration-300 hover:after:scale-x-100"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
 
             {/* CTAs */}
             <div className="flex items-center gap-3 ml-2">
               {/* Book a Demo — apricot fill */}
-              <a
-                href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
+              <Link
+                href="/contact?intent=demo"
                 className="inline-flex items-center px-5 py-2 rounded-full bg-apricot text-teal-dark text-sm font-medium hover:bg-apricot-light transition-all duration-200 ease-out whitespace-nowrap hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
               >
                 Book a Demo
-              </a>
+              </Link>
               {/* Contact Us — apricot outline */}
-              <a
-                href="#contact"
-                onClick={handleContactScroll}
+              <Link
+                href="/contact?intent=invest"
                 className="inline-flex items-center px-5 py-2 rounded-full border border-apricot text-apricot bg-transparent text-sm font-medium hover:bg-apricot/10 transition-all duration-200 ease-out whitespace-nowrap hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
               >
                 Contact Us
-              </a>
+              </Link>
             </div>
           </nav>
 
@@ -293,35 +310,38 @@ export default function Navbar() {
           ref={linksRef}
           className="list-none m-0 p-0 flex flex-col items-center gap-8 mb-12"
         >
-          {NAV_LINKS.map(({ label, href }) => (
-            <li key={href}>
-              <a
-                href={href}
-                onClick={(e) => handleSmoothScroll(e, href)}
-                className="relative text-3xl font-light text-cream/80 hover:text-cream tracking-wide transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-apricot after:transition-transform after:duration-300 hover:after:scale-x-100"
-              >
-                {label}
-              </a>
-            </li>
-          ))}
+          {NAV_LINKS.map(({ label, href }) => {
+            const resolvedHref = isHome ? href : `/${href}`;
+            return (
+              <li key={href}>
+                <a
+                  href={resolvedHref}
+                  onClick={(e) => handleSmoothScroll(e, href)}
+                  className="relative text-3xl font-light text-cream/80 hover:text-cream tracking-wide transition-colors duration-200 after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-apricot after:transition-transform after:duration-300 hover:after:scale-x-100"
+                >
+                  {label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Mobile CTAs */}
         <div className="flex flex-col items-center gap-4">
-          <a
-            href="mailto:vishwasvijayan007@gmail.com,rishianarkat@gmail.com?subject=Demo Request"
+          <Link
+            href="/contact?intent=demo"
             onClick={closeMenu}
             className="inline-flex items-center px-8 py-3 rounded-full bg-apricot text-teal-dark text-base font-medium hover:bg-apricot-light transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
           >
             Book a Demo
-          </a>
-          <a
-            href="#contact"
-            onClick={handleContactScroll}
+          </Link>
+          <Link
+            href="/contact?intent=invest"
+            onClick={closeMenu}
             className="inline-flex items-center px-8 py-3 rounded-full border border-apricot text-apricot bg-transparent text-base font-medium hover:bg-apricot/10 transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
           >
-            Get in Touch
-          </a>
+            Contact Us
+          </Link>
         </div>
       </div>
     </>

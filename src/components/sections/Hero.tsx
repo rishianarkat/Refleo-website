@@ -150,12 +150,12 @@ export default function Hero() {
           </Link>
 
           {/* Get in Touch — apricot OUTLINE pill */}
-          <Link
-            href="/contact?intent=invest"
+          <a
+            href="mailto:info@refleohealth.com?subject=Contact"
             className="flex w-full items-center justify-center rounded-full border border-apricot bg-transparent px-8 py-3 text-center text-sm font-semibold text-apricot transition-all duration-200 ease-out hover:bg-apricot/10 hover:scale-[1.04] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot sm:w-auto"
           >
             Get in Touch
-          </Link>
+          </a>
         </div>
       </div>
 

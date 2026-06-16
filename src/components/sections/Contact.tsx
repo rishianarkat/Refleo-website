@@ -144,12 +144,12 @@ export default function Contact() {
               <p className="text-base text-cream/70">{INVEST_COPY}</p>
             </div>
             <div>
-              <Link
-                href="/contact?intent=invest"
+              <a
+                href="mailto:info@refleohealth.com?subject=Investment Inquiry"
                 className="inline-flex items-center justify-center rounded-full border border-apricot bg-transparent px-8 py-3 text-base font-semibold text-apricot transition-all duration-200 ease-out hover:bg-apricot/10 hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-apricot min-h-[44px]"
               >
                 {INVEST_LABEL}
-              </Link>
+              </a>
             </div>
           </div>
         </div>

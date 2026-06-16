@@ -235,12 +235,12 @@ export default function Navbar() {
                 Book a Demo
               </Link>
               {/* Contact Us — apricot outline */}
-              <Link
-                href="/contact?intent=invest"
+              <a
+                href="mailto:info@refleohealth.com?subject=Contact"
                 className="inline-flex items-center px-5 py-2 rounded-full border border-apricot text-apricot bg-transparent text-sm font-medium hover:bg-apricot/10 transition-all duration-200 ease-out whitespace-nowrap hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
               >
                 Contact Us
-              </Link>
+              </a>
             </div>
           </nav>
 
@@ -335,13 +335,13 @@ export default function Navbar() {
           >
             Book a Demo
           </Link>
-          <Link
-            href="/contact?intent=invest"
+          <a
+            href="mailto:info@refleohealth.com?subject=Contact"
             onClick={closeMenu}
             className="inline-flex items-center px-8 py-3 rounded-full border border-apricot text-apricot bg-transparent text-base font-medium hover:bg-apricot/10 transition-all duration-200 ease-out hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)]"
           >
             Contact Us
-          </Link>
+          </a>
         </div>
       </div>
     </>

@@ -21,9 +21,9 @@ const VISHWAS_BULLET_2 =
 
 const RISHI_NAME = "Rishi Anarkat";
 const RISHI_ROLE = "Co-Founder";
-const RISHI_AFFILIATION = "Rice University · AI / CS";
+const RISHI_AFFILIATION = "Rice University · AI / Pre-Med";
 const RISHI_BULLET_1 =
-  "AI/CS @ Rice architecting Refleo's voice journaling and clinical continuity platform";
+  "AI/Pre-Med @ Rice architecting Refleo's voice journaling and clinical continuity platform";
 const RISHI_BULLET_2 =
   "Healthcare and AI/ML researcher at M.D. Anderson, Baylor College of Medicine, and McGovern School of Medicine";
 

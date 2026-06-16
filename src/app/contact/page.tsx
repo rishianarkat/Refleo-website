@@ -55,7 +55,7 @@ export default function ContactPage() {
     const form = e.currentTarget;
     setStatus("submitting");
     try {
-      const res = await fetch("https://formspree.io/f/mqeojyyq", {
+      const res = await fetch("https://formspree.io/f/xzdqwkyp", {
         method: "POST",
         body: new FormData(form),
         headers: { Accept: "application/json" },

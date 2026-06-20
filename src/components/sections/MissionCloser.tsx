@@ -3,15 +3,13 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Footer from "@/components/Footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const STATEMENT_PART_1 = "8 million teens are in treatment. Every one of them has a therapist entering a session with";
 const STATEMENT_HIGHLIGHT = "incomplete information.";
 const FIXES_THAT = "fixes that.";
-const COPYRIGHT = "© 2026 Refleo Health";
-const SITE_URL = "https://www.refleohealth.com";
-const SITE_LABEL = "www.refleohealth.com";
 
 export default function MissionCloser() {
   const rootRef = useRef<HTMLElement>(null);
@@ -76,17 +74,7 @@ export default function MissionCloser() {
 
         {/* Footer */}
         <div className="mt-28 border-t border-white/10 pt-10 md:mt-36">
-          <div className="flex flex-wrap items-center justify-between gap-4 text-sm">
-            <span className="text-cream/50">{COPYRIGHT}</span>
-            <a
-              href={SITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-apricot transition-colors duration-200 hover:text-apricot-light"
-            >
-              {SITE_LABEL}
-            </a>
-          </div>
+          <Footer />
         </div>
       </div>
     </section>

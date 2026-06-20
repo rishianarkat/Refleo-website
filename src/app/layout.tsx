@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 const SITE_URL = "https://www.refleohealth.com";
-const TITLE = "Refleo — Helping clinicians capture life outside the session";
+const TITLE = "Refleo";
 const DESCRIPTION =
   "Refleo is a between-session continuity platform for adolescent therapists. Teens log voice or text entries between sessions, and their clinician receives a structured pre-session brief.";
 

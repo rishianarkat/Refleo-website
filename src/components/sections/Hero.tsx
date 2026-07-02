@@ -1,9 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import RippleCanvas from "@/components/RippleCanvas";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ export default function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
   const ctasRef = useRef<HTMLDivElement>(null);
+  const [canvasActive, setCanvasActive] = useState(false);
 
   useLayoutEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -78,35 +80,42 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 flex items-center justify-center"
         style={{ zIndex: 0 }}
       >
+        {/* WebGL ripple field — desktop only; CSS rings below are the fallback */}
+        <RippleCanvas onActiveChange={setCanvasActive} />
+
         {/* Center apricot dot */}
         <span
           className="absolute rounded-full bg-apricot"
           style={{ width: 10, height: 10 }}
         />
 
-        {/* Ring 1 — innermost, teal-light accent */}
-        <span
-          className="ripple-ring ripple-ring--accent"
-          style={{ width: 220, height: 220, animationDelay: "0s" }}
-        />
+        {!canvasActive && (
+          <>
+            {/* Ring 1 — innermost, teal-light accent */}
+            <span
+              className="ripple-ring ripple-ring--accent"
+              style={{ width: 220, height: 220, animationDelay: "0s" }}
+            />
 
-        {/* Ring 2 */}
-        <span
-          className="ripple-ring"
-          style={{ width: 360, height: 360, animationDelay: "1.4s" }}
-        />
+            {/* Ring 2 */}
+            <span
+              className="ripple-ring"
+              style={{ width: 360, height: 360, animationDelay: "1.4s" }}
+            />
 
-        {/* Ring 3 */}
-        <span
-          className="ripple-ring"
-          style={{ width: 520, height: 520, animationDelay: "2.8s" }}
-        />
+            {/* Ring 3 */}
+            <span
+              className="ripple-ring"
+              style={{ width: 520, height: 520, animationDelay: "2.8s" }}
+            />
 
-        {/* Ring 4 — outermost */}
-        <span
-          className="ripple-ring"
-          style={{ width: 700, height: 700, animationDelay: "4.2s" }}
-        />
+            {/* Ring 4 — outermost */}
+            <span
+              className="ripple-ring"
+              style={{ width: 700, height: 700, animationDelay: "4.2s" }}
+            />
+          </>
+        )}
       </div>
 
       {/* Vignette overlay — above ripples, below text; darkens center for headline legibility */}

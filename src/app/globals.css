@@ -64,3 +64,19 @@ html.has-custom-cursor * {
     scroll-behavior: auto;
   }
 }
+
+/* ── Product phone float — gentle 4s bob ── */
+@keyframes phone-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.phone-float {
+  animation: phone-float 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phone-float {
+    animation: none;
+  }
+}

@@ -3,6 +3,7 @@
 import { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedStat from "@/components/AnimatedStat";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,7 +20,6 @@ const QUOTE_ATTRIBUTION = "— LPC, Private Practice";
 
 export default function Problem() {
   const rootRef = useRef<HTMLElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
   const quoteCardRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -28,15 +28,7 @@ export default function Problem() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
-      if (counterRef.current) {
-        counterRef.current.textContent = COUNTER_FINAL.toLocaleString("en-US");
-      }
       return;
-    }
-
-    // Reset counter to 0 before ScrollTrigger fires
-    if (counterRef.current) {
-      counterRef.current.textContent = "0";
     }
 
     const ctx = gsap.context(() => {
@@ -57,28 +49,6 @@ export default function Problem() {
           },
         }
       );
-
-      // Counter count-up ScrollTrigger
-      const proxy = { n: 0 };
-      ScrollTrigger.create({
-        trigger: counterRef.current,
-        start: "top 80%",
-        once: true,
-        onEnter: () => {
-          gsap.to(proxy, {
-            n: COUNTER_FINAL,
-            duration: 2,
-            ease: "power2.out",
-            onUpdate: () => {
-              if (counterRef.current) {
-                counterRef.current.textContent = Math.round(
-                  proxy.n
-                ).toLocaleString("en-US");
-              }
-            },
-          });
-        },
-      });
 
       // Quote card entrance: fade up + slide from left (spec)
       gsap.fromTo(
@@ -130,12 +100,10 @@ export default function Problem() {
         {/* Counter block */}
         <div className="mb-16" data-animate>
           <div className="inline-block">
-            <span
-              ref={counterRef}
+            <AnimatedStat
+              value={COUNTER_FINAL}
               className="text-6xl sm:text-7xl lg:text-8xl font-bold text-apricot tabular-nums leading-none"
-            >
-              {COUNTER_FINAL.toLocaleString("en-US")}
-            </span>
+            />
             <p className="mt-3 text-cream/70 text-base tracking-wide">
               {COUNTER_CAPTION}
             </p>

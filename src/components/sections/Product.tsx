@@ -291,6 +291,20 @@ export default function Product() {
         },
       });
 
+      // Phone entrance: fade up + scale from 0.95
+      gsap.from(".prod-phone", {
+        opacity: 0,
+        y: 24,
+        scale: 0.95,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".prod-mockups",
+          start: "top 75%",
+          toggleActions: "play none none none",
+        },
+      });
+
       // Parallax on phone mockup — scrub across section scroll (faster, y 50→-50)
       if (phoneRef.current) {
         gsap.fromTo(
@@ -425,27 +439,43 @@ export default function Product() {
               className="absolute bottom-0 -right-4 sm:-right-6 lg:-right-8 w-28 sm:w-36 md:w-40 lg:w-44"
               style={{ zIndex: 10 }}
             >
-              <div className="relative rounded-[2.5rem] overflow-hidden border-[3px] border-teal-light/30 shadow-2xl shadow-black/50 bg-[#1a2e2e]">
-                {/* Phone status bar notch */}
-                <div className="h-5 bg-[#1a2e2e] flex items-center justify-center shrink-0">
-                  <div className="w-12 h-2 bg-[#243636] rounded-full" aria-hidden="true" />
-                </div>
+              <div className="prod-phone relative">
+                {/* Soft apricot/teal glow behind the frame */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-10"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at 50% 55%, rgba(232,168,124,0.30) 0%, rgba(74,124,124,0.20) 45%, transparent 72%)",
+                    filter: "blur(26px)",
+                  }}
+                />
 
-                {/* Screenshot */}
-                <div className="relative w-full" style={{ aspectRatio: "780 / 1688" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/demo-journaling.png"
-                    alt="Teen voice journaling screen with mood picker and audio entry"
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 h-full w-full object-cover object-top"
-                  />
-                </div>
+                {/* Gentle 4s bob — keyframes in globals.css */}
+                <div className="phone-float relative">
+                  <div className="relative rounded-[2.5rem] overflow-hidden border-[3px] border-teal-light/30 shadow-2xl shadow-black/50 bg-[#1a2e2e]">
+                    {/* Phone status bar notch */}
+                    <div className="h-5 bg-[#1a2e2e] flex items-center justify-center shrink-0">
+                      <div className="w-12 h-2 bg-[#243636] rounded-full" aria-hidden="true" />
+                    </div>
 
-                {/* Phone home indicator bar */}
-                <div className="h-4 bg-[#1a2e2e] flex items-end justify-center pb-1 shrink-0">
-                  <div className="w-10 h-1 bg-[#243636] rounded-full" aria-hidden="true" />
+                    {/* Screenshot */}
+                    <div className="relative w-full" style={{ aspectRatio: "780 / 1688" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/images/demo-journaling.png"
+                        alt="Teen voice journaling screen with mood picker and audio entry"
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                      />
+                    </div>
+
+                    {/* Phone home indicator bar */}
+                    <div className="h-4 bg-[#1a2e2e] flex items-end justify-center pb-1 shrink-0">
+                      <div className="w-10 h-1 bg-[#243636] rounded-full" aria-hidden="true" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

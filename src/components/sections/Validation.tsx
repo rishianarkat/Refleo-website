@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedStat from "@/components/AnimatedStat";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,9 +44,6 @@ const PHOTO_CREDIT_UNSPLASH_URL =
 
 export default function Validation() {
   const rootRef = useRef<HTMLElement>(null);
-  const stat1Ref = useRef<HTMLSpanElement>(null);
-  const stat2Ref = useRef<HTMLSpanElement>(null);
-  const stat3Ref = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {
     const prefersReduced =
@@ -54,16 +52,8 @@ export default function Validation() {
 
     // If reduced motion, leave everything at final visible state
     if (prefersReduced) {
-      if (stat1Ref.current) stat1Ref.current.textContent = `${STAT_1_VALUE}${STAT_1_SUFFIX}`;
-      if (stat2Ref.current) stat2Ref.current.textContent = `${STAT_2_VALUE}${STAT_2_SUFFIX}`;
-      if (stat3Ref.current) stat3Ref.current.textContent = `${STAT_3_VALUE}${STAT_3_SUFFIX}`;
       return;
     }
-
-    // Reset numeric part to 0 for count-up animation
-    if (stat1Ref.current) stat1Ref.current.textContent = `0${STAT_1_SUFFIX}`;
-    if (stat2Ref.current) stat2Ref.current.textContent = `0${STAT_2_SUFFIX}`;
-    if (stat3Ref.current) stat3Ref.current.textContent = `0${STAT_3_SUFFIX}`;
 
     const ctx = gsap.context(() => {
       // Header fade + slide in
@@ -89,49 +79,6 @@ export default function Validation() {
           trigger: ".val-image",
           start: "top 80%",
           toggleActions: "play none none none",
-        },
-      });
-
-      // Stats count-up — fire once when stat row enters view
-      const statsProxy1 = { n: 0 };
-      const statsProxy2 = { n: 0 };
-      const statsProxy3 = { n: 0 };
-
-      ScrollTrigger.create({
-        trigger: ".val-stats",
-        start: "top 78%",
-        once: true,
-        onEnter: () => {
-          gsap.to(statsProxy1, {
-            n: STAT_1_VALUE,
-            duration: 1.8,
-            ease: "power2.out",
-            onUpdate: () => {
-              if (stat1Ref.current) {
-                stat1Ref.current.textContent = `${Math.round(statsProxy1.n)}${STAT_1_SUFFIX}`;
-              }
-            },
-          });
-          gsap.to(statsProxy2, {
-            n: STAT_2_VALUE,
-            duration: 1.4,
-            ease: "power2.out",
-            onUpdate: () => {
-              if (stat2Ref.current) {
-                stat2Ref.current.textContent = `${Math.round(statsProxy2.n)}${STAT_2_SUFFIX}`;
-              }
-            },
-          });
-          gsap.to(statsProxy3, {
-            n: STAT_3_VALUE,
-            duration: 1.8,
-            ease: "power2.out",
-            onUpdate: () => {
-              if (stat3Ref.current) {
-                stat3Ref.current.textContent = `${Math.round(statsProxy3.n)}${STAT_3_SUFFIX}`;
-              }
-            },
-          });
         },
       });
 
@@ -215,12 +162,7 @@ export default function Validation() {
             <div className="val-stats grid grid-cols-1 sm:grid-cols-3 gap-8">
               {/* Stat 1 */}
               <div className="flex flex-col gap-2">
-                <span
-                  ref={stat1Ref}
-                  className="text-5xl sm:text-6xl font-bold text-apricot tabular-nums leading-none"
-                >
-                  {STAT_1_VALUE}{STAT_1_SUFFIX}
-                </span>
+                <AnimatedStat value={STAT_1_VALUE} suffix={STAT_1_SUFFIX} useLocale={false} delayIndex={0} className="text-5xl sm:text-6xl font-bold text-apricot tabular-nums leading-none" />
                 <p className="text-base sm:text-sm text-teal-dark/70 leading-snug mt-1">
                   {STAT_1_LABEL}
                 </p>
@@ -228,12 +170,7 @@ export default function Validation() {
 
               {/* Stat 2 */}
               <div className="flex flex-col gap-2">
-                <span
-                  ref={stat2Ref}
-                  className="text-5xl sm:text-6xl font-bold text-apricot tabular-nums leading-none"
-                >
-                  {STAT_2_VALUE}{STAT_2_SUFFIX}
-                </span>
+                <AnimatedStat value={STAT_2_VALUE} suffix={STAT_2_SUFFIX} useLocale={false} delayIndex={1} className="text-5xl sm:text-6xl font-bold text-apricot tabular-nums leading-none" />
                 <p className="text-base sm:text-sm text-teal-dark/70 leading-snug mt-1">
                   {STAT_2_LABEL}
                 </p>
@@ -241,12 +178,7 @@ export default function Validation() {
 
               {/* Stat 3 */}
               <div className="flex flex-col gap-2">
-                <span
-                  ref={stat3Ref}
-                  className="text-5xl sm:text-6xl font-bold text-apricot tabular-nums leading-none"
-                >
-                  {STAT_3_VALUE}{STAT_3_SUFFIX}
-                </span>
+                <AnimatedStat value={STAT_3_VALUE} suffix={STAT_3_SUFFIX} useLocale={false} delayIndex={2} className="text-5xl sm:text-6xl font-bold text-apricot tabular-nums leading-none" />
                 <p className="text-base sm:text-sm text-teal-dark/70 leading-snug mt-1">
                   {STAT_3_LABEL}
                 </p>

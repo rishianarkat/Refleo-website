@@ -82,7 +82,7 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section ref={rootRef} className="bg-teal-deep py-28 md:py-40">
+    <section ref={rootRef} className="bg-teal-deep/60 py-20 md:py-24">
       <div className="max-w-6xl mx-auto px-6 lg:px-12">
         <div className="hiw-eyebrow mb-6 flex items-center gap-3">
           <span

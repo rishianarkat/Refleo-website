@@ -20,6 +20,7 @@ const QUOTE_ATTRIBUTION = "LPC, Private Practice";
 export default function Problem() {
   const rootRef = useRef<HTMLElement>(null);
   const statRef = useRef<HTMLSpanElement>(null);
+  const captionRef = useRef<HTMLParagraphElement>(null);
   const [displayStat, setDisplayStat] = useState(STAT_FINAL);
 
   useLayoutEffect(() => {
@@ -49,6 +50,9 @@ export default function Problem() {
         });
       });
 
+      gsap.set(captionRef.current, { opacity: 0 });
+      gsap.set(statRef.current, { scale: 0.92, y: 20 });
+
       const counter = { value: 0 };
       ScrollTrigger.create({
         trigger: statRef.current,
@@ -63,6 +67,30 @@ export default function Problem() {
               setDisplayStat(Math.round(counter.value));
             },
           });
+          gsap.to(statRef.current, {
+            scale: 1,
+            y: 0,
+            duration: 2,
+            ease: "power2.out",
+          });
+          gsap.to(captionRef.current, {
+            opacity: 1,
+            duration: 0.6,
+            delay: 1.8,
+          });
+        },
+      });
+
+      ScrollTrigger.create({
+        trigger: rootRef.current,
+        start: "top 70%",
+        once: true,
+        onEnter: () => {
+          window.dispatchEvent(
+            new CustomEvent("refleo:pulse", {
+              detail: { x: 0.3, y: 0.4, strength: 1.2 },
+            })
+          );
         },
       });
     }, rootRef);
@@ -71,8 +99,8 @@ export default function Problem() {
   }, []);
 
   return (
-    <section id="problem" ref={rootRef} className="relative bg-teal-deep overflow-hidden">
-      <div className="relative max-w-6xl mx-auto px-6 lg:px-12 py-28 md:py-40">
+    <section id="problem" ref={rootRef} className="relative bg-transparent overflow-hidden">
+      <div className="relative max-w-6xl mx-auto px-6 lg:px-12 py-20 md:py-24">
         <div data-animate className="mb-6 inline-flex items-center gap-4">
           <span
             aria-hidden="true"
@@ -93,11 +121,13 @@ export default function Problem() {
         <div data-animate className="mt-16">
           <span
             ref={statRef}
-            className="font-serif text-7xl sm:text-8xl lg:text-9xl text-apricot tabular-nums leading-none"
+            className="inline-block font-serif text-8xl sm:text-9xl lg:text-[11rem] text-apricot tabular-nums leading-none"
           >
             {displayStat.toLocaleString("en-US")}
           </span>
-          <p className="mt-4 text-cream/70 text-lg">{STAT_CAPTION}</p>
+          <p ref={captionRef} className="mt-4 text-cream/70 text-lg">
+            {STAT_CAPTION}
+          </p>
         </div>
 
         <p

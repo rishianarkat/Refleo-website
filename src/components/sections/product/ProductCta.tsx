@@ -43,7 +43,7 @@ export default function ProductCta() {
   return (
     <section
       ref={rootRef}
-      className="bg-teal-deep py-24 md:py-32 text-center"
+      className="bg-teal-deep/60 py-20 md:py-24 text-center"
     >
       <div className="pc-content max-w-6xl mx-auto px-6 lg:px-12">
         <p className="font-serif text-2xl sm:text-3xl text-cream max-w-2xl mx-auto">

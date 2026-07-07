@@ -15,6 +15,7 @@ const TEAM = [
     affiliation: "Rice University · Finance / BBA",
     photo: "/images/vishwas.jpg",
     alt: "Portrait of Vishwas Vijayan",
+    linkedin: "https://www.linkedin.com/in/vishwasvijayan/",
     bullets: [
       "Finance/BBA @ Rice building the commercial and go-to-market side of Refleo",
       "Junior Associate at a $55M Houston VC fund; AI analyst at AfterQuery (YC W'25)",
@@ -26,15 +27,13 @@ const TEAM = [
     affiliation: "Rice University · AI / Pre-Med",
     photo: "/images/rishi.jpg",
     alt: "Portrait of Rishi Anarkat",
+    linkedin: "https://www.linkedin.com/in/rishianarkat/",
     bullets: [
       "AI/Pre-Med @ Rice architecting Refleo's voice journaling and clinical continuity platform",
       "Healthcare and AI/ML researcher at M.D. Anderson, Baylor College of Medicine, and McGovern School of Medicine",
     ],
   },
 ];
-
-const TAGLINE =
-  "We're here because we went out instead of staying in on a Friday night during a hackathon. We won first place anyway.";
 
 export default function Team() {
   const rootRef = useRef<HTMLElement>(null);
@@ -72,25 +71,13 @@ export default function Team() {
           once: true,
         },
       });
-
-      gsap.from("[data-team-tagline]", {
-        opacity: 0,
-        y: 28,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: "[data-team-tagline]",
-          start: "top 85%",
-          once: true,
-        },
-      });
     }, rootRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={rootRef} className="bg-teal-deep py-28 md:py-40">
+    <section ref={rootRef} className="bg-teal-deep/60 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
         <h2
           className="font-serif text-3xl tracking-tight text-cream sm:text-5xl lg:text-6xl"
@@ -132,16 +119,28 @@ export default function Team() {
                   </li>
                 ))}
               </ul>
+
+              <a
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${member.name} on LinkedIn`}
+                className="mt-5 inline-flex items-center gap-2 rounded-full border border-teal-light/30 px-4 py-2 text-xs font-semibold font-sans text-cream/80 transition-all duration-200 hover:border-apricot hover:text-apricot hover:scale-[1.03] active:scale-[0.98]"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" />
+                </svg>
+                LinkedIn
+              </a>
             </div>
           ))}
         </div>
-
-        <p
-          className="mt-16 text-center font-serif text-lg italic text-cream/80 sm:text-xl"
-          data-team-tagline
-        >
-          {TAGLINE}
-        </p>
       </div>
     </section>
   );

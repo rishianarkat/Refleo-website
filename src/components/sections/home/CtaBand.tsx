@@ -28,6 +28,8 @@ export default function CtaBand() {
 
     if (reduced) return;
 
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+
     const ctx = gsap.context(() => {
       gsap.from("[data-animate]", {
         opacity: 0,
@@ -41,20 +43,45 @@ export default function CtaBand() {
           once: true,
         },
       });
+
+      ScrollTrigger.create({
+        trigger: rootRef.current,
+        start: "top 70%",
+        once: true,
+        onEnter: () => {
+          const pulses = [
+            { x: 0.5, y: 0.5, strength: 1.9 },
+            { x: 0.42, y: 0.55, strength: 1.3 },
+            { x: 0.58, y: 0.45, strength: 1.3 },
+          ];
+          pulses.forEach((detail, i) => {
+            timeouts.push(
+              setTimeout(() => {
+                window.dispatchEvent(
+                  new CustomEvent("refleo:pulse", { detail })
+                );
+              }, i * 350)
+            );
+          });
+        },
+      });
     }, rootRef);
 
-    return () => ctx.revert();
+    return () => {
+      timeouts.forEach((t) => clearTimeout(t));
+      ctx.revert();
+    };
   }, []);
 
   return (
     <section
       ref={rootRef}
-      className="bg-teal-dark py-28 md:py-36 text-center"
+      className="bg-transparent py-20 md:py-28 text-center"
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-12">
         <h2
           data-animate
-          className="font-serif tracking-tight text-cream text-3xl sm:text-5xl lg:text-6xl max-w-3xl mx-auto"
+          className="font-serif tracking-tight text-cream text-4xl sm:text-6xl lg:text-7xl max-w-4xl mx-auto text-balance"
         >
           {H2_TEXT}
         </h2>

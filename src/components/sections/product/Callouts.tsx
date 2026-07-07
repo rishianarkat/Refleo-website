@@ -74,7 +74,7 @@ export default function Callouts() {
   }, []);
 
   return (
-    <section ref={rootRef} className="bg-teal-dark py-28 md:py-40">
+    <section ref={rootRef} className="bg-transparent py-20 md:py-24">
       <div className="max-w-6xl mx-auto px-6 lg:px-12">
         <div className="co-eyebrow mb-6 flex items-center gap-3">
           <span

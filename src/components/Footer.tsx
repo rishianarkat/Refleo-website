@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WaveLines } from "@/components/ripples/RippleArt";
 
 const MISSION_LINE = "Helping clinicians capture life outside the session.";
 
@@ -22,8 +23,9 @@ const ACTIONS_HEADING = "Get started";
 
 export default function Footer() {
   return (
-    <footer className="bg-teal-deep border-t border-white/5 py-16 md:py-20">
+    <footer className="bg-teal-deep/70 border-t border-white/5 py-12 md:py-14">
       <div className="max-w-6xl mx-auto px-6 lg:px-12">
+        <WaveLines className="text-teal-light/20 w-full max-w-sm mx-auto mb-10" />
         <div className="md:flex md:justify-between md:gap-12">
           {/* Left: ripple mark + mission line */}
           <div className="flex items-start gap-4 max-w-md">

@@ -67,8 +67,11 @@ export default function Navbar() {
                     <Link
                       href={href}
                       className={[
-                        "text-sm font-sans transition-colors duration-200",
-                        active ? "text-apricot" : "text-cream/80 hover:text-cream",
+                        "relative text-sm font-sans transition-colors duration-200",
+                        "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-apricot after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100",
+                        active
+                          ? "text-apricot after:scale-x-100"
+                          : "text-cream/80 hover:text-cream",
                       ].join(" ")}
                     >
                       {label}

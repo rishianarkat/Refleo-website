@@ -31,6 +31,13 @@ export default function Mission() {
           trigger: rootRef.current,
           start: "top 80%",
           once: true,
+          onEnter: () => {
+            window.dispatchEvent(
+              new CustomEvent("refleo:pulse", {
+                detail: { x: 0.5, y: 0.5, strength: 1.6 },
+              })
+            );
+          },
         },
       });
 
@@ -53,7 +60,7 @@ export default function Mission() {
   return (
     <section
       ref={rootRef}
-      className="bg-teal-dark py-32 text-center md:py-44"
+      className="bg-transparent py-24 text-center md:py-28"
     >
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
         <p

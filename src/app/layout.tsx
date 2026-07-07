@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import GlobalRipples from "@/components/GlobalRipples";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -100,7 +101,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="bg-teal-dark font-sans text-cream antialiased">
-        {children}
+        <GlobalRipples />
+        <div className="relative z-10">{children}</div>
         <CustomCursor />
         <script
           type="application/ld+json"

@@ -28,6 +28,7 @@ const CLOSING_LINE =
 export default function Validation() {
   const rootRef = useRef<HTMLElement>(null);
   const statRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const pingRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const [displayStats, setDisplayStats] = useState<number[]>(
     STATS.map((s) => s.value)
   );
@@ -76,9 +77,31 @@ export default function Validation() {
                   return next;
                 });
               },
+              onComplete: () => {
+                const ping = pingRefs.current[i];
+                if (!ping) return;
+                gsap.fromTo(
+                  ping,
+                  { opacity: 0.6, scale: 0.4 },
+                  { opacity: 0, scale: 2.2, duration: 0.9, ease: "power2.out" }
+                );
+              },
             });
           },
         });
+      });
+
+      ScrollTrigger.create({
+        trigger: rootRef.current,
+        start: "top 70%",
+        once: true,
+        onEnter: () => {
+          window.dispatchEvent(
+            new CustomEvent("refleo:pulse", {
+              detail: { x: 0.7, y: 0.5, strength: 1.2 },
+            })
+          );
+        },
       });
 
       gsap.from("[data-quote]", {
@@ -111,8 +134,8 @@ export default function Validation() {
   }, []);
 
   return (
-    <section id="validation" ref={rootRef} className="bg-teal-deep">
-      <div className="max-w-6xl mx-auto px-6 lg:px-12 py-28 md:py-40">
+    <section id="validation" ref={rootRef} className="bg-teal-deep/60">
+      <div className="max-w-6xl mx-auto px-6 lg:px-12 py-20 md:py-24">
         <div data-animate className="mb-6 inline-flex items-center gap-4">
           <span
             aria-hidden="true"
@@ -132,7 +155,7 @@ export default function Validation() {
 
         <div data-animate className="mt-20 grid sm:grid-cols-3 gap-10">
           {STATS.map((stat, i) => (
-            <div key={stat.label}>
+            <div key={stat.label} className="relative">
               <span
                 ref={(el) => {
                   statRefs.current[i] = el;
@@ -142,44 +165,53 @@ export default function Validation() {
                 {displayStats[i]}
                 {stat.suffix}
               </span>
+              <span
+                ref={(el) => {
+                  pingRefs.current[i] = el;
+                }}
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-apricot/60 opacity-0"
+              />
               <p className="mt-4 text-sm text-cream/60">{stat.label}</p>
             </div>
           ))}
         </div>
 
-        <div data-quote className="mt-28 max-w-3xl">
-          <span
-            aria-hidden="true"
-            className="block font-serif text-7xl leading-none text-apricot select-none"
-          >
-            &ldquo;
-          </span>
-          <p className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-cream leading-snug">
-            {QUOTE_A_TEXT}
-          </p>
-          <p className="mt-6 text-sm uppercase tracking-widest text-cream/50 font-sans">
-            {QUOTE_A_ATTRIBUTION}
-          </p>
-        </div>
+        <div className="mt-20 grid gap-14 md:grid-cols-2 md:gap-12">
+          <div data-quote>
+            <span
+              aria-hidden="true"
+              className="block font-serif text-6xl leading-none text-apricot select-none"
+            >
+              &ldquo;
+            </span>
+            <p className="font-serif italic text-xl sm:text-2xl lg:text-3xl text-cream leading-snug">
+              {QUOTE_A_TEXT}
+            </p>
+            <p className="mt-5 text-sm uppercase tracking-widest text-cream/50 font-sans">
+              {QUOTE_A_ATTRIBUTION}
+            </p>
+          </div>
 
-        <div data-quote className="mt-24 max-w-3xl">
-          <span
-            aria-hidden="true"
-            className="block font-serif text-7xl leading-none text-apricot select-none"
-          >
-            &ldquo;
-          </span>
-          <p className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-cream leading-snug">
-            {QUOTE_B_TEXT}
-          </p>
-          <p className="mt-6 text-sm uppercase tracking-widest text-cream/50 font-sans">
-            {QUOTE_B_ATTRIBUTION}
-          </p>
+          <div data-quote>
+            <span
+              aria-hidden="true"
+              className="block font-serif text-6xl leading-none text-apricot select-none"
+            >
+              &ldquo;
+            </span>
+            <p className="font-serif italic text-xl sm:text-2xl lg:text-3xl text-cream leading-snug">
+              {QUOTE_B_TEXT}
+            </p>
+            <p className="mt-5 text-sm uppercase tracking-widest text-cream/50 font-sans">
+              {QUOTE_B_ATTRIBUTION}
+            </p>
+          </div>
         </div>
 
         <p
           data-closing
-          className="mt-24 text-center font-serif text-xl text-cream/80 italic"
+          className="mt-16 text-center font-serif text-xl text-cream/80 italic"
         >
           {CLOSING_LINE}
         </p>

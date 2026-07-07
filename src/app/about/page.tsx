@@ -7,7 +7,7 @@ import Mission from "@/components/sections/about/Mission";
 
 const TITLE = "About";
 const DESCRIPTION =
-  "The story and team behind Refleo, built by two Rice University students after a health policy hackathon.";
+  "Meet the team behind Refleo and what we believe: continuity between sessions makes adolescent therapy work better.";
 const URL = "https://www.refleohealth.com/about";
 
 export const metadata: Metadata = {

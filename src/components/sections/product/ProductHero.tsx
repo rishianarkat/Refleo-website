@@ -22,6 +22,7 @@ const JOURNALING_ALT =
 
 export default function ProductHero() {
   const rootRef = useRef<HTMLElement>(null);
+  const tiltRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (
@@ -61,10 +62,57 @@ export default function ProductHero() {
     return () => ctx.revert();
   }, []);
 
+  useLayoutEffect(() => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fine =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: fine)").matches;
+
+    if (reduced || !fine) return;
+
+    const container = rootRef.current?.querySelector(
+      ".ph-tilt-wrap"
+    ) as HTMLElement | null;
+    const tilt = tiltRef.current;
+    if (!container || !tilt) return;
+
+    function handleMouseMove(e: MouseEvent) {
+      const rect = container!.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+      gsap.to(tilt, {
+        rotationY: nx * 7,
+        rotationX: -ny * 5,
+        duration: 0.5,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+
+    function handleMouseLeave() {
+      gsap.to(tilt, {
+        rotationY: 0,
+        rotationX: 0,
+        duration: 0.8,
+        ease: "elastic.out(1,0.5)",
+      });
+    }
+
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, []);
+
   return (
     <section
       ref={rootRef}
-      className="bg-teal-dark pt-40 pb-28 md:pb-36"
+      className="bg-transparent pt-36 pb-20 md:pb-24"
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-12">
         <div className="ph-eyebrow mb-6 flex items-center gap-3">
@@ -95,71 +143,76 @@ export default function ProductHero() {
         </div>
 
         {/* Device mockups */}
-        <div className="ph-mockups relative mt-16 pb-16">
-          {/* Browser mockup */}
-          <div className="relative w-full max-w-3xl rounded-xl overflow-hidden border border-teal-light/20 shadow-2xl shadow-black/40 bg-[#1a2e2e]">
-            {/* Chrome bar */}
-            <div className="flex items-center gap-1.5 px-3 py-2.5 bg-[#243636] border-b border-teal-light/10 shrink-0">
-              <span
-                className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]"
-                aria-hidden="true"
-              />
-              <span
-                className="w-2.5 h-2.5 rounded-full bg-[#FFBC2E]"
-                aria-hidden="true"
-              />
-              <span
-                className="w-2.5 h-2.5 rounded-full bg-[#28C840]"
-                aria-hidden="true"
-              />
-              <div
-                className="ml-3 flex-1 bg-teal-dark/60 rounded-md h-4"
-                aria-hidden="true"
-              />
-            </div>
-
-            <div className="relative w-full aspect-[16/10] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/demo-brief.png"
-                alt={BRIEF_ALT}
-                decoding="async"
-                className="absolute inset-0 h-full w-full object-cover object-top"
-              />
-            </div>
-          </div>
-
-          {/* Phone mockup, overlapping bottom-right */}
-          <div className="absolute bottom-0 -right-2 sm:right-0 lg:right-4 w-32 sm:w-40 lg:w-44">
-            <div className="relative rounded-[2.5rem] overflow-hidden border-[3px] border-teal-light/30 shadow-2xl shadow-black/50 bg-[#1a2e2e]">
-              {/* Notch bar */}
-              <div className="h-5 bg-[#1a2e2e] flex items-center justify-center shrink-0">
+        <div
+          className="ph-mockups ph-tilt-wrap relative mt-16 pb-16"
+          style={{ perspective: "1000px" }}
+        >
+          <div ref={tiltRef} className="relative" style={{ transformStyle: "preserve-3d" }}>
+            {/* Browser mockup */}
+            <div className="relative w-full max-w-3xl rounded-xl overflow-hidden border border-teal-light/20 shadow-2xl shadow-black/40 bg-[#1a2e2e]">
+              {/* Chrome bar */}
+              <div className="flex items-center gap-1.5 px-3 py-2.5 bg-[#243636] border-b border-teal-light/10 shrink-0">
+                <span
+                  className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]"
+                  aria-hidden="true"
+                />
+                <span
+                  className="w-2.5 h-2.5 rounded-full bg-[#FFBC2E]"
+                  aria-hidden="true"
+                />
+                <span
+                  className="w-2.5 h-2.5 rounded-full bg-[#28C840]"
+                  aria-hidden="true"
+                />
                 <div
-                  className="w-12 h-2 bg-[#243636] rounded-full"
+                  className="ml-3 flex-1 bg-teal-dark/60 rounded-md h-4"
                   aria-hidden="true"
                 />
               </div>
 
-              <div
-                className="relative w-full"
-                style={{ aspectRatio: "780 / 1688" }}
-              >
+              <div className="relative w-full aspect-[16/10] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/demo-journaling.png"
-                  alt={JOURNALING_ALT}
-                  loading="lazy"
+                  src="/images/demo-brief.png"
+                  alt={BRIEF_ALT}
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover object-top"
                 />
               </div>
+            </div>
 
-              {/* Home indicator bar */}
-              <div className="h-4 bg-[#1a2e2e] flex items-end justify-center pb-1 shrink-0">
+            {/* Phone mockup, overlapping bottom-right */}
+            <div className="absolute bottom-0 -right-2 sm:right-0 lg:right-4 w-32 sm:w-40 lg:w-44">
+              <div className="relative rounded-[2.5rem] overflow-hidden border-[3px] border-teal-light/30 shadow-2xl shadow-black/50 bg-[#1a2e2e]">
+                {/* Notch bar */}
+                <div className="h-5 bg-[#1a2e2e] flex items-center justify-center shrink-0">
+                  <div
+                    className="w-12 h-2 bg-[#243636] rounded-full"
+                    aria-hidden="true"
+                  />
+                </div>
+
                 <div
-                  className="w-10 h-1 bg-[#243636] rounded-full"
-                  aria-hidden="true"
-                />
+                  className="relative w-full"
+                  style={{ aspectRatio: "780 / 1688" }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/demo-journaling.png"
+                    alt={JOURNALING_ALT}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
+                  />
+                </div>
+
+                {/* Home indicator bar */}
+                <div className="h-4 bg-[#1a2e2e] flex items-end justify-center pb-1 shrink-0">
+                  <div
+                    className="w-10 h-1 bg-[#243636] rounded-full"
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
             </div>
           </div>

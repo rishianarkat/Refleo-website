@@ -78,7 +78,7 @@ export default function ContactPageClient() {
   const labelBase = "block text-sm font-medium text-cream/80 mb-1.5 font-sans";
 
   return (
-    <div className="min-h-screen flex flex-col bg-teal-dark">
+    <div className="min-h-screen flex flex-col bg-transparent">
       <Navbar />
       <div
         ref={containerRef}

@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         // Refleo brand palette
         "teal-dark": "#2D4F4F", // dark background
+        "teal-deep": "#24403F", // alternate deeper band
         teal: "#4A7C7C", // primary
         "teal-light": "#7FB3B3", // accent
         apricot: "#E8A87C", // CTA / highlight
@@ -20,6 +21,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        serif: ["var(--font-fraunces)", "Georgia", "serif"],
       },
     },
   },

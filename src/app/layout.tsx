@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 
@@ -9,14 +9,21 @@ const inter = Inter({
   display: "swap",
 });
 
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
 const SITE_URL = "https://www.refleohealth.com";
-const TITLE = "Refleo — Helping clinicians capture life outside the session";
+const TITLE = "Refleo · Helping clinicians capture life outside the session";
 const DESCRIPTION =
   "Refleo is a between-session continuity platform for adolescent therapists. Teens log voice or text entries between sessions, and their clinician receives a structured pre-session brief.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: TITLE,
+  title: { default: "Refleo", template: "%s · Refleo" },
   description: DESCRIPTION,
   keywords: [
     "adolescent therapy",
@@ -43,7 +50,7 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Refleo — Helping clinicians capture life outside the session",
+        alt: "Refleo · Helping clinicians capture life outside the session",
       },
     ],
   },
@@ -91,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="bg-teal-dark font-sans text-cream antialiased">
         {children}
         <CustomCursor />

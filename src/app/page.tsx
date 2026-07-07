@@ -1,14 +1,10 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/sections/Hero";
-import Problem from "@/components/sections/Problem";
-import Solution from "@/components/sections/Solution";
-import FoundingStory from "@/components/sections/FoundingStory";
-import Product from "@/components/sections/Product";
-import Validation from "@/components/sections/Validation";
-import Team from "@/components/sections/Team";
-import Contact from "@/components/sections/Contact";
-import MissionCloser from "@/components/sections/MissionCloser";
-import ParticleFlow from "@/components/ParticleFlow";
+import Footer from "@/components/Footer";
+import Hero from "@/components/sections/home/Hero";
+import Problem from "@/components/sections/home/Problem";
+import Solution from "@/components/sections/home/Solution";
+import Validation from "@/components/sections/home/Validation";
+import CtaBand from "@/components/sections/home/CtaBand";
 
 export default function Home() {
   return (
@@ -17,17 +13,11 @@ export default function Home() {
       <main>
         <Hero />
         <Problem />
-        <ParticleFlow />
         <Solution />
-        <ParticleFlow />
-        <FoundingStory />
-        <Product />
-        <ParticleFlow />
         <Validation />
-        <Team />
-        <Contact />
-        <MissionCloser />
+        <CtaBand />
       </main>
+      <Footer />
     </>
   );
 }

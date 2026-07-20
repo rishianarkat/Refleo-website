@@ -12,7 +12,7 @@ const H2_TEXT = "Fifty minutes a week is not the whole story.";
 const STAT_FINAL = 10030;
 const STAT_CAPTION = "minutes every week the clinician can't see";
 const BODY_TEXT =
-  "Sessions start cold. The first ten minutes go to reconstructing the week from memory. Crises fade, breakthroughs blur, and small moments disappear before the next appointment. Teens forget. Some never had the words in the first place. Others aren't ready to say it out loud.";
+  "Sessions start cold. The first ten minutes go to reconstructing the week from memory. Crises fade, breakthroughs blur, and small moments disappear before the next appointment. People forget. Some never had the words in the first place. Others aren't ready to say it out loud.";
 const QUOTE_TEXT =
   "By the time they're in my office, I've lost the week. I'm building a picture from what they happen to remember in the first five minutes.";
 const QUOTE_ATTRIBUTION = "LPC, Private Practice";

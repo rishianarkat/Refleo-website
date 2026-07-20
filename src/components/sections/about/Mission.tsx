@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const STATEMENT_LEAD =
-  "8 million teens are in treatment. Every one of them has a therapist entering a session with ";
+  "60 million Americans are in treatment. Every one of them has a therapist entering a session with ";
 const STATEMENT_EMPHASIS = "incomplete information.";
 const PUNCH = "fixes that.";
 

@@ -9,9 +9,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HERO_EYEBROW = "About Refleo";
 const HERO_HEADLINE =
-  "Refleo exists so a teen's therapist never has to wonder what they missed.";
+  "Refleo exists so a patient's therapist never has to wonder what they missed.";
 const HERO_SUB =
-  "We build continuity between sessions. Teens get a private place to talk through the week. Clinicians get the context to make fifty minutes count.";
+  "We build continuity between sessions — starting with adolescent therapists, where it matters most, and expanding across behavioral health. Patients get a private place to talk through the week. Clinicians get the context to make fifty minutes count.";
 
 const BELIEFS_EYEBROW = "What we believe";
 const BELIEFS = [
@@ -21,7 +21,7 @@ const BELIEFS = [
   },
   {
     title: "Privacy is the product.",
-    body: "Teens choose what they share. Refleo listens for what the clinician flagged, surfaces patterns, and never counsels.",
+    body: "Patients choose what they share. Refleo listens for what the clinician flagged, surfaces patterns, and never counsels.",
   },
   {
     title: "Built with clinicians, not just for them.",

@@ -11,14 +11,14 @@ gsap.registerPlugin(ScrollTrigger);
 const EYEBROW = "Product";
 const HEADLINE = "See it in action.";
 const SUB =
-  "A teen's voice notes become a one-screen brief their clinician reads before the session.";
+  "A patient's voice notes become a one-screen brief their clinician reads before the session.";
 const CTA_LABEL = "Book a Demo";
 const CTA_HREF = "/contact?intent=demo";
 
 const BRIEF_ALT =
   "Clinician pre-session brief showing recurring themes and keyword matches";
 const JOURNALING_ALT =
-  "Teen voice journaling screen with mood picker and audio entry";
+  "Patient voice journaling screen with mood picker and audio entry";
 
 export default function ProductHero() {
   const rootRef = useRef<HTMLElement>(null);

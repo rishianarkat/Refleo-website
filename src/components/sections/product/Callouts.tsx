@@ -28,7 +28,7 @@ const CALLOUTS = [
   {
     id: "guardrails",
     title: "Built-in scope guardrails",
-    body: "No automated triage. No direct teen support. No SaMD territory.",
+    body: "No automated triage. No direct patient support. No SaMD territory.",
   },
 ] as const;
 

@@ -12,7 +12,7 @@ const H2_TEXT = "We asked the clinicians we're building for.";
 
 const STATS = [
   { value: 100, suffix: "+", label: "Clinician conversations across 8 states" },
-  { value: 5, suffix: "+", label: "Clinics interested in piloting" },
+  { value: 6, suffix: "+", label: "Clinics interested in piloting" },
   { value: 60, suffix: "%", label: "Already use some form of technology in practice" },
 ] as const;
 
@@ -20,7 +20,7 @@ const QUOTE_A_TEXT =
   "What you're describing is exactly what I need. I lose so much of what happens between sessions.";
 const QUOTE_A_ATTRIBUTION = "LCSW, Adolescent Practice";
 const QUOTE_B_TEXT =
-  "I'd want to set the keywords myself for each kid. Every teen's signal is different.";
+  "I'd want to set the keywords myself for each client. Every patient's signal is different.";
 const QUOTE_B_ATTRIBUTION = "LPC, Private Practice";
 const CLOSING_LINE =
   "Clinicians describe Refleo back to us before we describe it to them.";

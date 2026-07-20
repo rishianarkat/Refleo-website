@@ -13,7 +13,7 @@ const EYEBROW = "How it works";
 const STEPS = [
   {
     number: "1",
-    title: "A teen records a short entry",
+    title: "A patient records a short entry",
     body: "Thirty seconds, voice or text, whenever it happens.",
   },
   {

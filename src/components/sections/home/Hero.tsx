@@ -8,7 +8,7 @@ import Waveform from "@/components/Waveform";
 const H1_PRE_WORDS = ["Helping", "clinicians", "capture", "life"];
 const H1_EM_WORDS = ["outside", "the", "session"];
 const SUB_TEXT =
-  "Teens talk through their week in short voice notes. Their therapist walks into the next session already caught up.";
+  "Patients talk through their week in short voice notes. Their therapist walks into the next session already caught up.";
 const CTA_DEMO_LABEL = "Book a Demo";
 const CTA_DEMO_HREF = "/contact?intent=demo";
 const CTA_CONTACT_LABEL = "Get in Touch";

@@ -20,7 +20,7 @@ const fraunces = Fraunces({
 const SITE_URL = "https://www.refleohealth.com";
 const TITLE = "Refleo · Helping clinicians capture life outside the session";
 const DESCRIPTION =
-  "Refleo is a between-session continuity platform for adolescent therapists. Teens log voice or text entries between sessions, and their clinician receives a structured pre-session brief.";
+  "Refleo is a between-session continuity platform for therapists, starting with adolescent care. Patients log voice or text entries between sessions, and their clinician receives a structured pre-session brief.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   keywords: [
     "adolescent therapy",
-    "teen mental health",
+    "behavioral health",
     "between-session",
     "voice journaling",
     "pre-session brief",
@@ -70,7 +70,7 @@ const organizationJsonLd = {
   url: "https://www.refleohealth.com",
   logo: "https://www.refleohealth.com/svg/refleo-logo-dark.svg",
   description:
-    "Refleo is a between-session continuity platform for adolescent therapists. Teens log voice or text entries between sessions, and their clinician receives a structured pre-session brief.",
+    "Refleo is a between-session continuity platform for therapists, starting with adolescent care. Patients log voice or text entries between sessions, and their clinician receives a structured pre-session brief.",
   founders: [
     { "@type": "Person", name: "Vishwas Vijayan" },
     { "@type": "Person", name: "Rishi Anarkat" },
@@ -90,7 +90,7 @@ const softwareApplicationJsonLd = {
   applicationCategory: "HealthApplication",
   operatingSystem: "Web",
   description:
-    "Between-session continuity platform for adolescent therapists",
+    "Between-session continuity platform for behavioral health clinicians, starting with adolescent care",
 };
 
 export default function RootLayout({

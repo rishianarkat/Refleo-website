@@ -7,7 +7,7 @@ import Mission from "@/components/sections/about/Mission";
 
 const TITLE = "About";
 const DESCRIPTION =
-  "Meet the team behind Refleo and what we believe: continuity between sessions makes adolescent therapy work better.";
+  "Meet the team behind Refleo and what we believe: continuity between sessions makes therapy work better, starting with adolescent care.";
 const URL = "https://www.refleohealth.com/about";
 
 export const metadata: Metadata = {

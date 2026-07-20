@@ -13,7 +13,7 @@ const H2_TEXT =
 
 const COLUMNS = [
   {
-    label: "ADOLESCENT",
+    label: "PATIENT",
     title: "Records short voice or text entries between sessions",
     body: "Lightweight and private. No prompts to perform. A place to talk through the week as it happens.",
   },
@@ -29,7 +29,7 @@ const COLUMNS = [
   },
 ] as const;
 
-const TAGLINE_PREFIX = "Teens share. ";
+const TAGLINE_PREFIX = "Patients share. ";
 const TAGLINE_HIGHLIGHT = "Refleo surfaces.";
 const TAGLINE_SUFFIX = " Clinicians walk in informed.";
 

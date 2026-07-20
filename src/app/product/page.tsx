@@ -9,7 +9,7 @@ import ProductCta from "@/components/sections/product/ProductCta";
 export const metadata: Metadata = {
   title: "Product",
   description:
-    "Teens record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
+    "Patients record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
   alternates: { canonical: "https://www.refleohealth.com/product" },
   openGraph: {
     type: "website",
@@ -17,14 +17,14 @@ export const metadata: Metadata = {
     siteName: "Refleo",
     title: "Product · Refleo",
     description:
-      "Teens record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
+      "Patients record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Refleo" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Product · Refleo",
     description:
-      "Teens record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
+      "Patients record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
     images: ["/og.png"],
   },
 };

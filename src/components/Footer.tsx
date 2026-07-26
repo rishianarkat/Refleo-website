@@ -122,6 +122,15 @@ export default function Footer() {
           >
             {SITE_LABEL}
           </a>
+          <span aria-hidden="true" className="mx-2 text-cream/30">
+            ·
+          </span>
+          <Link
+            href="/privacy"
+            className="transition-colors hover:text-cream/80 hover:underline"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>

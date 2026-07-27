@@ -260,7 +260,7 @@ export default function WeekBand() {
             </svg>
 
             {/* Entries captured between sessions */}
-            {ENTRY_MARKS.map((mark, i) => (
+            {ENTRY_MARKS.map((mark) => (
               <span
                 key={`${mark.left}-${mark.top}`}
                 aria-hidden="true"

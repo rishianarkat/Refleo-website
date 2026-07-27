@@ -13,7 +13,7 @@ const H2_TEXT = "We asked the clinicians we're building for.";
 const STATS = [
   { value: 100, suffix: "+", label: "Clinician conversations across 8 states" },
   { value: 6, suffix: "+", label: "Clinics interested in piloting" },
-  { value: 60, suffix: "%", label: "Already use some form of technology in practice" },
+  { value: 90, suffix: "%", label: "of clinicians reported missing critical between-session events" },
 ] as const;
 
 const QUOTE_A_TEXT =

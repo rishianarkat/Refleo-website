@@ -7,7 +7,7 @@ import { WaveLines } from "@/components/ripples/RippleArt";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const EYEBROW = "03 · Validation";
+const EYEBROW = "Validation";
 const H2_TEXT = "We asked the clinicians we're building for.";
 
 const STATS = [

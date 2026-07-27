@@ -7,7 +7,7 @@ import { DotRipple } from "@/components/ripples/RippleArt";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const EYEBROW = "02 · The Solution";
+const EYEBROW = "The Solution";
 const H2_TEXT =
   "A private place to reflect. A pre-session brief for their clinician.";
 

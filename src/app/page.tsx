@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/sections/home/Hero";
-import Problem from "@/components/sections/home/Problem";
+import WeekBand from "@/components/sections/home/WeekBand";
 import Solution from "@/components/sections/home/Solution";
 import ProductTeaser from "@/components/sections/home/ProductTeaser";
 import Validation from "@/components/sections/home/Validation";
@@ -13,7 +13,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <Problem />
+        <WeekBand />
         <Solution />
         <ProductTeaser />
         <Validation />

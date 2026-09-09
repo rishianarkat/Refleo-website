@@ -15,6 +15,12 @@ const ACTION_LINKS = [
   { label: "Invest in Refleo", href: "/contact?intent=invest" },
 ] as const;
 
+const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/legal/privacy/v1/" },
+  { label: "Terms of Service", href: "/legal/terms/v1/" },
+  { label: "BAA", href: "/legal/baa/1.0/" },
+] as const;
+
 const COPYRIGHT = "© 2026 Refleo Health";
 const SITE_LABEL = "www.refleohealth.com";
 const SITE_URL = "https://www.refleohealth.com";
@@ -125,12 +131,21 @@ export default function Footer() {
           <span aria-hidden="true" className="mx-2 text-cream/30">
             ·
           </span>
-          <Link
-            href="/privacy"
-            className="transition-colors hover:text-cream/80 hover:underline"
-          >
-            Privacy Policy
-          </Link>
+          {LEGAL_LINKS.map(({ label, href }, index) => (
+            <span key={href}>
+              {index > 0 && (
+                <span aria-hidden="true" className="mx-2 text-cream/30">
+                  ·
+                </span>
+              )}
+              <Link
+                href={href}
+                className="transition-colors hover:text-cream/80 hover:underline"
+              >
+                {label}
+              </Link>
+            </span>
+          ))}
         </div>
       </div>
     </footer>

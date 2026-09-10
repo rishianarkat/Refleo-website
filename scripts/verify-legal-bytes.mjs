@@ -14,7 +14,13 @@ import { fileURLToPath } from "node:url";
 const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const backendRoot = join(projectRoot, "..", "refleo-aws-backend");
 const manifestPath = join(projectRoot, "public", "legal", "manifest.json");
-const documents = [["privacy", "v1"], ["terms", "v1"], ["baa", "1.0"]];
+const documents = [
+  ["privacy", "v1"],
+  ["terms", "v1"],
+  ["baa", "1.0"],
+  ["parental_consent", "1.0"],
+  ["minor_acknowledgment", "1.0"],
+];
 const write = process.argv.includes("--write");
 const sha256 = (b) => createHash("sha256").update(b).digest("hex");
 const exists = (p) => access(p).then(() => true, () => false);

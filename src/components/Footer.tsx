@@ -19,6 +19,7 @@ const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/legal/privacy/v1/" },
   { label: "Terms of Service", href: "/legal/terms/v1/" },
   { label: "BAA", href: "/legal/baa/1.0/" },
+  { label: "Parental Consent", href: "/legal/parental_consent/1.0/" },
 ] as const;
 
 const COPYRIGHT = "© 2026 Refleo Health";

@@ -2,7 +2,12 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 interface ImmutableLegalDocumentProps {
-  document: "privacy" | "terms" | "baa";
+  document:
+    | "privacy"
+    | "terms"
+    | "baa"
+    | "parental_consent"
+    | "minor_acknowledgment";
   version: "v1" | "1.0";
 }
 

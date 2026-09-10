@@ -7,7 +7,7 @@ export default function PrivacyRedirectPage() {
   return (
     <ShortLegalRedirect
       title="Privacy Policy"
-      destination="/legal/privacy/v1/"
+      destination="/legal/privacy/v2/"
     />
   );
 }

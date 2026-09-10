@@ -8,7 +8,7 @@ interface ImmutableLegalDocumentProps {
     | "baa"
     | "parental_consent"
     | "minor_acknowledgment";
-  version: "v1" | "1.0";
+  version: "v1" | "v2" | "1.0";
 }
 
 export default function ImmutableLegalDocument({

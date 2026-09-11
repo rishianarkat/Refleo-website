@@ -12,7 +12,7 @@ const SUB_TEXT =
 const CTA_DEMO_LABEL = "Book a Demo";
 const CTA_DEMO_HREF = "/contact?intent=demo";
 const CTA_CONTACT_LABEL = "Get in Touch";
-const CTA_CONTACT_HREF = "mailto:info@refleohealth.com?subject=Contact";
+const CTA_CONTACT_HREF = "mailto:support@refleohealth.com?subject=Contact";
 const SCROLL_HINT_LABEL = "Scroll";
 
 const FILL_BTN =

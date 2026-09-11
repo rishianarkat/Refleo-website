@@ -12,7 +12,7 @@ const SUBLINE =
   "Tell us a bit about yourself and we'll get back to you within one business day.";
 const SUCCESS_MSG = "Thanks. We'll be in touch shortly.";
 const ERROR_PREFIX = "Something went wrong. Email us directly at ";
-const ERROR_EMAIL = "info@refleohealth.com";
+const ERROR_EMAIL = "support@refleohealth.com";
 const FORM_SUBJECT = "New Refleo website inquiry";
 
 type Status = "idle" | "submitting" | "success" | "error";

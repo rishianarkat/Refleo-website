@@ -78,7 +78,7 @@ const organizationJsonLd = {
   foundingDate: "2026",
   contactPoint: {
     "@type": "ContactPoint",
-    email: "info@refleohealth.com",
+    email: "support@refleohealth.com",
     contactType: "customer support",
   },
 };

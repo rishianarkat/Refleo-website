@@ -65,3 +65,14 @@ html.has-custom-cursor * {
   }
 }
 
+
+/* ── Immutable legal documents ──
+   Each document.html ships its own <style> written for a white page. The site
+   injects the markup into <main>, so the document's `body { color; background }`
+   rule is dropped while its class rules survive — and `.meta { color: #4a5763 }`
+   (the Effective Date / Last Updated lines) renders slate on the site's teal at
+   roughly 1.2:1. The date Apple reads first was invisible. The document bytes
+   are hash-pinned and cannot change; this override can. */
+.legal-document .meta {
+  color: rgba(250, 245, 240, 0.82); /* cream, slightly quieted */
+}

@@ -141,12 +141,16 @@ export default function Footer() {
                   ·
                 </span>
               )}
-              <Link
+              {/* A plain anchor, not <Link>: Next treats the dot in "1.0" as a
+                  file extension and strips the trailing slash from
+                  /legal/baa/1.0/ — and the static host 404s the slash-less
+                  path. An <a> keeps the href exactly as written. */}
+              <a
                 href={href}
                 className="transition-colors hover:text-cream/80 hover:underline"
               >
                 {label}
-              </Link>
+              </a>
             </span>
           ))}
         </div>

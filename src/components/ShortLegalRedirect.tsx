@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 interface ShortLegalRedirectProps {
   title: string;
@@ -16,9 +15,9 @@ export default function ShortLegalRedirect({
         <h1 className="font-serif text-3xl">{title}</h1>
         <p className="mt-4 text-base leading-relaxed">
           This document has moved. If you are not redirected automatically, {" "}
-          <Link className="underline" href={destination}>
+          <a className="underline" href={destination}>
             view the current {title}
-          </Link>
+          </a>
           .
         </p>
       </div>

@@ -15,9 +15,8 @@ const projectRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const backendRoot = join(projectRoot, "..", "refleo-aws-backend");
 const manifestPath = join(projectRoot, "public", "legal", "manifest.json");
 const documents = [
-  ["privacy", "v1"],
-  ["privacy", "v2"],
-  ["terms", "v1"],
+  ["privacy", "2026-09-18"],
+  ["terms", "2026-09-18"],
   ["baa", "1.0"],
   ["parental_consent", "1.0"],
   ["minor_acknowledgment", "1.0"],

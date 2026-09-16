@@ -15,11 +15,21 @@ const ERROR_PREFIX = "Something went wrong. Email us directly at ";
 const ERROR_EMAIL = "support@refleohealth.com";
 const FORM_SUBJECT = "New Refleo website inquiry";
 
+// Launch-day sign-up (LinkedIn teaser links to /contact?intent=launch).
+// Same Formspree form, same fields; only the framing and the email subject
+// change, so the inbox can tell a launch sign-up from a demo request.
+const LAUNCH_HEADLINE = "Refleo opens September 18";
+const LAUNCH_SUBLINE =
+  "Leave your name and email and we'll send you the link the morning it opens, with the free trial ready to go.";
+const LAUNCH_FORM_SUBJECT = "Refleo launch sign-up";
+const LAUNCH_SUCCESS_MSG = "You're on the list. See you on the 18th.";
+
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function ContactPageClient() {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const [launch, setLaunch] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Read intent from URL client-side (static-export safe - no useSearchParams)
@@ -29,6 +39,9 @@ export default function ContactPageClient() {
       setRole("Clinician");
     } else if (intent === "invest") {
       setRole("Investor");
+    } else if (intent === "launch") {
+      setRole("Clinician");
+      setLaunch(true);
     }
   }, []);
 
@@ -89,10 +102,10 @@ export default function ContactPageClient() {
         {/* Headline + subline */}
         <div className="text-center mb-10">
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl tracking-tight text-cream">
-            {HEADLINE}
+            {launch ? LAUNCH_HEADLINE : HEADLINE}
           </h1>
           <p className="mt-3 font-sans text-cream/70 text-lg leading-relaxed max-w-[420px] mx-auto">
-            {SUBLINE}
+            {launch ? LAUNCH_SUBLINE : SUBLINE}
           </p>
         </div>
 
@@ -120,7 +133,7 @@ export default function ContactPageClient() {
               />
             </svg>
             <p className="font-sans text-xl sm:text-2xl text-cream font-medium">
-              {SUCCESS_MSG}
+              {launch ? LAUNCH_SUCCESS_MSG : SUCCESS_MSG}
             </p>
             <Link
               href="/"
@@ -137,7 +150,12 @@ export default function ContactPageClient() {
             className="w-full max-w-[520px] mx-auto flex flex-col gap-5"
           >
             {/* Hidden subject */}
-            <input type="hidden" name="_subject" value={FORM_SUBJECT} />
+            <input
+              type="hidden"
+              name="_subject"
+              value={launch ? LAUNCH_FORM_SUBJECT : FORM_SUBJECT}
+            />
+            {launch ? <input type="hidden" name="intent" value="launch" /> : null}
 
             {/* Error banner */}
             {status === "error" && (

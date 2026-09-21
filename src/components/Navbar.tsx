@@ -10,9 +10,9 @@ const NAV_LINKS = [
 ] as const;
 
 const CONTACT_HREF = "/contact?intent=invest";
-const DEMO_HREF = "/contact?intent=demo";
+const PORTAL_HREF = "https://app.refleohealth.com/?choose=1";
 const CONTACT_LABEL = "Contact Us";
-const DEMO_LABEL = "Book a Demo";
+const PORTAL_LABEL = "Access Refleo Portal";
 
 const FILL_BUTTON =
   "inline-flex items-center justify-center rounded-full bg-apricot px-8 py-3 text-sm font-semibold font-sans text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] active:scale-[0.98]";
@@ -89,16 +89,16 @@ export default function Navbar() {
             >
               {CONTACT_LABEL}
             </Link>
-            <Link href={DEMO_HREF} className={`${FILL_BUTTON} !px-5 !py-2`}>
-              {DEMO_LABEL}
+            <Link href={PORTAL_HREF} className={`${FILL_BUTTON} !px-5 !py-2`}>
+              {PORTAL_LABEL}
             </Link>
           </div>
         </div>
 
         {/* Mobile: logo + single CTA, no hamburger */}
         <div className="md:hidden">
-          <Link href={DEMO_HREF} className={`${FILL_BUTTON} !px-5 !py-2`}>
-            {DEMO_LABEL}
+          <Link href={PORTAL_HREF} className={`${FILL_BUTTON} !px-5 !py-2`}>
+            {PORTAL_LABEL}
           </Link>
         </div>
       </div>

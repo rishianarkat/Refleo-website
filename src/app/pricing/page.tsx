@@ -87,10 +87,10 @@ export default function PricingPage() {
 
             <div className="mt-8">
               <Link
-                href="/contact?intent=demo"
+                href="https://app.refleohealth.com/?choose=1"
                 className="inline-flex items-center justify-center rounded-full bg-apricot px-8 py-3 text-sm font-semibold font-sans text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98]"
               >
-                Book a Demo
+                Access Refleo Portal
               </Link>
             </div>
           </div>

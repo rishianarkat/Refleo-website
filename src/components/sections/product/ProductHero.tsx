@@ -12,8 +12,8 @@ const EYEBROW = "Product";
 const HEADLINE = "See it in action.";
 const SUB =
   "A patient's voice notes become a one-screen brief their clinician reads before the session.";
-const CTA_LABEL = "Book a Demo";
-const CTA_HREF = "/contact?intent=demo";
+const CTA_LABEL = "Access Refleo Portal";
+const CTA_HREF = "https://app.refleohealth.com/?choose=1";
 
 const BRIEF_ALT =
   "Clinician pre-session brief showing recurring themes and keyword matches";

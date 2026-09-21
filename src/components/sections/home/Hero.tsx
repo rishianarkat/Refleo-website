@@ -9,8 +9,8 @@ const H1_PRE_WORDS = ["Helping", "clinicians", "capture", "life"];
 const H1_EM_WORDS = ["outside", "the", "session"];
 const SUB_TEXT =
   "Patients talk through their week in short voice notes. Their therapist walks into the next session already caught up.";
-const CTA_DEMO_LABEL = "Book a Demo";
-const CTA_DEMO_HREF = "/contact?intent=demo";
+const CTA_PORTAL_LABEL = "Access Refleo Portal";
+const CTA_PORTAL_HREF = "https://app.refleohealth.com/?choose=1";
 const CTA_CONTACT_LABEL = "Get in Touch";
 const CTA_CONTACT_HREF = "mailto:support@refleohealth.com?subject=Contact";
 const SCROLL_HINT_LABEL = "Scroll";
@@ -118,8 +118,8 @@ export default function Hero() {
           ref={ctaRef}
           className="flex flex-col sm:flex-row items-center gap-4"
         >
-          <Link href={CTA_DEMO_HREF} className={FILL_BTN}>
-            {CTA_DEMO_LABEL}
+          <Link href={CTA_PORTAL_HREF} className={FILL_BTN}>
+            {CTA_PORTAL_LABEL}
           </Link>
           <a href={CTA_CONTACT_HREF} className={OUTLINE_BTN}>
             {CTA_CONTACT_LABEL}

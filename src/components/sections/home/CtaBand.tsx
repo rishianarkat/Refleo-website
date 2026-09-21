@@ -8,8 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const H2_TEXT = "Walk into your next session already caught up.";
-const CTA_DEMO_LABEL = "Book a Demo";
-const CTA_DEMO_HREF = "/contact?intent=demo";
+const CTA_PORTAL_LABEL = "Access Refleo Portal";
+const CTA_PORTAL_HREF = "https://app.refleohealth.com/?choose=1";
 const CTA_INVEST_LABEL = "Invest in Refleo";
 const CTA_INVEST_HREF = "/contact?intent=invest";
 
@@ -90,8 +90,8 @@ export default function CtaBand() {
           data-animate
           className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Link href={CTA_DEMO_HREF} className={FILL_BTN}>
-            {CTA_DEMO_LABEL}
+          <Link href={CTA_PORTAL_HREF} className={FILL_BTN}>
+            {CTA_PORTAL_LABEL}
           </Link>
           <Link href={CTA_INVEST_HREF} className={OUTLINE_BTN}>
             {CTA_INVEST_LABEL}

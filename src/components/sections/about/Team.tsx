@@ -24,12 +24,12 @@ const TEAM = [
   {
     name: "Rishi Anarkat",
     role: "Co-Founder",
-    affiliation: "Rice University · AI / Pre-Med",
+    affiliation: "Rice University · AI / Entrepreneurship",
     photo: "/images/rishi.jpg",
     alt: "Portrait of Rishi Anarkat",
     linkedin: "https://www.linkedin.com/in/rishianarkat/",
     bullets: [
-      "AI/Pre-Med @ Rice architecting Refleo's voice journaling and clinical continuity platform",
+      "AI/Entrepreneurship @ Rice architecting Refleo's voice journaling and clinical continuity platform",
       "Healthcare and AI/ML researcher at M.D. Anderson, Baylor College of Medicine, and McGovern School of Medicine",
     ],
   },

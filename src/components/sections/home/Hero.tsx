@@ -11,7 +11,7 @@ const SUB_TEXT =
   "Patients talk through their week in short voice notes. Their therapist walks into the next session already caught up.";
 const CTA_PORTAL_LABEL = "Start free trial";
 // Launch copy: the button is an invitation, not a login. Pricing matches /pricing.
-const CTA_TRIAL_LINE = "Free to try, then $100 a month. Your clients never pay.";
+const CTA_TRIAL_LINE = "Free to try for 2 months, then $100 a month. Your clients never pay.";
 const APP_STORE_LABEL = "Get the iPhone app";
 const APP_STORE_HREF = "https://apps.apple.com/us/app/refleo/id6807892935";
 const CTA_PORTAL_HREF = "https://app.refleohealth.com/?choose=1";

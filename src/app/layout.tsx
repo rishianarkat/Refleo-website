@@ -18,15 +18,17 @@ const fraunces = Fraunces({
 });
 
 const SITE_URL = "https://www.refleohealth.com";
-const TITLE = "Refleo · Helping clinicians capture life outside the session";
+const TITLE = "Refleo | Between-session check-ins for therapists";
 const DESCRIPTION =
-  "Refleo is a between-session continuity platform for therapists, starting with adolescent care. Patients log voice or text entries between sessions, and their clinician receives a structured pre-session brief.";
+  "Refleo gives therapists a pre-session brief built from their clients' voice and text check-ins between appointments. HIPAA covered, parental consent built in, free for two months.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: "Refleo", template: "%s · Refleo" },
+  title: { default: TITLE, template: "%s · Refleo" },
   description: DESCRIPTION,
   keywords: [
+    "between-session check-ins",
+    "therapist software",
     "adolescent therapy",
     "behavioral health",
     "between-session",
@@ -77,8 +79,7 @@ const organizationJsonLd = {
   name: "Refleo Health",
   url: "https://www.refleohealth.com",
   logo: "https://www.refleohealth.com/svg/refleo-logo-dark.svg",
-  description:
-    "Refleo is a between-session continuity platform for therapists, starting with adolescent care. Patients log voice or text entries between sessions, and their clinician receives a structured pre-session brief.",
+  description: DESCRIPTION,
   founders: [
     { "@type": "Person", name: "Vishwas Vijayan" },
     { "@type": "Person", name: "Rishi Anarkat" },
@@ -109,8 +110,7 @@ const softwareApplicationJsonLd = {
       "Two-month free trial for clinicians, then $100 per month. Free for patients and clients.",
     url: "https://www.refleohealth.com/pricing/",
   },
-  description:
-    "Between-session continuity platform for behavioral health clinicians, starting with adolescent care",
+  description: DESCRIPTION,
 };
 
 export default function RootLayout({

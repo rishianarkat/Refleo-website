@@ -37,8 +37,16 @@ export const metadata: Metadata = {
     "mental health SaaS",
   ],
   authors: [{ name: "Refleo Health" }],
+  // "./" resolves against each route, so every page is canonical to ITSELF.
+  // The fixed homepage URL that used to sit here was inherited by every page
+  // without its own canonical (all the legal pages), telling search engines
+  // they were duplicates of the homepage.
   alternates: {
-    canonical: "https://www.refleohealth.com",
+    canonical: "./",
+  },
+  // iOS Safari shows an "Open in the App Store" banner for the live app.
+  itunes: {
+    appId: "6807892935",
   },
   openGraph: {
     type: "website",
@@ -88,7 +96,19 @@ const softwareApplicationJsonLd = {
   "@type": "SoftwareApplication",
   name: "Refleo",
   applicationCategory: "HealthApplication",
-  operatingSystem: "Web",
+  operatingSystem: "iOS, Web",
+  url: "https://app.refleohealth.com/",
+  downloadUrl: "https://apps.apple.com/us/app/refleo/id6807892935",
+  installUrl: "https://apps.apple.com/us/app/refleo/id6807892935",
+  publisher: { "@type": "Organization", name: "Refleo Health, Inc." },
+  offers: {
+    "@type": "Offer",
+    price: "100.00",
+    priceCurrency: "USD",
+    description:
+      "Two-month free trial for clinicians, then $100 per month. Free for patients and clients.",
+    url: "https://www.refleohealth.com/pricing/",
+  },
   description:
     "Between-session continuity platform for behavioral health clinicians, starting with adolescent care",
 };

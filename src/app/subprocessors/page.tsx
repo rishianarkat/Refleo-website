@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import ShortLegalRedirect from "@/components/ShortLegalRedirect";
 
-export const metadata: Metadata = { title: "Subprocessors" };
+export const metadata: Metadata = {
+  title: "Subprocessors",
+  alternates: { canonical: "/legal/subprocessors/" },
+};
 
 export default function SubprocessorsRedirectPage() {
   return (

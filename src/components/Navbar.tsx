@@ -12,7 +12,7 @@ const NAV_LINKS = [
 const CONTACT_HREF = "/contact?intent=invest";
 const PORTAL_HREF = "https://app.refleohealth.com/?choose=1";
 const CONTACT_LABEL = "Contact Us";
-const PORTAL_LABEL = "Access Refleo Portal";
+const PORTAL_LABEL = "Start free trial";
 
 const FILL_BUTTON =
   "inline-flex items-center justify-center rounded-full bg-apricot px-8 py-3 text-sm font-semibold font-sans text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] active:scale-[0.98]";

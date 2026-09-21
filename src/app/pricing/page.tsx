@@ -90,8 +90,17 @@ export default function PricingPage() {
                 href="https://app.refleohealth.com/?choose=1"
                 className="inline-flex items-center justify-center rounded-full bg-apricot px-8 py-3 text-sm font-semibold font-sans text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98]"
               >
-                Access Refleo Portal
+                Start free trial
               </Link>
+              <p className="mt-4 text-sm font-sans text-cream/70">
+                Also on iPhone:{" "}
+                <a
+                  href="https://apps.apple.com/us/app/refleo/id6807892935"
+                  className="underline underline-offset-4 text-cream/90 hover:text-cream transition-colors"
+                >
+                  get the app
+                </a>
+              </p>
             </div>
           </div>
 

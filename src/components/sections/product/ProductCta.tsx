@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // --- Copy constants (apostrophes safe inside JS strings) ---
 const LINE = "See how Refleo fits into the way you already work.";
-const CTA_LABEL = "Access Refleo Portal";
+const CTA_LABEL = "Start free trial";
 const CTA_HREF = "https://app.refleohealth.com/?choose=1";
 
 export default function ProductCta() {

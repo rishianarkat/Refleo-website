@@ -9,7 +9,11 @@ const H1_PRE_WORDS = ["Helping", "clinicians", "capture", "life"];
 const H1_EM_WORDS = ["outside", "the", "session"];
 const SUB_TEXT =
   "Patients talk through their week in short voice notes. Their therapist walks into the next session already caught up.";
-const CTA_PORTAL_LABEL = "Access Refleo Portal";
+const CTA_PORTAL_LABEL = "Start free trial";
+// Launch copy: the button is an invitation, not a login. Pricing matches /pricing.
+const CTA_TRIAL_LINE = "Free to try, then $100 a month. Your clients never pay.";
+const APP_STORE_LABEL = "Get the iPhone app";
+const APP_STORE_HREF = "https://apps.apple.com/us/app/refleo/id6807892935";
 const CTA_PORTAL_HREF = "https://app.refleohealth.com/?choose=1";
 const CTA_CONTACT_LABEL = "Get in Touch";
 const CTA_CONTACT_HREF = "mailto:support@refleohealth.com?subject=Contact";
@@ -125,6 +129,16 @@ export default function Hero() {
             {CTA_CONTACT_LABEL}
           </a>
         </div>
+
+        <p className="text-sm font-sans text-cream/70 text-center">
+          {CTA_TRIAL_LINE}{" "}
+          <a
+            href={APP_STORE_HREF}
+            className="underline underline-offset-4 text-cream/90 hover:text-cream transition-colors"
+          >
+            {APP_STORE_LABEL}
+          </a>
+        </p>
 
         <button
           type="button"

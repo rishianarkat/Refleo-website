@@ -11,7 +11,9 @@ const EXPLORE_LINKS = [
 ] as const;
 
 const ACTION_LINKS = [
-  { label: "Access Refleo Portal", href: "https://app.refleohealth.com/?choose=1" },
+  { label: "Start free trial", href: "https://app.refleohealth.com/?choose=1" },
+  { label: "Sign in", href: "https://app.refleohealth.com/sign-in/" },
+  { label: "iPhone app", href: "https://apps.apple.com/us/app/refleo/id6807892935" },
   { label: "Book a Demo", href: "/contact?intent=demo" },
   { label: "Invest in Refleo", href: "/contact?intent=invest" },
 ] as const;

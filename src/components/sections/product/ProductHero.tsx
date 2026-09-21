@@ -12,7 +12,7 @@ const EYEBROW = "Product";
 const HEADLINE = "See it in action.";
 const SUB =
   "A patient's voice notes become a one-screen brief their clinician reads before the session.";
-const CTA_LABEL = "Access Refleo Portal";
+const CTA_LABEL = "Start free trial";
 const CTA_HREF = "https://app.refleohealth.com/?choose=1";
 
 const BRIEF_ALT =

@@ -32,9 +32,58 @@ export const metadata: Metadata = {
   },
 };
 
+// Rendered as the FAQ section below AND emitted as FAQPage structured data,
+// so the visible answers and the machine-readable ones can never drift.
+// Answers state what the product does today (trial, card, cancellation);
+// if billing behaviour changes, change it here in the same commit.
+const FAQ: { question: string; answer: string }[] = [
+  {
+    question: "Who pays for Refleo?",
+    answer: "Clinicians do. Clients never pay.",
+  },
+  {
+    question: "What does the free trial include?",
+    answer: `Everything. Your first two months are free with no card needed. When those end, you add a card and get one more month free before your first $${MONTHLY_PRICE_USD} charge.`,
+  },
+  {
+    question: "Is Refleo HIPAA compliant?",
+    answer:
+      "Refleo is a HIPAA business associate. Every clinician signs our Business Associate Agreement at sign-up, and the full agreement is published on this site.",
+  },
+  {
+    question: "Can I use it with clients under 18?",
+    answer:
+      "Yes. A parent or guardian signs a Parental Consent and Authorization before a minor's account can be used, and the minor sees a plain-language acknowledgment of their own.",
+  },
+  {
+    question: "What do my clients see?",
+    answer:
+      "A simple check-in: voice or text, whenever they want between sessions. They do not see your brief or your notes.",
+  },
+  {
+    question: "Can I cancel?",
+    answer:
+      "Any time from Settings. You will not be charged again, and you keep access through the end of the month you have already paid for. The current month is not refunded.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map(({ question, answer }) => ({
+    "@type": "Question",
+    name: question,
+    acceptedAnswer: { "@type": "Answer", text: answer },
+  })),
+};
+
 export default function PricingPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Navbar />
       <main className="pt-32 pb-24 md:pt-40 md:pb-28">
         <div className="mx-auto max-w-3xl px-6 lg:px-12">
@@ -139,6 +188,25 @@ export default function PricingPage() {
                 suspend access after notice and an opportunity to cure.
               </li>
             </ul>
+          </section>
+
+          {/* FAQ */}
+          <section className="mt-16" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" className="font-serif text-2xl text-cream">
+              Common questions
+            </h2>
+            <dl className="mt-6 divide-y divide-white/10">
+              {FAQ.map(({ question, answer }) => (
+                <div key={question} className="py-6 first:pt-0 last:pb-0">
+                  <dt className="font-sans text-base font-semibold text-cream">
+                    {question}
+                  </dt>
+                  <dd className="mt-2 text-base leading-relaxed text-cream/80">
+                    {answer}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </section>
 
           {/* Links */}

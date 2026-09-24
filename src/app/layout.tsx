@@ -73,23 +73,51 @@ export const metadata: Metadata = {
   },
 };
 
+// One entity, three names: the brand is "Refleo", the company is "Refleo
+// Health, Inc.", and the site copy says "Refleo Health" in places. The
+// @id lets the WebSite and SoftwareApplication nodes point at this same
+// Organization instead of restating it, so crawlers and AI systems see one
+// entity rather than three near-duplicates.
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Refleo Health",
+  "@id": ORGANIZATION_ID,
+  name: "Refleo",
+  legalName: "Refleo Health, Inc.",
+  alternateName: "Refleo Health",
   url: "https://www.refleohealth.com",
   logo: "https://www.refleohealth.com/svg/refleo-logo-dark.svg",
   description: DESCRIPTION,
+  email: "support@refleohealth.com",
   founders: [
     { "@type": "Person", name: "Vishwas Vijayan" },
     { "@type": "Person", name: "Rishi Anarkat" },
   ],
   foundingDate: "2026",
+  areaServed: "US",
   contactPoint: {
     "@type": "ContactPoint",
     email: "support@refleohealth.com",
     contactType: "customer support",
+    url: "https://www.refleohealth.com/contact/",
   },
+  sameAs: [
+    "https://www.linkedin.com/company/refleo-health",
+    "https://apps.apple.com/us/app/refleo/id6807892935",
+  ],
+};
+
+const webSiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  name: "Refleo",
+  url: SITE_URL,
+  description: DESCRIPTION,
+  inLanguage: "en-US",
+  publisher: { "@id": ORGANIZATION_ID },
 };
 
 const softwareApplicationJsonLd = {
@@ -101,7 +129,7 @@ const softwareApplicationJsonLd = {
   url: "https://app.refleohealth.com/",
   downloadUrl: "https://apps.apple.com/us/app/refleo/id6807892935",
   installUrl: "https://apps.apple.com/us/app/refleo/id6807892935",
-  publisher: { "@type": "Organization", name: "Refleo Health, Inc." },
+  publisher: { "@id": ORGANIZATION_ID },
   offers: {
     "@type": "Offer",
     price: "100.00",
@@ -127,6 +155,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
         <script
           type="application/ld+json"

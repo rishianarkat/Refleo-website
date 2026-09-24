@@ -1,0 +1,30 @@
+# Refleo
+
+> Refleo gives therapists a pre-session brief built from their clients' voice and text check-ins between appointments. HIPAA covered, parental consent built in, free for two months.
+
+Refleo is made by Refleo Health, Inc., founded in 2026 by Vishwas Vijayan and Rishi Anarkat. Clinicians use it on the web at https://app.refleohealth.com and on iPhone; their clients use the free Refleo iPhone app or https://my.refleohealth.com. Clients never pay. Clinicians get two months free, then $100 a month.
+
+## Product
+
+- [Product overview](https://www.refleohealth.com/product/): how between-session check-ins become a pre-session brief for the clinician.
+- [Pricing](https://www.refleohealth.com/pricing/): free for two months, then $100 a month per clinician; free for clients.
+- [Refleo for clinicians (web app)](https://app.refleohealth.com/): sign in or start a free trial.
+- [Refleo on the App Store](https://apps.apple.com/us/app/refleo/id6807892935): the iPhone app for clinicians and clients.
+
+## Company
+
+- [About](https://www.refleohealth.com/about/): the founders and why Refleo exists.
+- [Contact](https://www.refleohealth.com/contact/): support@refleohealth.com.
+
+## Legal and privacy
+
+- [Terms of Service](https://www.refleohealth.com/legal/terms/2026-09-18/)
+- [Privacy Policy](https://www.refleohealth.com/legal/privacy/2026-09-18/)
+- [Business Associate Agreement](https://www.refleohealth.com/legal/baa/1.0/): signed by every clinician; Refleo is a HIPAA business associate.
+- [Parental Consent and Authorization](https://www.refleohealth.com/legal/parental_consent/1.0/): required before a client under 18 can use Refleo.
+- [Minor Acknowledgment](https://www.refleohealth.com/legal/minor_acknowledgment/1.0/)
+- [Subprocessors](https://www.refleohealth.com/legal/subprocessors/): the vendors that process data on Refleo's behalf.
+
+## Optional
+
+- [LinkedIn](https://www.linkedin.com/company/refleo-health)

@@ -105,6 +105,7 @@ const organizationJsonLd = {
   },
   sameAs: [
     "https://www.linkedin.com/company/refleo-health",
+    "https://www.instagram.com/refleohealth/",
     "https://apps.apple.com/us/app/refleo/id6807892935",
   ],
 };

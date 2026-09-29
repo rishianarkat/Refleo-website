@@ -18,7 +18,7 @@ const fraunces = Fraunces({
 });
 
 const SITE_URL = "https://www.refleohealth.com";
-const TITLE = "Refleo | Between-session check-ins for therapists";
+const TITLE = "Refleo | Between-session intelligence for behavioral health";
 // Under 160 characters: Bing's URL Inspection flagged the previous 175-character
 // version, and Google truncates at about the same point.
 const DESCRIPTION =

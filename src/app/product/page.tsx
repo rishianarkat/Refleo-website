@@ -7,7 +7,7 @@ import Callouts from "@/components/sections/product/Callouts";
 import ProductCta from "@/components/sections/product/ProductCta";
 
 export const metadata: Metadata = {
-  title: "Product",
+  title: "Product: check-ins that become a pre-session brief",
   description:
     "Patients record short voice entries. Refleo turns them into a one-screen pre-session brief for their clinician.",
   alternates: { canonical: "https://www.refleohealth.com/product" },

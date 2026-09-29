@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ShortLegalRedirect from "@/components/ShortLegalRedirect";
 
 export const metadata: Metadata = {
-  title: "Subprocessors",
+  title: "Subprocessors: the vendors that handle data for Refleo",
   alternates: { canonical: "/legal/subprocessors/" },
 };
 

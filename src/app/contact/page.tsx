@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ContactPageClient from "./ContactPageClient";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact: support, demos, and launch updates",
   description:
     "Book a demo to see how Refleo fits into your clinical workflow, or reach out about investment opportunities.",
   alternates: { canonical: "https://www.refleohealth.com/contact" },

@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 // Update this one value to change the price shown on this page.
 const MONTHLY_PRICE_USD = 100;
 
-const TITLE = "Pricing";
+const TITLE = "Pricing: $100 a month, first two months free";
 const DESCRIPTION =
   "One plan for clinicians: $100 a month, with the first two months free during our launch offer, no card required. Billing, refund, and non-payment terms.";
 const URL = "https://www.refleohealth.com/pricing";

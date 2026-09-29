@@ -5,7 +5,7 @@ import Story from "@/components/sections/about/Story";
 import Team from "@/components/sections/about/Team";
 import Mission from "@/components/sections/about/Mission";
 
-const TITLE = "About";
+const TITLE = "About: the founders and why we built it";
 const DESCRIPTION =
   "Meet the team behind Refleo and what we believe: continuity between sessions makes therapy work better, starting with adolescent care.";
 const URL = "https://www.refleohealth.com/about";

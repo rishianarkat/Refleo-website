@@ -44,7 +44,7 @@ export default function HeroGradient() {
             uDensity={1.1}
             uFrequency={5.5}
             uAmplitude={0}
-            color1="#2B5E60"
+            color1="#2A5866"
             color2="#E8A87C"
             color3="#0B1717"
             positionX={0.2}
@@ -58,7 +58,7 @@ export default function HeroGradient() {
             cDistance={3.9}
             cameraZoom={1}
             lightType="3d"
-            brightness={1}
+            brightness={0.85}
             reflection={0.1}
             grain="on"
             grainBlending={0.3}

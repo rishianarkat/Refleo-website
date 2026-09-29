@@ -79,7 +79,11 @@ export default function Navbar() {
           ? isV2Route(pathname)
             ? "bg-ink/80 backdrop-blur-md border-b border-white/5"
             : "bg-teal-dark/95 backdrop-blur-md border-b border-white/5"
-          : "bg-transparent border-b border-transparent",
+          : isV2Route(pathname)
+            ? // Over the moving gradient: a soft ink scrim keeps the links
+              // readable when the bright band drifts behind the bar.
+              "bg-gradient-to-b from-ink/85 via-ink/50 to-transparent border-b border-transparent"
+            : "bg-transparent border-b border-transparent",
       ].join(" ")}
     >
       <div className="max-w-6xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">

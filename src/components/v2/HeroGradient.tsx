@@ -58,7 +58,7 @@ export default function HeroGradient() {
             cDistance={3.9}
             cameraZoom={1}
             lightType="3d"
-            brightness={0.85}
+            brightness={0.78}
             reflection={0.1}
             grain="on"
             grainBlending={0.3}

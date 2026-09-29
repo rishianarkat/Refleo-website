@@ -19,8 +19,10 @@ const fraunces = Fraunces({
 
 const SITE_URL = "https://www.refleohealth.com";
 const TITLE = "Refleo | Between-session check-ins for therapists";
+// Under 160 characters: Bing's URL Inspection flagged the previous 175-character
+// version, and Google truncates at about the same point.
 const DESCRIPTION =
-  "Refleo gives therapists a pre-session brief built from their clients' voice and text check-ins between appointments. HIPAA covered, parental consent built in, free for two months.";
+  "Refleo turns clients' voice and text check-ins between sessions into a pre-session brief for their therapist. HIPAA covered, parental consent built in.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

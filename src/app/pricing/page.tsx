@@ -9,7 +9,7 @@ const MONTHLY_PRICE_USD = 100;
 
 const TITLE = "Pricing";
 const DESCRIPTION =
-  "One plan for clinicians: $100/month. For our launch, your first two months are free, no credit card required. See what's included, how billing works, and our refund and non-payment terms.";
+  "One plan for clinicians: $100 a month, with the first two months free during our launch offer, no card required. Billing, refund, and non-payment terms.";
 const URL = "https://www.refleohealth.com/pricing";
 
 export const metadata: Metadata = {

@@ -53,6 +53,9 @@ const TEAM = [
     role: "Co-Founder",
     affiliation: "Rice University · Finance / BBA",
     photo: "/images/vishwas.jpg",
+    // The two portraits are framed differently (portrait vs. wide), so each
+    // gets its own crop to put both faces at the same size in a square.
+    crop: { objectPosition: "50% 28%" },
     alt: "Portrait of Vishwas Vijayan",
     linkedin: "https://www.linkedin.com/in/vishwasvijayan/",
     bullets: [
@@ -65,6 +68,7 @@ const TEAM = [
     role: "Co-Founder",
     affiliation: "Rice University · AI / Entrepreneurship",
     photo: "/images/rishi.jpg",
+    crop: { objectPosition: "50% 30%", transform: "scale(1.12)", transformOrigin: "50% 36%" },
     alt: "Portrait of Rishi Anarkat",
     linkedin: "https://www.linkedin.com/in/rishianarkat/",
     bullets: [
@@ -134,13 +138,14 @@ export default function AboutPage() {
                   className="border-b border-cream/10 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0"
                 >
                   <Reveal delay={i * 120}>
-                    <div className="aspect-[3/2] overflow-hidden border-b border-cream/10">
+                    <div className="aspect-square overflow-hidden border-b border-cream/10">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={m.photo}
                         alt={m.alt}
                         loading="lazy"
-                        className="h-full w-full object-cover grayscale-[35%] transition duration-500 hover:grayscale-0"
+                        style={m.crop}
+                        className="h-full w-full object-cover grayscale-[35%] transition-[filter] duration-500 hover:grayscale-0"
                       />
                     </div>
                     <div className="px-6 py-8 lg:px-8">

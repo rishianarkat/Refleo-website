@@ -124,7 +124,7 @@ export default function Footer() {
             screen "Refleo Health, Inc." and "Parental Consent" stay whole. The
             row must never be wider than the screen either, or the browser
             widens the layout viewport and the fixed header spills past it. */}
-        <div className="border-t border-cream/10 mt-16 pt-8 flex flex-wrap items-center justify-center gap-y-1 text-center font-mono text-[11px] uppercase tracking-[0.08em] text-cream/45">
+        <div className="relative z-10 border-t border-cream/10 mt-16 pt-8 flex flex-wrap items-center justify-center gap-y-1 text-center font-mono text-[11px] uppercase tracking-[0.08em] text-cream/45">
           {[
             <span key="copyright">{COPYRIGHT}</span>,
             <a
@@ -162,10 +162,12 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Oversized wordmark, cropped by the page edge. */}
+      {/* Oversized wordmark, cropped by the page edge. Its glyphs rise above
+          its tight line box and over the legal row at desktop widths, so it
+          must never take clicks. */}
       <p
         aria-hidden="true"
-        className="mt-12 select-none text-center font-serif text-[clamp(6rem,24vw,22rem)] font-medium leading-[0.72] tracking-[-0.05em] text-cream/[0.06]"
+        className="pointer-events-none relative z-0 mt-12 select-none text-center font-serif text-[clamp(6rem,24vw,22rem)] font-medium leading-[0.72] tracking-[-0.05em] text-cream/[0.06]"
       >
         refleo
       </p>

@@ -89,7 +89,7 @@ const faqJsonLd = {
 };
 
 const INCLUDED = [
-  "HIPAA business associate",
+  "HIPAA · BAA included",
   "Parental consent built in",
   "Free for your clients",
   "iPhone and web",

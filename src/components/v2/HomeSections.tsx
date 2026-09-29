@@ -22,7 +22,7 @@ const INVEST_HREF = "/contact?intent=invest";
 /* ── Hero ─────────────────────────────────────────────────────────────── */
 
 const FACTS = [
-  "HIPAA business associate",
+  "HIPAA · BAA included",
   "Parental consent built in",
   "$100/mo · 2 months free",
   "Clients never pay",

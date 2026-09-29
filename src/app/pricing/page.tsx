@@ -2,6 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ModeToggle from "@/components/v2/ModeToggle";
+import Reveal from "@/components/v2/Reveal";
+import { CtaV2 } from "@/components/v2/HomeSections";
+import {
+  APP_STORE_HREF,
+  FILL_BTN,
+  H2,
+  Label,
+  PageHero,
+  PORTAL_HREF,
+} from "@/components/v2/ui";
 
 // Single source of truth for the displayed subscription price.
 // Update this one value to change the price shown on this page.
@@ -77,142 +88,167 @@ const faqJsonLd = {
   })),
 };
 
+const INCLUDED = [
+  "HIPAA business associate",
+  "Parental consent built in",
+  "Free for your clients",
+  "iPhone and web",
+];
+
 export default function PricingPage() {
   return (
-    <>
+    <div className="bg-ink">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Navbar />
-      <main className="pt-32 pb-24 md:pt-40 md:pb-28">
-        <div className="mx-auto max-w-3xl px-6 lg:px-12">
-          {/* Heading */}
-          <p className="font-sans text-xs uppercase tracking-widest text-teal-light">
-            Pricing
-          </p>
-          <h1 className="mt-4 font-serif text-4xl text-cream sm:text-5xl">
-            One plan for clinicians.
-          </h1>
-          <p className="mt-6 text-lg leading-relaxed text-cream/70">
-            Refleo is built for clinicians who want continuity between
-            sessions. One plan, one price, and for our launch, two months free
-            before you pay anything.
-          </p>
+      <main>
+        <PageHero
+          label="Pricing"
+          title={
+            <>
+              One plan <em className="italic text-apricot-light">for clinicians.</em>
+            </>
+          }
+          sub="Refleo is built for clinicians who want continuity between sessions. One plan, one price, and for our launch, two months free before you pay anything."
+        />
 
-          {/* Price card */}
-          <div className="mt-12 rounded-2xl border border-white/10 bg-teal-deep/60 p-8 sm:p-10">
-            <div className="flex items-baseline gap-2">
-              <span className="font-serif text-5xl text-cream sm:text-6xl">
-                ${MONTHLY_PRICE_USD}
-              </span>
-              <span className="font-sans text-base text-cream/60">
-                / month
-              </span>
-            </div>
-            <p className="mt-3 font-sans text-sm text-cream/50">
-              Per clinician, billed monthly in U.S. dollars, exclusive of
-              taxes.
-            </p>
+        {/* 01 · The plan */}
+        <section className="border-t border-cream/10">
+          <div className="mx-auto max-w-7xl lg:px-12">
+            <div className="grid border-b border-cream/10 lg:grid-cols-[1fr_1.3fr] lg:border-x">
+              <Reveal className="border-b border-cream/10 px-6 py-12 lg:border-b-0 lg:border-r lg:px-10 lg:py-16">
+                <Label index="01">The plan</Label>
+                <div className="mt-8 flex items-baseline gap-3">
+                  <span className="font-serif text-[clamp(5rem,10vw,8rem)] font-medium leading-none tracking-[-0.04em] text-cream">
+                    ${MONTHLY_PRICE_USD}
+                  </span>
+                  <span className="font-mono text-sm uppercase tracking-[0.14em] text-cream/55">
+                    / month
+                  </span>
+                </div>
+                <p className="mt-4 text-sm text-cream/55">
+                  Per clinician, billed monthly in U.S. dollars, exclusive of taxes.
+                </p>
+                <ul className="mt-10 grid grid-cols-2 border-t border-cream/10">
+                  {INCLUDED.map((item, i) => (
+                    <li
+                      key={item}
+                      className="border-b border-cream/10 py-4 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/70 odd:border-r odd:pr-4 even:pl-4"
+                    >
+                      <span className="mr-2 text-cream/30">0{i + 1}</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-10">
+                  <Link href={PORTAL_HREF} className={FILL_BTN}>
+                    Start free trial <span aria-hidden="true">→</span>
+                  </Link>
+                  <p className="mt-4 text-sm text-cream/65">
+                    Also on iPhone:{" "}
+                    <a
+                      href={APP_STORE_HREF}
+                      className="underline underline-offset-4 text-cream/90 transition-colors hover:text-cream"
+                    >
+                      get the app
+                    </a>
+                  </p>
+                </div>
+              </Reveal>
 
-            <div className="mt-8 border-t border-white/10 pt-8">
-              <h2 className="font-sans text-xs uppercase tracking-widest text-cream/50">
-                Launch offer
-              </h2>
-              <p className="mt-3 text-base leading-relaxed text-cream/80">
-                For our launch, new accounts get their first two months
-                completely free, with no credit card required. The two months
-                begin the day the account is activated, and the offer is
-                available once per clinician and once per practice. This is a
-                launch promotion and may end for new sign-ups.
-              </p>
-              <p className="mt-4 text-base leading-relaxed text-cream/80">
-                You will not be charged at the end of your trial, and it does
-                not convert automatically into a paid subscription. Your
-                access continues only if you affirmatively choose a paid plan
-                and add a payment method. We&apos;ll send a reminder to your
-                account email at least seven days before your trial ends,
-                describing your options and the then-current price.
-              </p>
-            </div>
-
-            <div className="mt-8">
-              <Link
-                href="https://app.refleohealth.com/?choose=1"
-                className="inline-flex items-center justify-center rounded-full bg-apricot px-8 py-3 text-sm font-semibold font-sans text-teal-dark transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98]"
-              >
-                Start free trial
-              </Link>
-              <p className="mt-4 text-sm font-sans text-cream/70">
-                Also on iPhone:{" "}
-                <a
-                  href="https://apps.apple.com/us/app/refleo/id6807892935"
-                  className="underline underline-offset-4 text-cream/90 hover:text-cream transition-colors"
-                >
-                  get the app
-                </a>
-              </p>
+              <Reveal delay={120} className="px-6 py-12 lg:px-10 lg:py-16">
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-apricot">
+                  Launch offer
+                </p>
+                <p className="mt-6 font-serif text-3xl font-medium leading-snug tracking-tight">
+                  Your first two months are free. No credit card required.
+                </p>
+                <p className="mt-6 leading-relaxed text-cream/75">
+                  For our launch, new accounts get their first two months
+                  completely free, with no credit card required. The two months
+                  begin the day the account is activated, and the offer is
+                  available once per clinician and once per practice. This is a
+                  launch promotion and may end for new sign-ups.
+                </p>
+                <p className="mt-4 leading-relaxed text-cream/75">
+                  You will not be charged at the end of your trial, and it does
+                  not convert automatically into a paid subscription. Your
+                  access continues only if you affirmatively choose a paid plan
+                  and add a payment method. We&apos;ll send a reminder to your
+                  account email at least seven days before your trial ends,
+                  describing your options and the then-current price.
+                </p>
+              </Reveal>
             </div>
           </div>
+        </section>
 
-          {/* What's included */}
-          <section className="mt-16">
-            <h2 className="font-serif text-2xl text-cream">
-              What&apos;s included
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-cream/80">
-              Your patients record short voice or text entries between
-              appointments. Refleo organizes those entries, identifies
-              recurring themes, and highlights the words and topics
-              you&apos;ve chosen to track. The result is a brief summary,
-              always presented alongside the underlying entries, for you to
-              review before the next session.
-            </p>
-          </section>
+        {/* 02 · Included + billing */}
+        <section className="mt-24 border-t border-cream/10 lg:mt-32">
+          <div className="mx-auto grid max-w-7xl gap-16 px-6 py-24 lg:grid-cols-2 lg:gap-20 lg:px-12 lg:py-32">
+            <Reveal>
+              <Label index="02">What&apos;s included</Label>
+              <p className="mt-6 text-lg leading-relaxed text-cream/80">
+                Your patients record short voice or text entries between
+                appointments. Refleo organizes those entries, identifies
+                recurring themes, and highlights the words and topics
+                you&apos;ve chosen to track. The result is a brief summary,
+                always presented alongside the underlying entries, for you to
+                review before the next session.
+              </p>
+            </Reveal>
+            <Reveal delay={120}>
+              <Label index="03">Billing details</Label>
+              <ul className="mt-6 border-t border-cream/10 text-cream/80">
+                <li className="border-b border-cream/10 py-4 leading-relaxed">
+                  Fees are stated in U.S. dollars and are exclusive of taxes.
+                </li>
+                <li className="border-b border-cream/10 py-4 leading-relaxed">
+                  <span className="text-cream">Refunds.</span> Fees already
+                  paid are non-refundable, except where required by applicable
+                  law or where we state otherwise in writing.
+                </li>
+                <li className="border-b border-cream/10 py-4 leading-relaxed">
+                  <span className="text-cream">Non-payment.</span> If a
+                  payment is more than fifteen (15) days past due, we may
+                  suspend access after notice and an opportunity to cure.
+                </li>
+              </ul>
+            </Reveal>
+          </div>
+        </section>
 
-          {/* Billing details */}
-          <section className="mt-16">
-            <h2 className="font-serif text-2xl text-cream">
-              Billing details
-            </h2>
-            <ul className="mt-4 space-y-4 text-base leading-relaxed text-cream/80">
-              <li>
-                Fees are stated in U.S. dollars and are exclusive of taxes.
-              </li>
-              <li>
-                <span className="text-cream">Refunds.</span> Fees already
-                paid are non-refundable, except where required by applicable
-                law or where we state otherwise in writing.
-              </li>
-              <li>
-                <span className="text-cream">Non-payment.</span> If a
-                payment is more than fifteen (15) days past due, we may
-                suspend access after notice and an opportunity to cure.
-              </li>
-            </ul>
-          </section>
-
-          {/* FAQ */}
-          <section className="mt-16" aria-labelledby="faq-heading">
-            <h2 id="faq-heading" className="font-serif text-2xl text-cream">
-              Common questions
-            </h2>
-            <dl className="mt-6 divide-y divide-white/10">
-              {FAQ.map(({ question, answer }) => (
-                <div key={question} className="py-6 first:pt-0 last:pb-0">
-                  <dt className="font-sans text-base font-semibold text-cream">
+        {/* 04 · FAQ */}
+        <section className="border-t border-cream/10" aria-labelledby="faq-heading">
+          <div className="mx-auto max-w-7xl px-6 pt-24 lg:px-12 lg:pt-32">
+            <Reveal>
+              <Label index="04">FAQ</Label>
+              <h2 id="faq-heading" className={`mt-6 ${H2}`}>
+                Common questions
+              </h2>
+            </Reveal>
+          </div>
+          <div className="mx-auto mt-16 max-w-7xl lg:px-12">
+            <dl className="grid border-t border-cream/10 md:grid-cols-2 lg:border-x">
+              {FAQ.map(({ question, answer }, i) => (
+                <div
+                  key={question}
+                  className="border-b border-cream/10 px-6 py-10 md:odd:border-r lg:px-8"
+                >
+                  <dt className="flex gap-4 font-serif text-2xl font-medium leading-snug">
+                    <span className="mt-2 font-mono text-[11px] tracking-[0.14em] text-cream/35">
+                      0{i + 1}
+                    </span>
                     {question}
                   </dt>
-                  <dd className="mt-2 text-base leading-relaxed text-cream/80">
-                    {answer}
-                  </dd>
+                  <dd className="mt-4 pl-10 leading-relaxed text-cream/70">{answer}</dd>
                 </div>
               ))}
             </dl>
-          </section>
-
-          {/* Links */}
-          <p className="mt-16 border-t border-white/10 pt-8 text-sm leading-relaxed text-cream/60">
+          </div>
+          <p className="mx-auto max-w-7xl px-6 pt-10 text-sm leading-relaxed text-cream/55 lg:px-12">
             This page describes the price, billing period, and included
             features referenced in our{" "}
             <Link href="/terms" className="underline hover:text-cream">
@@ -224,9 +260,12 @@ export default function PricingPage() {
             </Link>{" "}
             for how we handle your information.
           </p>
-        </div>
+        </section>
+
+        <CtaV2 />
       </main>
       <Footer />
-    </>
+      <ModeToggle active="human" />
+    </div>
   );
 }

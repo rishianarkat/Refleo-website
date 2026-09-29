@@ -5,6 +5,8 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HeroGradient from "@/components/v2/HeroGradient";
+import ModeToggle from "@/components/v2/ModeToggle";
 
 // String consts to avoid raw JSX text with apostrophes / special chars
 const HEADLINE = "Let's talk";
@@ -87,33 +89,57 @@ export default function ContactPageClient() {
   }
 
   const fieldBase =
-    "w-full rounded-xl bg-white/5 border border-teal-light/20 px-4 py-3 text-base text-cream placeholder-cream/40 focus:outline-none focus:border-apricot focus:ring-2 focus:ring-apricot/40 transition-colors duration-150";
-  const labelBase = "block text-sm font-medium text-cream/80 mb-1.5 font-sans";
+    "w-full rounded-none bg-black/30 border border-cream/15 px-4 py-3 text-base text-cream placeholder-cream/35 focus:outline-none focus:border-apricot focus:ring-1 focus:ring-apricot/60 transition-colors duration-150";
+  const labelBase =
+    "block font-mono text-[11px] uppercase tracking-[0.16em] text-cream/55 mb-2";
 
   return (
-    <div className="min-h-screen flex flex-col bg-transparent">
+    <div className="min-h-screen flex flex-col bg-ink">
       <Navbar />
-      <div
-        ref={containerRef}
-        className="flex-1 flex flex-col px-6 pt-28 pb-12 md:pt-32 md:pb-20"
-      >
-      {/* Centered page content */}
-      <div className="flex-1 flex flex-col items-center">
+      <div ref={containerRef} className="relative flex-1 overflow-hidden">
+        <HeroGradient />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-ink/20"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent"
+        />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-14 px-6 pt-36 pb-24 lg:grid-cols-[1fr_minmax(0,520px)] lg:gap-20 lg:px-12 lg:pt-44 lg:pb-32">
         {/* Headline + subline */}
-        <div className="text-center mb-10">
-          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl tracking-tight text-cream">
+        <div className="lg:self-start">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/70">
+            Contact
+          </p>
+          <h1 className="mt-6 font-serif text-[clamp(3rem,7vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.035em] text-cream">
             {launch ? LAUNCH_HEADLINE : HEADLINE}
           </h1>
-          <p className="mt-3 font-sans text-cream/70 text-lg leading-relaxed max-w-[420px] mx-auto">
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-cream/75">
             {launch ? LAUNCH_SUBLINE : SUBLINE}
           </p>
+          <dl className="mt-12 max-w-md border-t border-cream/10 font-mono text-[11px] uppercase tracking-[0.14em]">
+            <div className="flex justify-between gap-6 border-b border-cream/10 py-4">
+              <dt className="text-cream/40">Email</dt>
+              <dd>
+                <a href={`mailto:${ERROR_EMAIL}`} className="text-cream/80 hover:text-apricot">
+                  {ERROR_EMAIL}
+                </a>
+              </dd>
+            </div>
+            <div className="flex justify-between gap-6 border-b border-cream/10 py-4">
+              <dt className="text-cream/40">Reply</dt>
+              <dd className="text-cream/80">Within one business day</dd>
+            </div>
+          </dl>
         </div>
 
+        <div className="border border-cream/15 bg-ink/70 p-6 backdrop-blur-md sm:p-8">
         {/* Success state */}
         {status === "success" ? (
           <div
             aria-live="polite"
-            className="max-w-[520px] w-full mx-auto flex flex-col items-center gap-4 text-center py-10"
+            className="w-full flex flex-col items-center gap-4 text-center py-10"
           >
             {/* Apricot check icon */}
             <svg
@@ -147,7 +173,7 @@ export default function ContactPageClient() {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="w-full max-w-[520px] mx-auto flex flex-col gap-5"
+            className="w-full flex flex-col gap-5"
           >
             {/* Hidden subject */}
             <input
@@ -161,7 +187,7 @@ export default function ContactPageClient() {
             {status === "error" && (
               <div
                 role="alert"
-                className="rounded-xl bg-white/5 border border-apricot/40 px-4 py-3 text-sm font-sans text-cream/80"
+                className="bg-black/30 border border-apricot/40 px-4 py-3 text-sm font-sans text-cream/80"
               >
                 {ERROR_PREFIX}
                 <a
@@ -269,15 +295,17 @@ export default function ContactPageClient() {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="w-full inline-flex items-center justify-center min-h-[44px] px-6 rounded-full bg-apricot text-teal-dark font-semibold font-sans text-base transition-all duration-200 ease-out hover:bg-apricot-light hover:scale-[1.04] active:scale-[0.98] hover:shadow-[0_0_24px_-4px_rgba(232,168,124,0.55)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
+              className="w-full inline-flex items-center justify-center min-h-[44px] px-6 rounded-full bg-apricot text-ink font-semibold font-sans text-base transition-colors duration-200 ease-out hover:bg-apricot-light disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {status === "submitting" ? "Sending…" : "Send message"}
             </button>
           </form>
         )}
+        </div>
       </div>
       </div>
       <Footer />
+      <ModeToggle active="human" />
     </div>
   );
 }

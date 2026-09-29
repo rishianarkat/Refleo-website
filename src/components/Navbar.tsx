@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { isV2Route } from "@/components/v2/routes";
 
 const NAV_LINKS = [
   { label: "Product", href: "/product" },
@@ -75,7 +76,7 @@ export default function Navbar() {
       className={[
         "fixed top-0 inset-x-0 z-50 transition-all duration-300",
         solidHeader
-          ? pathname === "/"
+          ? isV2Route(pathname)
             ? "bg-ink/80 backdrop-blur-md border-b border-white/5"
             : "bg-teal-dark/95 backdrop-blur-md border-b border-white/5"
           : "bg-transparent border-b border-transparent",

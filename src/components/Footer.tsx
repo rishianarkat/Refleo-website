@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { WaveLines } from "@/components/ripples/RippleArt";
 
 const MISSION_LINE = "Helping clinicians capture life outside the session.";
 
@@ -36,9 +35,8 @@ const ACTIONS_HEADING = "Get started";
 
 export default function Footer() {
   return (
-    <footer className="bg-teal-deep/70 border-t border-white/5 py-12 md:py-14">
-      <div className="max-w-6xl mx-auto px-6 lg:px-12">
-        <WaveLines className="text-teal-light/20 w-full max-w-sm mx-auto mb-10" />
+    <footer className="relative overflow-hidden bg-ink border-t border-cream/10 pt-16 md:pt-20">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="md:flex md:justify-between md:gap-12">
           {/* Left: ripple mark + mission line */}
           <div className="flex items-start gap-4 max-w-md">
@@ -76,7 +74,7 @@ export default function Footer() {
               />
               <circle cx="20" cy="20" r="2" fill="#E8A87C" />
             </svg>
-            <p className="font-serif text-xl text-cream leading-snug">
+            <p className="font-serif text-2xl text-cream leading-snug">
               {MISSION_LINE}
             </p>
           </div>
@@ -84,7 +82,7 @@ export default function Footer() {
           {/* Right: two nav columns */}
           <div className="flex gap-16 mt-12 md:mt-0">
             <div>
-              <h2 className="font-sans text-xs uppercase tracking-widest text-cream/50 mb-4">
+              <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/45 mb-4">
                 {EXPLORE_HEADING}
               </h2>
               <ul className="list-none m-0 p-0 flex flex-col gap-3 font-sans text-sm">
@@ -102,7 +100,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h2 className="font-sans text-xs uppercase tracking-widest text-cream/50 mb-4">
+              <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/45 mb-4">
                 {ACTIONS_HEADING}
               </h2>
               <ul className="list-none m-0 p-0 flex flex-col gap-3 font-sans text-sm">
@@ -126,7 +124,7 @@ export default function Footer() {
             screen "Refleo Health, Inc." and "Parental Consent" stay whole. The
             row must never be wider than the screen either, or the browser
             widens the layout viewport and the fixed header spills past it. */}
-        <div className="border-t border-white/10 mt-12 pt-8 flex flex-wrap items-center justify-center gap-y-1 text-center text-xs text-cream/50">
+        <div className="border-t border-cream/10 mt-16 pt-8 flex flex-wrap items-center justify-center gap-y-1 text-center font-mono text-[11px] uppercase tracking-[0.08em] text-cream/45">
           {[
             <span key="copyright">{COPYRIGHT}</span>,
             <a
@@ -163,6 +161,14 @@ export default function Footer() {
           ))}
         </div>
       </div>
+
+      {/* Oversized wordmark, cropped by the page edge. */}
+      <p
+        aria-hidden="true"
+        className="mt-12 select-none text-center font-serif text-[clamp(6rem,24vw,22rem)] font-medium leading-[0.72] tracking-[-0.05em] text-cream/[0.06]"
+      >
+        refleo
+      </p>
     </footer>
   );
 }

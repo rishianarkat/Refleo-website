@@ -2,29 +2,21 @@ import Link from "next/link";
 import HeroGradient from "@/components/v2/HeroGradient";
 import Reveal from "@/components/v2/Reveal";
 import CountUp from "@/components/v2/CountUp";
+import {
+  APP_STORE_HREF,
+  FILL_BTN,
+  GHOST_BTN,
+  Label,
+  PORTAL_HREF,
+  TRIAL_LINE,
+} from "@/components/v2/ui";
 
 // v2 homepage: ShaderGradient hero, basement-style editorial grid below.
 // Copy follows the claims rule: Refleo surfaces and shows; it never
 // analyzes, detects, assesses, or predicts.
 
-const PORTAL_HREF = "https://app.refleohealth.com/?choose=1";
-const APP_STORE_HREF = "https://apps.apple.com/us/app/refleo/id6807892935";
 const CONTACT_HREF = "mailto:support@refleohealth.com?subject=Contact";
 const INVEST_HREF = "/contact?intent=invest";
-const TRIAL_LINE = "Free to try for 2 months, then $100 a month. Your clients never pay.";
-
-const FILL_BTN =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-apricot px-7 py-3 text-sm font-semibold text-ink transition-colors duration-200 ease-out hover:bg-apricot-light";
-const GHOST_BTN =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-cream/25 px-7 py-3 text-sm font-semibold text-cream transition-colors duration-200 ease-out hover:border-cream/60";
-
-function Label({ index, children }: { index: string; children: React.ReactNode }) {
-  return (
-    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/50">
-      <span className="text-apricot">[{index}]</span> {children}
-    </p>
-  );
-}
 
 /* ── Hero ─────────────────────────────────────────────────────────────── */
 
@@ -259,7 +251,15 @@ export function ProofV2() {
 
 /* ── CTA ──────────────────────────────────────────────────────────────── */
 
-export function CtaV2() {
+export function CtaV2({
+  lead = "Walk into the next session",
+  emphasis = "already caught up.",
+  secondary = { label: "Invest in Refleo", href: INVEST_HREF },
+}: {
+  lead?: string;
+  emphasis?: string;
+  secondary?: { label: string; href: string };
+} = {}) {
   return (
     <section className="relative mt-24 overflow-hidden border-t border-cream/10 lg:mt-32">
       {/* Static cousin of the hero gradient: one WebGL canvas per page. */}
@@ -268,15 +268,15 @@ export function CtaV2() {
       <div className="relative mx-auto max-w-7xl px-6 py-32 text-center lg:px-12 lg:py-44">
         <Reveal>
           <h2 className="mx-auto max-w-[16ch] text-balance font-serif text-[clamp(2.75rem,7vw,6.5rem)] font-medium leading-[0.92] tracking-[-0.035em]">
-            Walk into the next session{" "}
-            <em className="italic text-apricot-light">already caught up.</em>
+            {lead}{" "}
+            <em className="italic text-apricot-light">{emphasis}</em>
           </h2>
           <div className="mt-12 flex flex-wrap justify-center gap-3">
             <Link href={PORTAL_HREF} className={FILL_BTN}>
               Start free trial <span aria-hidden="true">→</span>
             </Link>
-            <Link href={INVEST_HREF} className={GHOST_BTN}>
-              Invest in Refleo
+            <Link href={secondary.href} className={GHOST_BTN}>
+              {secondary.label}
             </Link>
           </div>
           <p className="mt-6 text-sm text-cream/65">

@@ -6,6 +6,7 @@ const MISSION_LINE = "Helping clinicians capture life outside the session.";
 const EXPLORE_LINKS = [
   { label: "Home", href: "/" },
   { label: "Product", href: "/product" },
+  { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -120,40 +121,44 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom row */}
-        <div className="border-t border-white/10 mt-12 pt-8 text-center text-xs text-cream/50">
-          <span>{COPYRIGHT}</span>
-          <span aria-hidden="true" className="mx-2 text-cream/30">
-            ·
-          </span>
-          <a
-            href={SITE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-apricot hover:text-apricot-light transition-colors"
-          >
-            {SITE_LABEL}
-          </a>
-          <span aria-hidden="true" className="mx-2 text-cream/30">
-            ·
-          </span>
-          {LEGAL_LINKS.map(({ label, href }, index) => (
-            <span key={href}>
-              {index > 0 && (
-                <span aria-hidden="true" className="mx-2 text-cream/30">
-                  ·
-                </span>
-              )}
-              {/* A plain anchor, not <Link>: Next treats the dot in "1.0" as a
-                  file extension and strips the trailing slash from
-                  /legal/baa/1.0/ — and the static host 404s the slash-less
-                  path. An <a> keeps the href exactly as written. */}
+        {/* Bottom row. Each item is one unbreakable unit carrying the dot that
+            follows it, and the row wraps only between units: on a narrow
+            screen "Refleo Health, Inc." and "Parental Consent" stay whole. The
+            row must never be wider than the screen either, or the browser
+            widens the layout viewport and the fixed header spills past it. */}
+        <div className="border-t border-white/10 mt-12 pt-8 flex flex-wrap items-center justify-center gap-y-1 text-center text-xs text-cream/50">
+          {[
+            <span key="copyright">{COPYRIGHT}</span>,
+            <a
+              key="site"
+              href={SITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-apricot hover:text-apricot-light transition-colors"
+            >
+              {SITE_LABEL}
+            </a>,
+            // Plain anchors, not <Link>: Next treats the dot in "1.0" as a
+            // file extension and strips the trailing slash from
+            // /legal/baa/1.0/ — and the static host 404s the slash-less
+            // path. An <a> keeps the href exactly as written.
+            ...LEGAL_LINKS.map(({ label, href }) => (
               <a
+                key={href}
                 href={href}
                 className="transition-colors hover:text-cream/80 hover:underline"
               >
                 {label}
               </a>
+            )),
+          ].map((item, index, items) => (
+            <span key={item.key} className="whitespace-nowrap">
+              {item}
+              {index < items.length - 1 && (
+                <span aria-hidden="true" className="mx-2 text-cream/30">
+                  ·
+                </span>
+              )}
             </span>
           ))}
         </div>

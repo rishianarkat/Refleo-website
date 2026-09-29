@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import ModeToggle from "@/components/v2/ModeToggle";
 import Reveal from "@/components/v2/Reveal";
+import Shot from "@/components/v2/Shot";
 import { CtaV2 } from "@/components/v2/HomeSections";
 import {
   FILL_BTN,
@@ -73,25 +74,34 @@ const CALLOUTS = [
   },
 ];
 
-function Window({
-  caption,
-  note,
-  children,
-}: {
-  caption: string;
-  note: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <figure className="flex h-full flex-col overflow-hidden rounded-xl border border-cream/15 bg-ink shadow-[0_40px_120px_-40px_rgba(232,168,124,0.3)]">
-      <div className="flex items-center justify-between border-b border-cream/10 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-cream/45">
-        <span>{caption}</span>
-        <span>{note}</span>
-      </div>
-      {children}
-    </figure>
-  );
-}
+// Real screens from the Refleo web app, rendered with synthetic data.
+const SHOTS = [
+  {
+    src: "/images/product/dashboard.jpg",
+    alt: "Clinician dashboard listing clients with their last check-in and next session",
+    title: "Your clients.",
+    caption: "Who checked in, and when you see them next.",
+  },
+  {
+    src: "/images/product/brief.jpg",
+    alt: "Pre-session brief showing recurring themes with the client's own quoted words",
+    title: "The pre-session brief.",
+    caption: "Recurring themes, in the client's own words.",
+  },
+  {
+    src: "/images/product/client.jpg",
+    alt: "Client profile with mood over time, recent entries, and the clinician's keywords",
+    title: "The client view.",
+    caption: "Mood over time, entries, and your keywords.",
+  },
+  {
+    src: "/images/product/checkin.jpg",
+    alt: "Client check-in screen on iPhone with a mood picker and a record button",
+    title: "The client check-in.",
+    caption: "Voice or text, thirty seconds, whenever it happens.",
+    phone: true,
+  },
+];
 
 export default function ProductPage() {
   return (
@@ -122,41 +132,17 @@ export default function ProductPage() {
         <section className="border-t border-cream/10">
           <div className="mx-auto max-w-7xl px-6 py-24 lg:px-12 lg:py-32">
             <Reveal>
-              <Label index="01">Two screens, one week</Label>
+              <Label index="01">The product</Label>
               <h2 className={`mt-6 max-w-[20ch] ${H2}`}>
                 Clients talk. Clinicians read one page.
               </h2>
             </Reveal>
-            <div className="mt-16 grid gap-6 md:grid-cols-[1.7fr_1fr]">
-              <Reveal>
-                <Window caption="Clinician · pre-session brief" note="Synthetic data">
-                  <div className="max-h-[560px] overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/demo-brief.png"
-                      alt="Clinician pre-session brief showing recurring themes and keyword matches"
-                      width={1000}
-                      height={1685}
-                      className="w-full"
-                    />
-                  </div>
-                </Window>
-              </Reveal>
-              <Reveal delay={120}>
-                <Window caption="Client · check-in" note="iPhone">
-                  <div className="flex flex-1 items-start justify-center bg-black/30 px-6 pt-8">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/demo-journaling.png"
-                      alt="Patient voice journaling screen with mood picker and audio entry"
-                      width={462}
-                      height={1000}
-                      loading="lazy"
-                      className="w-full max-w-[240px] rounded-t-[2rem] border-x-[3px] border-t-[3px] border-cream/15"
-                    />
-                  </div>
-                </Window>
-              </Reveal>
+            <div className="mt-16 grid gap-x-6 gap-y-12 md:grid-cols-2">
+              {SHOTS.map((shot, i) => (
+                <Reveal key={shot.src} delay={(i % 2) * 120}>
+                  <Shot {...shot} index={`0${i + 1}`} />
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>

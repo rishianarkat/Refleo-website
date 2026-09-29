@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HeroGradient from "@/components/v2/HeroGradient";
 import Reveal from "@/components/v2/Reveal";
+import Shot from "@/components/v2/Shot";
 import CountUp from "@/components/v2/CountUp";
 import {
   APP_STORE_HREF,
@@ -145,7 +146,7 @@ export function HowV2() {
 export function ProductV2() {
   return (
     <section className="mt-24 border-t border-cream/10 lg:mt-32">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:px-12 lg:py-32">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-[1fr_1.4fr] lg:gap-16 lg:px-12 lg:py-32">
         <Reveal className="lg:sticky lg:top-32 lg:self-start">
           <Label index="03">Product</Label>
           <h2 className="mt-6 font-serif text-[clamp(2.25rem,4.5vw,4rem)] font-medium leading-[0.98] tracking-[-0.03em]">
@@ -163,22 +164,13 @@ export function ProductV2() {
         </Reveal>
 
         <Reveal delay={120}>
-          <figure className="overflow-hidden rounded-xl border border-cream/15 bg-ink shadow-[0_40px_120px_-40px_rgba(232,168,124,0.35)]">
-            <div className="flex items-center justify-between border-b border-cream/10 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.16em] text-cream/45">
-              <span>Pre-session brief</span>
-              <span>Synthetic data</span>
-            </div>
-            <div className="max-h-[640px] overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/demo-brief.png"
-                alt="Clinician pre-session brief showing recurring themes and keyword matches"
-                width={1000}
-                height={1685}
-                className="w-full"
-              />
-            </div>
-          </figure>
+          <Shot
+            src="/images/product/brief.jpg"
+            alt="Pre-session brief showing recurring themes with the client's own quoted words"
+            index="01"
+            title="The pre-session brief."
+            caption="Real screen, synthetic data."
+          />
         </Reveal>
       </div>
     </section>

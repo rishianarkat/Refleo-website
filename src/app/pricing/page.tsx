@@ -9,7 +9,7 @@ const MONTHLY_PRICE_USD = 100;
 
 const TITLE = "Pricing";
 const DESCRIPTION =
-  "One plan for individual clinicians: $100/month with a two-month free trial. See what's included, how billing works, and our refund and non-payment terms.";
+  "One plan for clinicians: $100/month. For our launch, your first two months are free, no credit card required. See what's included, how billing works, and our refund and non-payment terms.";
 const URL = "https://www.refleohealth.com/pricing";
 
 export const metadata: Metadata = {
@@ -43,7 +43,7 @@ const FAQ: { question: string; answer: string }[] = [
   },
   {
     question: "What does the free trial include?",
-    answer: `Everything. Your first two months are free with no card needed. When those end, you add a card and get one more month free before your first $${MONTHLY_PRICE_USD} charge.`,
+    answer: `Everything. As a launch promotion, your first two months are completely free, with no credit card required. To keep using Refleo after that, you add a card and your plan starts at $${MONTHLY_PRICE_USD} a month. Nothing is charged automatically.`,
   },
   {
     question: "Is Refleo HIPAA compliant?",
@@ -92,11 +92,11 @@ export default function PricingPage() {
             Pricing
           </p>
           <h1 className="mt-4 font-serif text-4xl text-cream sm:text-5xl">
-            One plan for individual clinicians.
+            One plan for clinicians.
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-cream/70">
-            Refleo is built for individual clinicians who want continuity
-            between sessions. One plan, one price, and two months to try it
+            Refleo is built for clinicians who want continuity between
+            sessions. One plan, one price, and for our launch, two months free
             before you pay anything.
           </p>
 
@@ -117,12 +117,14 @@ export default function PricingPage() {
 
             <div className="mt-8 border-t border-white/10 pt-8">
               <h2 className="font-sans text-xs uppercase tracking-widest text-cream/50">
-                Free trial
+                Launch offer
               </h2>
               <p className="mt-3 text-base leading-relaxed text-cream/80">
-                Every new account starts with a free trial of two consecutive
-                months, beginning the day the account is activated. The trial
-                is available once per clinician and once per practice.
+                For our launch, new accounts get their first two months
+                completely free, with no credit card required. The two months
+                begin the day the account is activated, and the offer is
+                available once per clinician and once per practice. This is a
+                launch promotion and may end for new sign-ups.
               </p>
               <p className="mt-4 text-base leading-relaxed text-cream/80">
                 You will not be charged at the end of your trial, and it does

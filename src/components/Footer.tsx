@@ -27,7 +27,7 @@ const LEGAL_LINKS = [
   { label: "Pricing", href: "/pricing/" },
 ] as const;
 
-const COPYRIGHT = "© 2026 Refleo Health";
+const COPYRIGHT = "© 2026 Refleo Health, Inc.";
 const SITE_LABEL = "www.refleohealth.com";
 const SITE_URL = "https://www.refleohealth.com";
 const EXPLORE_HEADING = "Explore";

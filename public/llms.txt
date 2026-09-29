@@ -1,13 +1,13 @@
 # Refleo
 
-> Refleo gives therapists a pre-session brief built from their clients' voice and text check-ins between appointments. HIPAA covered, parental consent built in, free for two months.
+> Refleo gives therapists a pre-session brief built from their clients' voice and text check-ins between appointments. HIPAA covered, parental consent built in, and free for the first two months during our launch promotion.
 
-Refleo is made by Refleo Health, Inc., founded in 2026 by Vishwas Vijayan and Rishi Anarkat. Clinicians use it on the web at https://app.refleohealth.com and on iPhone; their clients use the free Refleo iPhone app or https://my.refleohealth.com. Clients never pay. Clinicians get two months free, then $100 a month.
+Refleo is made by Refleo Health, Inc., founded in 2026 by Vishwas Vijayan and Rishi Anarkat. Clinicians use it on the web at https://app.refleohealth.com and on iPhone; their clients use the free Refleo iPhone app or https://my.refleohealth.com. Clients never pay. Clinicians pay $100 a month; during our launch promotion, the first two months are free with no credit card required.
 
 ## Product
 
 - [Product overview](https://www.refleohealth.com/product/): how between-session check-ins become a pre-session brief for the clinician.
-- [Pricing](https://www.refleohealth.com/pricing/): free for two months, then $100 a month per clinician; free for clients.
+- [Pricing](https://www.refleohealth.com/pricing/): $100 a month per clinician, with the first two months free during our launch promotion; free for clients.
 - [Refleo for clinicians (web app)](https://app.refleohealth.com/): sign in or start a free trial.
 - [Refleo on the App Store](https://apps.apple.com/us/app/refleo/id6807892935): the iPhone app for clinicians and clients.
 

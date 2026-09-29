@@ -1,9 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ModeToggle from "@/components/v2/ModeToggle";
+import WeekStory from "@/components/v2/WeekStory";
 import {
   HeroV2,
-  WeekV2,
   HowV2,
   ProductV2,
   ProofV2,
@@ -16,7 +16,7 @@ export default function Home() {
       <Navbar />
       <main>
         <HeroV2 />
-        <WeekV2 />
+        <WeekStory />
         <HowV2 />
         <ProductV2 />
         <ProofV2 />

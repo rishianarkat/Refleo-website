@@ -121,3 +121,18 @@ html.has-custom-cursor * {
     transition: none;
   }
 }
+
+.v2-ping {
+  animation: v2-ping 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes v2-ping {
+  from {
+    opacity: 0.7;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}

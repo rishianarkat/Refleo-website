@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HeroGradient from "@/components/v2/HeroGradient";
 import Reveal from "@/components/v2/Reveal";
+import CountUp from "@/components/v2/CountUp";
 
 // v2 homepage: ShaderGradient hero, basement-style editorial grid below.
 // Copy follows the claims rule: Refleo surfaces and shows; it never
@@ -85,74 +86,6 @@ export function HeroV2() {
           </li>
         ))}
       </ul>
-    </section>
-  );
-}
-
-/* ── 01 · The week ────────────────────────────────────────────────────── */
-
-// Synthetic week: how many check-ins land on each day. Wednesday holds the
-// session. Positions are percentages inside each day cell.
-const WEEK = [
-  { day: "Mon", entries: [[30, 28], [62, 64]] },
-  { day: "Tue", entries: [[44, 46]] },
-  { day: "Wed", session: true, entries: [[70, 22]] },
-  { day: "Thu", entries: [[26, 34], [58, 58], [38, 78]] },
-  { day: "Fri", entries: [[52, 40]] },
-  { day: "Sat", entries: [[34, 30], [64, 70]] },
-  { day: "Sun", entries: [[48, 54]] },
-] as const;
-
-export function WeekV2() {
-  return (
-    <section className="border-t border-cream/10">
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-12 lg:py-32">
-        <Reveal>
-          <Label index="01">One week · one client</Label>
-          <h2 className="mt-6 max-w-[18ch] font-serif text-[clamp(2.5rem,6vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.03em]">
-            You see fifty minutes.{" "}
-            <span className="text-cream/40">Everything else happens without you.</span>
-          </h2>
-        </Reveal>
-
-        <Reveal delay={120} className="mt-16">
-          <div className="grid grid-cols-7 border border-cream/10">
-            {WEEK.map((d) => (
-              <div
-                key={d.day}
-                className="relative h-44 border-r border-cream/10 last:border-r-0 sm:h-56"
-              >
-                <span className="absolute left-2 top-2 font-mono text-[10px] uppercase tracking-[0.14em] text-cream/40 sm:left-3 sm:top-3">
-                  {d.day}
-                </span>
-                {"session" in d && d.session && (
-                  <div className="absolute inset-y-0 left-1/2 w-[3px] -translate-x-1/2 bg-apricot">
-                    <span className="absolute bottom-3 left-2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-apricot">
-                      50 min
-                    </span>
-                  </div>
-                )}
-                {d.entries.map(([x, y], i) => (
-                  <span
-                    key={i}
-                    className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cream/70 ring-4 ring-cream/10"
-                    style={{ left: `${x}%`, top: `${y}%` }}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/50">
-            <span className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-cream/70" /> Check-ins between sessions
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="h-3 w-[3px] bg-apricot" /> The session
-            </span>
-            <span className="ml-auto text-cream/70">10,030 minutes you never see</span>
-          </div>
-        </Reveal>
-      </div>
     </section>
   );
 }
@@ -263,9 +196,9 @@ export function ProductV2() {
 /* ── 04 · Proof ───────────────────────────────────────────────────────── */
 
 const STATS = [
-  { value: "100+", label: "Clinician conversations across 8 states" },
-  { value: "6+", label: "Clinics interested in piloting" },
-  { value: "90%", label: "Of clinicians reported missing critical between-session events" },
+  { value: 100, suffix: "+", label: "Clinician conversations across 8 states" },
+  { value: 6, suffix: "+", label: "Clinics interested in piloting" },
+  { value: 90, suffix: "%", label: "Of clinicians reported missing critical between-session events" },
 ];
 
 const QUOTES = [
@@ -292,13 +225,13 @@ export function ProofV2() {
       </div>
       <div className="mx-auto mt-16 max-w-7xl lg:px-12">
         <div className="grid border-t border-cream/10 sm:grid-cols-3 lg:border-x">
-          {STATS.map((s) => (
+          {STATS.map((s, i) => (
             <div
               key={s.label}
               className="border-b border-cream/10 px-6 py-10 sm:border-r sm:last:border-r-0 lg:px-8"
             >
-              <p className="font-mono text-5xl font-medium tracking-tight text-cream lg:text-6xl">
-                {s.value}
+              <p className="font-serif text-6xl font-medium leading-none tracking-tight text-apricot lg:text-7xl">
+                <CountUp value={s.value} suffix={s.suffix} delay={i * 200} />
               </p>
               <p className="mt-4 max-w-[26ch] text-sm text-cream/60">{s.label}</p>
             </div>

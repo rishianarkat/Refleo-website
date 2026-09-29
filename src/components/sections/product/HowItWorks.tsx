@@ -18,7 +18,7 @@ const STEPS = [
   },
   {
     number: "2",
-    title: "Refleo listens for what the clinician flagged",
+    title: "Refleo surfaces what the clinician flagged",
     body: "Themes, shifts, and keywords set per client.",
   },
   {

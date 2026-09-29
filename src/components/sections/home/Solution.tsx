@@ -19,7 +19,7 @@ const COLUMNS = [
   },
   {
     label: "REFLEO",
-    title: "Analyzes entries for themes and clinician-set parameters",
+    title: "Surfaces themes and the keywords the clinician set",
     body: "Surfaces recurring topics, emotional shifts, and patterns. It never counsels.",
   },
   {

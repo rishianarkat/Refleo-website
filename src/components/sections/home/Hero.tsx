@@ -144,7 +144,7 @@ export default function Hero() {
           type="button"
           onClick={handleScrollHint}
           aria-label={SCROLL_HINT_LABEL}
-          className="mt-8 flex flex-col items-center gap-2 text-cream/60 hover:text-cream transition-colors duration-200 animate-bounce"
+          className="mt-8 flex flex-col items-center gap-2 text-cream/60 hover:text-cream transition-colors duration-200"
         >
           <span className="text-xs uppercase tracking-widest font-sans">
             {SCROLL_HINT_LABEL}

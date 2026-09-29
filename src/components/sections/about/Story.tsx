@@ -21,7 +21,7 @@ const BELIEFS = [
   },
   {
     title: "Privacy is the product.",
-    body: "Patients choose what they share. Refleo listens for what the clinician flagged, surfaces patterns, and never counsels.",
+    body: "Patients choose what they share. Refleo brings forward the keywords the clinician set, surfaces recurring themes, and never counsels.",
   },
   {
     title: "Built with clinicians, not just for them.",

@@ -8,6 +8,7 @@
 // narrow-viewport conditions.
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 const MAX_RIPPLES = 14;
 const RIPPLE_SPEED = 0.3;
@@ -57,10 +58,14 @@ const FRAGMENT_SHADER = [
 
 export default function GlobalRipples() {
   const hostRef = useRef<HTMLDivElement | null>(null);
+  // The v2 homepage brings its own WebGL gradient, and the machine view is
+  // plain text. One canvas per page, so the water sits those out.
+  const pathname = usePathname();
+  const sitOut = pathname === "/" || !!pathname?.startsWith("/machine");
 
   useEffect(() => {
     const host = hostRef.current;
-    if (!host) return;
+    if (!host || sitOut) return;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -234,7 +239,7 @@ export default function GlobalRipples() {
       cleanupFns.forEach((fn) => fn());
       cleanupFns = [];
     };
-  }, []);
+  }, [sitOut]);
 
   return (
     <div

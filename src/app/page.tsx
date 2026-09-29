@@ -1,25 +1,29 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Hero from "@/components/sections/home/Hero";
-import WeekBand from "@/components/sections/home/WeekBand";
-import Solution from "@/components/sections/home/Solution";
-import ProductTeaser from "@/components/sections/home/ProductTeaser";
-import Validation from "@/components/sections/home/Validation";
-import CtaBand from "@/components/sections/home/CtaBand";
+import ModeToggle from "@/components/v2/ModeToggle";
+import {
+  HeroV2,
+  WeekV2,
+  HowV2,
+  ProductV2,
+  ProofV2,
+  CtaV2,
+} from "@/components/v2/HomeSections";
 
 export default function Home() {
   return (
-    <>
+    <div className="bg-ink">
       <Navbar />
       <main>
-        <Hero />
-        <WeekBand />
-        <Solution />
-        <ProductTeaser />
-        <Validation />
-        <CtaBand />
+        <HeroV2 />
+        <WeekV2 />
+        <HowV2 />
+        <ProductV2 />
+        <ProofV2 />
+        <CtaV2 />
       </main>
       <Footer />
-    </>
+      <ModeToggle active="human" />
+    </div>
   );
 }

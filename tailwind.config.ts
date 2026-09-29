@@ -17,11 +17,13 @@ const config: Config = {
         apricot: "#E8A87C", // CTA / highlight
         "apricot-light": "#F2C8A0",
         cream: "#FAF5F0", // light sections
+        ink: "#0B1717", // near-black teal: the v2 homepage ground
         white: "#FFFFFF",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         serif: ["var(--font-fraunces)", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
     },
   },

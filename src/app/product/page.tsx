@@ -5,6 +5,7 @@ import Link from "next/link";
 import ModeToggle from "@/components/v2/ModeToggle";
 import Reveal from "@/components/v2/Reveal";
 import Shot from "@/components/v2/Shot";
+import ProductStory from "@/components/sections/product/ProductStory";
 import { CtaV2 } from "@/components/v2/HomeSections";
 import {
   FILL_BTN,
@@ -38,24 +39,6 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
 };
-
-const STEPS = [
-  {
-    who: "Client",
-    title: "A patient records a short entry",
-    body: "Thirty seconds, voice or text, whenever it happens.",
-  },
-  {
-    who: "Refleo",
-    title: "Refleo surfaces what the clinician flagged",
-    body: "Themes and the keywords set per client, in the client's own words.",
-  },
-  {
-    who: "Clinician",
-    title: "The clinician gets a brief before the session",
-    body: "One screen. The week, organized.",
-  },
-];
 
 const CALLOUTS = [
   { title: "Voice-first entries", body: "30-second journaling on phone, no prompts." },
@@ -147,40 +130,8 @@ export default function ProductPage() {
           </div>
         </section>
 
-        {/* 02 · How it works */}
-        <section className="border-t border-cream/10">
-          <div className="mx-auto max-w-7xl px-6 pt-24 lg:px-12 lg:pt-32">
-            <Reveal>
-              <Label index="02">How it works</Label>
-              <h2 className={`mt-6 ${H2}`}>
-                Patients share. <em className="italic text-apricot-light">Refleo surfaces.</em>
-              </h2>
-            </Reveal>
-          </div>
-          <div className="mx-auto mt-16 max-w-7xl lg:px-12">
-            <ol className="grid border-y border-cream/10 md:grid-cols-3 lg:border-x">
-              {STEPS.map((s, i) => (
-                <li
-                  key={s.who}
-                  className="group border-b border-cream/10 px-6 py-10 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0 lg:px-8"
-                >
-                  <Reveal delay={i * 100}>
-                    <div className="flex items-baseline justify-between">
-                      <span className="font-serif text-6xl font-medium tracking-tight text-cream/20 transition-colors duration-300 group-hover:text-apricot">
-                        0{i + 1}
-                      </span>
-                      <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream/50">
-                        {s.who}
-                      </span>
-                    </div>
-                    <h3 className="mt-10 text-xl font-semibold leading-snug">{s.title}</h3>
-                    <p className="mt-3 text-cream/65">{s.body}</p>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        {/* 02 · How it works: the scroll story */}
+        <ProductStory />
 
         {/* 03 · What's inside */}
         <section className="mt-24 border-t border-cream/10 lg:mt-32">

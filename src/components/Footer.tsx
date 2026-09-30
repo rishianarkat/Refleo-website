@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { twinOf } from "@/lib/viewMode";
 import Link from "next/link";
 
 const MISSION_LINE = "Helping clinicians capture life outside the session.";
@@ -34,6 +38,8 @@ const EXPLORE_HEADING = "Explore";
 const ACTIONS_HEADING = "Get started";
 
 export default function Footer() {
+  const machine = usePathname()?.startsWith("/machine/");
+  const inMode = (href: string) => machine ? twinOf(href) || href : href;
   return (
     <footer className="relative overflow-hidden bg-ink border-t border-cream/10 pt-16 md:pt-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -89,7 +95,7 @@ export default function Footer() {
                 {EXPLORE_LINKS.map(({ label, href }) => (
                   <li key={href}>
                     <Link
-                      href={href}
+                      href={inMode(href)}
                       className="text-cream/60 hover:text-cream transition-colors"
                     >
                       {label}
@@ -107,7 +113,7 @@ export default function Footer() {
                 {ACTION_LINKS.map(({ label, href }) => (
                   <li key={href}>
                     <Link
-                      href={href}
+                      href={inMode(href)}
                       className="text-cream/60 hover:text-cream transition-colors"
                     >
                       {label}
@@ -143,7 +149,7 @@ export default function Footer() {
             ...LEGAL_LINKS.map(({ label, href }) => (
               <a
                 key={href}
-                href={href}
+                href={inMode(href)}
                 className="transition-colors hover:text-cream/80 hover:underline"
               >
                 {label}

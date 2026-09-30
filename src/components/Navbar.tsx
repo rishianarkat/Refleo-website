@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { twinOf } from "@/lib/viewMode";
 import { isV2Route } from "@/components/v2/routes";
 
 const NAV_LINKS = [
@@ -27,6 +28,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const machine = pathname?.startsWith("/machine/") || pathname === "/machine";
+  const inMode = (href: string) => machine ? twinOf(href) || href : href;
 
   // Close the mobile menu on any navigation, including the back button, not
   // only on a tap inside it. Adjusting state during render when a value
@@ -89,7 +92,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
         <Link
-          href="/"
+          href={inMode("/")}
           aria-label="Refleo home"
           className="inline-flex min-h-[44px] items-center py-2.5 -my-2.5 shrink-0"
         >
@@ -108,11 +111,11 @@ export default function Navbar() {
           <nav aria-label="Main navigation">
             <ul className="flex items-center gap-6 list-none m-0 p-0">
               {NAV_LINKS.map(({ label, href }) => {
-                const active = pathname?.startsWith(href);
+                const active = pathname?.startsWith(inMode(href).replace(/\/$/, ""));
                 return (
                   <li key={href}>
                     <Link
-                      href={href}
+                      href={inMode(href)}
                       className={[
                         "relative text-sm font-sans transition-colors duration-200",
                         "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-apricot after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100",
@@ -131,7 +134,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <Link
-              href={CONTACT_HREF}
+              href={machine ? "/machine/contact/?intent=invest" : CONTACT_HREF}
               className={`${OUTLINE_BUTTON} !px-5 !py-2`}
             >
               {CONTACT_LABEL}
@@ -197,11 +200,11 @@ export default function Navbar() {
         <nav aria-label="Mobile navigation" className="px-6 pt-2 pb-6">
           <ul className="list-none m-0 p-0">
             {NAV_LINKS.map(({ label, href }) => {
-              const active = pathname?.startsWith(href);
+              const active = pathname?.startsWith(inMode(href).replace(/\/$/, ""));
               return (
                 <li key={href} className="border-b border-white/5">
                   <Link
-                    href={href}
+                    href={inMode(href)}
                     aria-current={active ? "page" : undefined}
                     onClick={() => setMenuOpen(false)}
                     className={[
@@ -217,7 +220,7 @@ export default function Navbar() {
           </ul>
           <div className="mt-6 flex flex-col gap-3">
             <Link
-              href={CONTACT_HREF}
+              href={machine ? "/machine/contact/?intent=invest" : CONTACT_HREF}
               onClick={() => setMenuOpen(false)}
               className={`${OUTLINE_BUTTON} w-full`}
             >

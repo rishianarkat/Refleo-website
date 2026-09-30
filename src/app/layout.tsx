@@ -158,6 +158,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${fraunces.variable} ${mono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: String.raw`
+(function(){
+  var p=location.pathname.replace(/\/+$/, '') || '';
+  if(p.indexOf('/machine')===0)return;
+  if(!/^(|\/(product|pricing|about|contact))$/.test(p))return;
+  var c=document.cookie.match(/(?:^|; )refleo-mode=(human|machine)(?:;|$)/);
+  var m=c&&c[1];
+  if(!m){try{m=localStorage.getItem('refleo-mode')}catch(e){}}
+  if(m==='machine')location.replace('/machine'+(p||'')+'/'+location.search+location.hash);
+})();` }} />
+      </head>
       <body className="bg-teal-dark font-sans text-cream antialiased">
         <GlobalRipples />
         <div className="relative z-10">{children}</div>

@@ -1,419 +1,479 @@
 "use client";
 
-// The product story. One DOM, three presentations, chosen by the same media
-// queries in CSS and in JS so the server markup is already laid out right:
+// The product story: one continuous walk through the app, scrubbed by scroll.
 //
-//   md and up, motion OK   ScrollTrigger pins the stage and steps through the
-//                          chapters as the visitor scrolls; each change is a
-//                          250 ms opacity crossfade. No scrub, no parallax, no
-//                          snapping. The scroll length is reserved in CSS
-//                          (pinSpacing off), so pinning never shifts layout.
-//   under md, motion OK    A plain vertical sequence, portrait media above each
-//                          caption; a video plays only while it is in view.
+//   motion OK      A tall wrapper reserves the scroll distance; inside it a
+//                  sticky stage holds a phone and the captions. ScrollTrigger
+//                  (scrub) turns the wrapper's scroll progress into a frame of
+//                  the image sequence in public/journey/, drawn to a <canvas>
+//                  on the next animation frame, only when the frame changes.
+//                  Nothing is hijacked: the page scrolls exactly as it always
+//                  does, so wheel, touch and keyboard all work, both ways.
+//                  The same on phones: phone above, caption below.
+//   reduced motion No pinning, no scrubbing, no drift: a plain vertical list
+//                  of key frames as images, each with its captions.
 //
-// Playback rule while pinned: the chapter on screen plays and every other clip
-// is paused. "On screen" comes from ScrollTrigger itself (the same scroll
-// measure that drives the pin), not from per-video observers: all the chapters
-// share one grid cell, so an observer cannot tell them apart anyway.
-//   reduced motion         The same plain stack at every width. No pinning, no
-//                          video, no transitions: posters or placeholders only.
-//
-// Captions are always real DOM text. Media is decorative (aria-hidden): the
-// caption carries the meaning.
+// Captions are real DOM text (h3 + p). The canvas and the frames are
+// decorative (aria-hidden): the captions carry the meaning.
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { forwardRef, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  storyMediaSrc,
-  type StoryChapter,
-  type StoryMediaAvailability,
-} from "./storyChapters";
+import { journeyFrameSrc, type JourneyCaption, type JourneyManifest } from "./storyJourney";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WIDE_QUERY = "(min-width: 768px)"; // Tailwind `md`
 const REDUCED_QUERY = "(prefers-reduced-motion: reduce)";
 
-// Scroll distance per chapter while pinned, in viewport heights.
-const VH_PER_CHAPTER = 60;
+/** Scroll distance per caption while the stage is pinned, in viewport heights. */
+const VH_PER_CAPTION = 90;
+/** Frames fetched before anything else, in order, once the section is near. */
+const EAGER_FRAMES = 30;
+/** Frame downloads in flight at once. */
+const PARALLEL = 6;
 
-type View = { wide: boolean; reduced: boolean };
+/**
+ * The phone's pose at each caption: a few degrees of turn and tilt and a few
+ * percent of scale, eased from one to the next as the story advances.
+ */
+const POSES: readonly { ry: number; rz: number; s: number }[] = [
+  { ry: -4, rz: 1, s: 0.97 },
+  { ry: 3, rz: -0.8, s: 0.99 },
+  { ry: -2.5, rz: 0.6, s: 1 },
+  { ry: 3.5, rz: -1, s: 1 },
+  { ry: 0, rz: 0, s: 1.03 },
+  { ry: -3, rz: 0.8, s: 1 },
+  { ry: 2, rz: -0.5, s: 1.02 },
+];
 
-function useView(): View | null {
-  // null until mounted: the server and the first client render agree, and
-  // media stays as poster or placeholder until the mode is known.
-  const [view, setView] = useState<View | null>(null);
+function poseTransform({ ry, rz, s }: { ry: number; rz: number; s: number }): string {
+  return `perspective(1600px) rotateY(${ry.toFixed(3)}deg) rotateZ(${rz.toFixed(3)}deg) scale(${s.toFixed(4)})`;
+}
 
+const smoothstep = (u: number) => u * u * (3 - 2 * u);
+
+function poseAt(p: number, stops: readonly number[]) {
+  let k = 0;
+  while (k < stops.length - 1 && stops[k + 1] <= p) k++;
+  const a = POSES[Math.min(k, POSES.length - 1)];
+  if (k >= stops.length - 1) return a;
+  const b = POSES[Math.min(k + 1, POSES.length - 1)];
+  const e = smoothstep(Math.max(0, Math.min(1, (p - stops[k]) / (stops[k + 1] - stops[k]))));
+  return { ry: a.ry + (b.ry - a.ry) * e, rz: a.rz + (b.rz - a.rz) * e, s: a.s + (b.s - a.s) * e };
+}
+
+/** The last index whose value is at or below `p` (values ascending). */
+function lastAtOrBelow(values: readonly number[], p: number): number {
+  let lo = 0;
+  let hi = values.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >> 1;
+    if (values[mid] <= p) lo = mid;
+    else hi = mid - 1;
+  }
+  return lo;
+}
+
+function useReducedMotion(): boolean | null {
+  // null until mounted: the server and the first client render agree, and CSS
+  // (motion-reduce:) already shows the right layout before this is known.
+  const [reduced, setReduced] = useState<boolean | null>(null);
   useEffect(() => {
-    const wide = window.matchMedia(WIDE_QUERY);
-    const reduced = window.matchMedia(REDUCED_QUERY);
-    const update = () => setView({ wide: wide.matches, reduced: reduced.matches });
+    const mq = window.matchMedia(REDUCED_QUERY);
+    const update = () => setReduced(mq.matches);
     update();
-    wide.addEventListener("change", update);
-    reduced.addEventListener("change", update);
-    return () => {
-      wide.removeEventListener("change", update);
-      reduced.removeEventListener("change", update);
-    };
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
-
-  return view;
+  return reduced;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export default function ProductStoryClient({
-  chapters,
-  media,
+  manifest,
+  captions,
 }: {
-  chapters: readonly StoryChapter[];
-  media: Record<string, StoryMediaAvailability>;
+  manifest: JourneyManifest;
+  captions: readonly JourneyCaption[];
+}) {
+  const reduced = useReducedMotion();
+
+  return (
+    <>
+      <div className="motion-reduce:hidden">
+        <Journey manifest={manifest} captions={captions} enabled={reduced === false} />
+      </div>
+      <div className="hidden motion-reduce:block">
+        <StillStory manifest={manifest} captions={captions} />
+      </div>
+    </>
+  );
+}
+
+function Journey({
+  manifest,
+  captions,
+  enabled,
+}: {
+  manifest: JourneyManifest;
+  captions: readonly JourneyCaption[];
+  enabled: boolean;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const view = useView();
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [active, setActive] = useState(0);
-  const [onScreen, setOnScreen] = useState(false);
-
-  const pinned = view !== null && view.wide && !view.reduced;
-  const count = chapters.length;
 
   useEffect(() => {
-    if (!pinned) {
-      setActive(0);
-      setOnScreen(false);
-      return;
-    }
+    const wrapper = wrapperRef.current;
+    const phone = phoneRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!enabled || !wrapper || !phone || !canvas || !ctx) return;
 
-    const ctx = gsap.context(() => {
-      const step = (progress: number) =>
-        setActive(Math.min(count - 1, Math.floor(progress * count)));
+    const n = manifest.frames;
+    const keys = manifest.keys;
+    const stops = manifest.captions.map((c) => c.activeAt);
+    const images: (HTMLImageElement | null)[] = new Array(n).fill(null);
+    const requested = new Uint8Array(n);
+    const pending = new Set<HTMLImageElement>();
 
-      ScrollTrigger.create({
-        trigger: wrapperRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        pin: stageRef.current,
-        // The wrapper's CSS height already reserves the scroll distance.
-        pinSpacing: false,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => step(self.progress),
-        onRefresh: (self) => step(self.progress),
-      });
+    let progress = 0;
+    let target = 0;
+    let drawn: HTMLImageElement | null = null;
+    let dirty = true;
+    let raf = 0;
+    let started = false;
+    let disposed = false;
+    let lastActive = -1;
+    let lastPose = "";
 
-      // Is any of the section on screen? Same scroll measure as the pin, so it
-      // is right after an instant jump or a reload that restores scroll too.
-      ScrollTrigger.create({
-        trigger: wrapperRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        onToggle: (self) => setOnScreen(self.isActive),
-        onRefresh: (self) => setOnScreen(self.isActive),
-      });
-    }, wrapperRef);
-
-    return () => ctx.revert();
-  }, [pinned, count]);
-
-  const wrapperStyle = {
-    "--story-h": `${100 + count * VH_PER_CHAPTER}vh`,
-  } as CSSProperties;
-
-  return (
-    <div
-      ref={wrapperRef}
-      style={wrapperStyle}
-      className="mt-16 md:motion-safe:mt-0 md:motion-safe:h-[var(--story-h)]"
-    >
-      <div
-        ref={stageRef}
-        className="md:motion-safe:flex md:motion-safe:h-screen md:motion-safe:flex-col md:motion-safe:justify-center md:motion-safe:pt-16"
-      >
-        <ol className="mx-auto flex w-full max-w-7xl flex-col gap-24 px-6 lg:px-12 md:motion-safe:grid md:motion-safe:gap-0">
-          {chapters.map((chapter, i) => {
-            const isActive = i === active;
-            return (
-              <li
-                key={chapter.id}
-                className={`flex flex-col gap-8 md:grid md:grid-cols-12 md:items-center md:gap-12 md:motion-safe:col-start-1 md:motion-safe:row-start-1 md:motion-safe:transition-opacity md:motion-safe:duration-[250ms] md:motion-safe:ease-out ${
-                  isActive ? "" : "md:motion-safe:pointer-events-none md:motion-safe:opacity-0"
-                }`}
-              >
-                {chapter.media !== "none" && (
-                  <div aria-hidden="true" className="md:col-span-7 md:col-start-6 md:row-start-1">
-                    <ChapterMedia
-                      chapter={chapter}
-                      avail={media[chapter.id]}
-                      view={view}
-                      // Pinned: only the active chapter plays, and only while the
-                      // section is on screen. Stacked: each video plays whenever
-                      // it is itself in view (its own observer).
-                      active={pinned ? isActive && onScreen : true}
-                      observe={!pinned}
-                    />
-                  </div>
-                )}
-                <Caption chapter={chapter} index={i} />
-              </li>
-            );
-          })}
-        </ol>
-
-        <div
-          aria-hidden="true"
-          className="mx-auto mt-10 hidden w-full max-w-7xl items-center gap-4 px-6 md:motion-safe:flex lg:px-12"
-        >
-          <span className="font-mono text-[11px] tabular-nums tracking-[0.14em] text-cream/50">
-            {pad(active + 1)} / {pad(count)}
-          </span>
-          <span className="flex gap-1.5">
-            {chapters.map((c, i) => (
-              <span
-                key={c.id}
-                className={`h-px w-6 transition-colors duration-[250ms] ease-out ${
-                  i === active ? "bg-apricot" : "bg-cream/20"
-                }`}
-              />
-            ))}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Caption({ chapter, index }: { chapter: StoryChapter; index: number }) {
-  const closing = chapter.media === "none";
-  return (
-    <div
-      className={
-        closing
-          ? "md:col-span-10 md:col-start-1 md:row-start-1"
-          : "md:col-span-5 md:col-start-1 md:row-start-1"
+    // ── Drawing ────────────────────────────────────────────────────────────
+    const nearestLoaded = (i: number): HTMLImageElement | null => {
+      // Prefer the frame just before: the screen the visitor came from.
+      for (let d = 0; d < n; d++) {
+        if (i - d >= 0 && images[i - d]) return images[i - d];
+        if (i + d < n && images[i + d]) return images[i + d];
       }
-    >
-      <span
-        aria-hidden="true"
-        className="font-mono text-[11px] tracking-[0.14em] text-cream/35"
-      >
-        {pad(index + 1)}
-      </span>
-      <h3
-        className={`mt-4 text-balance font-serif font-medium tracking-[-0.02em] text-cream ${
-          closing
-            ? "max-w-[24ch] text-[clamp(2rem,4.5vw,3.75rem)] leading-[1]"
-            : "text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.05]"
-        }`}
-      >
-        {chapter.title}
-      </h3>
-      {chapter.body && (
-        <p className={`mt-4 max-w-md text-lg ${closing ? "text-apricot-light" : "text-cream/65"}`}>
-          {chapter.body}
-        </p>
-      )}
-    </div>
-  );
-}
+      return null;
+    };
 
-function ChapterMedia({
-  chapter,
-  avail,
-  view,
-  active,
-  observe,
-}: {
-  chapter: StoryChapter;
-  avail: StoryMediaAvailability | undefined;
-  view: View | null;
-  active: boolean;
-  observe: boolean;
-}) {
-  const poster = avail?.poster ? storyMediaSrc(chapter.id, "poster.jpg") : undefined;
-  const isScreen = chapter.media === "screen";
+    const tick = () => {
+      raf = 0;
+      target = lastAtOrBelow(keys, progress);
+      const img = nearestLoaded(target);
+      if (img && (img !== drawn || dirty)) {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawn = img;
+        dirty = false;
+      }
+      const pose = poseTransform(poseAt(progress, stops));
+      if (pose !== lastPose) {
+        phone.style.transform = pose;
+        lastPose = pose;
+      }
+      const a = lastAtOrBelow(stops, progress);
+      if (a !== lastActive) {
+        lastActive = a;
+        setActive(a);
+      }
+    };
+    const schedule = () => {
+      if (!raf && !disposed) raf = requestAnimationFrame(tick);
+    };
 
-  // Which clip this slot plays, if any. Nothing before mount or under reduced
-  // motion, and nothing unless the file was found at build time. Phone UI is
-  // portrait on every width; camera footage switches with the frame.
-  let video: string | undefined;
-  if (view && !view.reduced && avail) {
-    if (isScreen || !view.wide) {
-      if (avail.portrait) video = storyMediaSrc(chapter.id, "portrait.mp4");
-    } else if (avail.landscape) {
-      video = storyMediaSrc(chapter.id, "landscape.mp4");
-    }
-  }
+    // ── Loading: the first frames first, then whatever is nearest ─────────
+    const nextToLoad = (): number => {
+      for (let i = 0; i < Math.min(EAGER_FRAMES, n); i++) if (!requested[i]) return i;
+      for (let d = 0; d < n; d++) {
+        if (target + d < n && !requested[target + d]) return target + d;
+        if (target - d >= 0 && !requested[target - d]) return target - d;
+      }
+      return -1;
+    };
+    const retried = new Uint8Array(n);
+    const pump = () => {
+      while (started && !disposed && pending.size < PARALLEL) {
+        const i = nextToLoad();
+        if (i < 0) return;
+        requested[i] = 1;
+        load(i);
+      }
+    };
+    const load = (i: number) => {
+      const img = new Image();
+      img.decoding = "async";
+      pending.add(img);
+      const done = (ok: boolean) => {
+        pending.delete(img);
+        if (disposed) return;
+        if (ok) {
+          images[i] = img;
+          schedule();
+        }
+        pump();
+      };
+      img.onload = () => {
+        // Decode off the main thread before the first draw where supported.
+        if (typeof img.decode === "function") {
+          img.decode().then(
+            () => done(true),
+            () => done(true),
+          );
+        } else done(true);
+      };
+      img.onerror = () => {
+        // One retry for a dropped request; after that the nearest loaded
+        // frame stands in for this one.
+        if (!retried[i]) {
+          retried[i] = 1;
+          requested[i] = 0;
+        }
+        done(false);
+      };
+      img.src = journeyFrameSrc(manifest, i);
+    };
+    const start = () => {
+      if (started) return;
+      started = true;
+      pump();
+    };
 
-  const content = video ? (
-    <StoryVideo key={video} src={video} poster={poster} active={active} observe={observe} />
-  ) : poster ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={poster}
-      alt=""
-      loading="lazy"
-      className="absolute inset-0 h-full w-full object-cover"
-    />
-  ) : (
-    <Placeholder id={chapter.id} shot={chapter.shot} compact={isScreen} />
-  );
-  const hasMedia = Boolean(video || poster);
+    // Start fetching when the section is within about a screen of view.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          start();
+          io.disconnect();
+        }
+      },
+      { rootMargin: "100% 0px 100% 0px" },
+    );
+    io.observe(wrapper);
 
-  if (isScreen) {
-    // A quiet panel with the portrait clip in a phone frame, so a phone
-    // recording reads as intentional on a wide layout instead of cropped.
-    return (
-      <div className="relative mx-auto aspect-[4/5] w-full max-w-[calc(64vh*4/5)] overflow-hidden rounded-lg border border-cream/10 bg-gradient-to-b from-teal/40 to-ink md:aspect-video md:max-w-none">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative aspect-[9/16] h-[88%] shrink-0 rounded-[1.75rem] border border-cream/20 bg-ink p-[5px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]">
-            <div className="relative h-full w-full overflow-hidden rounded-[1.4rem]">
-              {content}
+    // ── A crisp canvas at the device's pixel ratio ─────────────────────────
+    const resize = () => {
+      // Layout size, not the transformed box: the phone's drift scales it.
+      // A few percent over, so the drift's largest scale is still crisp.
+      const dpr = Math.min(window.devicePixelRatio || 1, 3) * 1.03;
+      const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
+      const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        dirty = true;
+        schedule();
+      }
+    };
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    resize();
+
+    // ── Scroll: section progress, scrubbed ─────────────────────────────────
+    const state = { p: 0 };
+    const gctx = gsap.context(() => {
+      const tween = gsap.to(state, {
+        p: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapper,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+        onUpdate: () => {
+          progress = state.p;
+          schedule();
+        },
+      });
+      // A reload that restores the scroll position lands mid-story.
+      progress = tween.scrollTrigger?.progress ?? 0;
+      schedule();
+    }, wrapper);
+
+    return () => {
+      disposed = true;
+      if (raf) cancelAnimationFrame(raf);
+      io.disconnect();
+      ro.disconnect();
+      gctx.revert();
+      pending.forEach((img) => {
+        img.onload = null;
+        img.onerror = null;
+        img.src = "";
+      });
+      pending.clear();
+      phone.style.transform = "";
+    };
+  }, [enabled, manifest]);
+
+  const count = captions.length;
+  const wrapperStyle: CSSProperties = { height: `${100 + count * VH_PER_CAPTION}vh` };
+
+  return (
+    <div ref={wrapperRef} style={wrapperStyle} className="relative mt-8 md:mt-12">
+      {/* The stage is exactly one small viewport tall (svh where supported,
+          so iOS toolbars never push it off screen). The phone takes what the
+          navbar and the caption leave: on phones, 360px covers the navbar,
+          a three-line caption, the progress row, the gaps and the site's
+          fixed Human/Machine toggle at the bottom. */}
+      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pb-14 pt-16 supports-[height:100svh]:h-[100svh] md:pb-10 md:pt-24">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-4 px-6 md:grid md:grid-cols-12 md:gap-12 lg:px-12">
+          <div
+            aria-hidden="true"
+            className="flex justify-center [--screen-h:min(50vh,calc(100vh_-_360px))] supports-[height:100svh]:[--screen-h:min(50svh,calc(100svh_-_360px))] md:col-span-6 md:col-start-7 md:row-start-1 md:[--screen-h:min(70vh,720px,calc(100vh_-_170px))] md:supports-[height:100svh]:[--screen-h:min(70svh,720px,calc(100svh_-_170px))]"
+          >
+            <PhoneFrame
+              ref={phoneRef}
+              manifest={manifest}
+              style={{ transform: poseTransform(POSES[0]) }}
+              className="will-change-transform"
+            >
+              {/* Frame 0 as a plain image: on screen before any script runs,
+                  and under the canvas until the canvas has drawn. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={journeyFrameSrc(manifest, 0)}
+                alt=""
+                width={manifest.width}
+                height={manifest.height}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full"
+              />
+              <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+            </PhoneFrame>
+          </div>
+
+          <div className="w-full max-w-md md:col-span-5 md:col-start-1 md:row-start-1 md:max-w-none">
+            <ol className="grid">
+              {captions.map((c, i) => {
+                const on = i === active;
+                return (
+                  <li
+                    key={c.title}
+                    className={`col-start-1 row-start-1 transition-[opacity,transform] ${
+                      on
+                        ? "translate-y-0 opacity-100 delay-75 duration-[250ms] ease-out"
+                        : "pointer-events-none translate-y-2 opacity-0 duration-150 ease-in"
+                    }`}
+                  >
+                    <CaptionText caption={c} index={i} />
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div aria-hidden="true" className="mt-6 flex items-center gap-4 md:mt-10">
+              <span className="font-mono text-[11px] tabular-nums tracking-[0.14em] text-cream/50">
+                {pad(active + 1)} / {pad(count)}
+              </span>
+              <span className="flex gap-1.5">
+                {captions.map((c, i) => (
+                  <span
+                    key={c.title}
+                    className={`h-px w-5 transition-colors duration-[250ms] ease-out md:w-6 ${
+                      i === active ? "bg-apricot" : "bg-cream/20"
+                    }`}
+                  />
+                ))}
+              </span>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="relative mx-auto aspect-[9/16] w-full max-w-[calc(64vh*9/16)] overflow-hidden rounded-lg md:aspect-video md:max-w-none">
-      {content}
-      {hasMedia && (
-        <span className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-cream/15" />
-      )}
     </div>
   );
 }
 
-function Placeholder({
-  id,
-  shot,
-  compact,
-}: {
-  id: string;
-  shot?: string;
-  compact: boolean;
-}) {
+function CaptionText({ caption, index }: { caption: JourneyCaption; index: number }) {
+  return (
+    <>
+      <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.14em] text-cream/35">
+        {pad(index + 1)}
+      </span>
+      <h3 className="mt-3 text-balance font-serif text-[clamp(1.5rem,3vw,2.75rem)] font-medium leading-[1.05] tracking-[-0.02em] text-cream md:mt-4">
+        {caption.title}
+      </h3>
+      <p className="mt-2 max-w-md text-base text-cream/65 md:mt-4 md:text-lg">{caption.body}</p>
+    </>
+  );
+}
+
+/**
+ * A plain phone: a dark rounded body around a rounded screen sized by the
+ * `--screen-h` custom property. No device artwork.
+ */
+const PhoneFrame = forwardRef<
+  HTMLDivElement,
+  {
+    manifest: JourneyManifest;
+    children: ReactNode;
+    style?: CSSProperties;
+    className?: string;
+  }
+>(function PhoneFrame({ manifest, children, style, className = "" }, ref) {
   return (
     <div
-      className={`absolute inset-0 flex flex-col justify-end rounded-[inherit] border border-dashed border-cream/25 bg-cream/[0.03] ${
-        compact ? "gap-1.5 p-3" : "gap-2 p-5"
-      }`}
+      ref={ref}
+      style={style}
+      className={`relative rounded-[calc(var(--screen-h)*0.079)] bg-[#101c1c] p-[calc(var(--screen-h)*0.013)] shadow-[0_40px_90px_-30px_rgba(0,0,0,0.7)] ring-1 ring-inset ring-cream/15 ${className}`}
     >
-      <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-apricot">
-        {id}
-      </span>
-      {shot && (
-        <span className={`leading-snug text-cream/55 ${compact ? "text-[11px]" : "text-sm"}`}>
-          {shot}
-        </span>
-      )}
+      <div
+        className="relative overflow-hidden rounded-[calc(var(--screen-h)*0.066)] bg-[#faf9f7]"
+        style={{
+          height: "var(--screen-h)",
+          width: `calc(var(--screen-h) * ${manifest.width / manifest.height})`,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
-}
+});
 
-function StoryVideo({
-  src,
-  poster,
-  active,
-  observe,
+function StillStory({
+  manifest,
+  captions,
 }: {
-  src: string;
-  poster?: string;
-  active: boolean;
-  observe: boolean;
+  manifest: JourneyManifest;
+  captions: readonly JourneyCaption[];
 }) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const [inView, setInView] = useState(false);
-
-  // Stacked layout only: track this video's own visibility. (Pinned layout
-  // passes `active` already resolved from ScrollTrigger.)
-  useEffect(() => {
-    const el = ref.current;
-    if (!observe || !el) return;
-    const io = new IntersectionObserver(
-      (entries) => setInView(entries[entries.length - 1].isIntersecting),
-      { threshold: 0.25 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [observe]);
-
-  const wanted = active && (!observe || inView);
-
-  // Make the element match `wanted`, and keep it matching. Anything can pause
-  // or interrupt a clip behind React's back (the browser pausing muted video in
-  // a hidden tab, an interrupted or refused play()), and `wanted` may not
-  // change again afterwards, so the listeners below re-sync instead of leaving
-  // the clip stopped.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    // React sets `muted` as a property only; set it explicitly so play()
-    // without a user gesture is allowed everywhere.
-    el.muted = true;
-    el.defaultMuted = true;
-
-    let retried = false;
-    let resumes = 0;
-    let retryTimer: number | undefined;
-
-    const sync = () => {
-      if (!wanted) {
-        if (!el.paused) el.pause();
-        return;
-      }
-      if (!el.paused) return;
-      el.play().catch(() => {
-        // Refused or interrupted. The `canplay` listener retries when the
-        // media is ready; if it already is, retry once shortly. If that is
-        // refused too (e.g. Low Power Mode) the poster stays up.
-        if (retried) return;
-        retried = true;
-        if (el.readyState >= 3) retryTimer = window.setTimeout(sync, 250);
-      });
-    };
-
-    // Paused by someone else while it should be playing: resume, unless the
-    // page is hidden (the browser would only pause it again), and never in a
-    // tight loop.
-    const onPause = () => {
-      if (wanted && document.visibilityState === "visible" && resumes < 3) {
-        resumes += 1;
-        sync();
-      }
-    };
-    const onVisible = () => {
-      if (document.visibilityState === "visible") sync();
-    };
-
-    el.addEventListener("pause", onPause);
-    el.addEventListener("canplay", sync);
-    document.addEventListener("visibilitychange", onVisible);
-    sync();
-
-    return () => {
-      window.clearTimeout(retryTimer);
-      el.removeEventListener("pause", onPause);
-      el.removeEventListener("canplay", sync);
-      document.removeEventListener("visibilitychange", onVisible);
-    };
-  }, [wanted]);
-
   return (
-    <video
-      ref={ref}
-      src={src}
-      poster={poster}
-      muted
-      playsInline
-      loop
-      preload="metadata"
-      aria-hidden="true"
-      tabIndex={-1}
-      className="absolute inset-0 h-full w-full object-cover"
-    />
+    <ol className="mx-auto mt-16 flex max-w-7xl flex-col gap-20 px-6 lg:px-12">
+      {manifest.stills.map((still) => (
+        <li
+          key={still.frame}
+          className="flex flex-col gap-8 md:grid md:grid-cols-12 md:items-center md:gap-12"
+        >
+          <div
+            aria-hidden="true"
+            className="flex justify-center [--screen-h:min(60vh,560px)] md:col-span-6 md:col-start-7 md:row-start-1"
+          >
+            <PhoneFrame manifest={manifest}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={journeyFrameSrc(manifest, still.frame)}
+                alt=""
+                width={manifest.width}
+                height={manifest.height}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full"
+              />
+            </PhoneFrame>
+          </div>
+          <div className="flex flex-col gap-10 md:col-span-5 md:col-start-1 md:row-start-1">
+            {still.captions.map((i) => (
+              <div key={i}>
+                <CaptionText caption={captions[i]} index={i} />
+              </div>
+            ))}
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }

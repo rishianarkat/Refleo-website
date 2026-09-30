@@ -1,36 +1,23 @@
-// Server component. Decides which story media exist at BUILD time (this site is
-// a static export), so the client never renders a <video> for a file that
-// isn't there and never probes for one with a request.
+// Server component. Reads the journey manifest at BUILD time (this site is a
+// static export) and hands it to the client, so the page ships with the frame
+// count and scroll mapping already in its HTML.
 
 import fs from "fs";
 import path from "path";
 import Reveal from "@/components/v2/Reveal";
 import { H2, Label } from "@/components/v2/ui";
 import ProductStoryClient from "./ProductStoryClient";
-import {
-  STORY_CHAPTERS,
-  storyMediaSrc,
-  type StoryMediaAvailability,
-  type StoryMediaFile,
-} from "./storyChapters";
+import { JOURNEY_CAPTIONS, type JourneyManifest } from "./storyJourney";
 
-const PUBLIC_DIR = path.join(process.cwd(), "public");
-
-function exists(id: string, file: StoryMediaFile): boolean {
-  return fs.existsSync(path.join(PUBLIC_DIR, storyMediaSrc(id, file)));
-}
-
-function detectMedia(): Record<string, StoryMediaAvailability> {
-  const out: Record<string, StoryMediaAvailability> = {};
-  for (const c of STORY_CHAPTERS) {
-    const none = c.media === "none";
-    out[c.id] = {
-      landscape: !none && c.media === "scene" && exists(c.id, "landscape.mp4"),
-      portrait: !none && exists(c.id, "portrait.mp4"),
-      poster: !none && exists(c.id, "poster.jpg"),
-    };
+function readManifest(): JourneyManifest {
+  const file = path.join(process.cwd(), "public", "journey", "manifest.json");
+  const manifest = JSON.parse(fs.readFileSync(file, "utf8")) as JourneyManifest;
+  if (manifest.captions.length !== JOURNEY_CAPTIONS.length) {
+    throw new Error(
+      `journey manifest has ${manifest.captions.length} captions, the page has ${JOURNEY_CAPTIONS.length}`,
+    );
   }
-  return out;
+  return manifest;
 }
 
 export default function ProductStory() {
@@ -44,7 +31,7 @@ export default function ProductStory() {
           </h2>
         </Reveal>
       </div>
-      <ProductStoryClient chapters={STORY_CHAPTERS} media={detectMedia()} />
+      <ProductStoryClient manifest={readManifest()} captions={JOURNEY_CAPTIONS} />
     </section>
   );
 }

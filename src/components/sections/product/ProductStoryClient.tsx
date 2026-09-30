@@ -4,11 +4,15 @@
 //
 //   motion OK      A tall wrapper reserves the scroll distance; inside it a
 //                  sticky stage holds a phone and the captions. ScrollTrigger
-//                  (scrub) turns the wrapper's scroll progress into a frame of
-//                  the image sequence in public/journey/, drawn to a <canvas>
-//                  on the next animation frame, only when the frame changes.
-//                  Nothing is hijacked: the page scrolls exactly as it always
-//                  does, so wheel, touch and keyboard all work, both ways.
+//                  (scrub) turns the wrapper's scroll progress into a position
+//                  in the image sequence in public/journey/. The drawn position
+//                  eases toward the scroll position (a few frames of visual
+//                  lag, nothing more), and between two frames the canvas
+//                  blends them, so the scrub is continuous at any scroll speed.
+//                  It draws at most once per animation frame, only when
+//                  something changed. Nothing is hijacked: the page scrolls
+//                  exactly as it always does, so wheel, touch and keyboard all
+//                  work, both ways.
 //                  The same on phones: phone above, caption below.
 //   reduced motion No pinning, no scrubbing, no drift: a plain vertical list
 //                  of key frames as images, each with its captions.
@@ -31,6 +35,16 @@ const VH_PER_CAPTION = 90;
 const EAGER_FRAMES = 30;
 /** Frame downloads in flight at once. */
 const PARALLEL = 6;
+/** Frames fetched ahead, in the direction of travel, before any behind. */
+const LOOKAHEAD = 48;
+/**
+ * How far the drawn position closes on the scroll position per 60 Hz frame
+ * (scaled for other refresh rates), and how close counts as arrived. With 400
+ * frames a long scroll passes one about every 0.002 of progress, so the snap
+ * is a tenth of a frame: the settle never ends on a visible hop.
+ */
+const EASE_PER_FRAME = 0.15;
+const SNAP = 0.0002;
 
 /**
  * The phone's pose at each caption: a few degrees of turn and tilt and a few
@@ -134,20 +148,32 @@ function Journey({
 
     const n = manifest.frames;
     const keys = manifest.keys;
+    // Where each frame stops being exact: a still holds until its end, a
+    // motion frame is exact at a single position.
+    const ends = keys.slice();
+    for (const [i, end] of manifest.holds) ends[i] = end;
     const stops = manifest.captions.map((c) => c.activeAt);
     const images: (HTMLImageElement | null)[] = new Array(n).fill(null);
     const requested = new Uint8Array(n);
     const pending = new Set<HTMLImageElement>();
 
-    let progress = 0;
+    /** Scroll progress, 0..1, from ScrollTrigger. */
     let target = 0;
-    let drawn: HTMLImageElement | null = null;
+    /** Drawn progress: eases toward `target`. */
+    let shown = 0;
+    let lastTime = 0;
+    let drawnA: HTMLImageElement | null = null;
+    let drawnB: HTMLImageElement | null = null;
+    let drawnMix = -1;
     let dirty = true;
     let raf = 0;
     let started = false;
     let disposed = false;
     let lastActive = -1;
     let lastPose = "";
+    /** Frame the scroll is at, and the way it last moved (+1 down, -1 up). */
+    let heading = 0;
+    let direction = 1;
 
     // ── Drawing ────────────────────────────────────────────────────────────
     const nearestLoaded = (i: number): HTMLImageElement | null => {
@@ -159,36 +185,79 @@ function Journey({
       return null;
     };
 
-    const tick = () => {
-      raf = 0;
-      target = lastAtOrBelow(keys, progress);
-      const img = nearestLoaded(target);
-      if (img && (img !== drawn || dirty)) {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        drawn = img;
-        dirty = false;
+    /** The two frames around progress `p`, and how far from the first to the second. */
+    const blendAt = (p: number): [number, number] => {
+      const k = lastAtOrBelow(keys, p);
+      if (k >= n - 1 || p <= ends[k]) return [k, 0];
+      const span = keys[k + 1] - ends[k];
+      return [k, span > 0 ? Math.min(1, (p - ends[k]) / span) : 1];
+    };
+
+    const draw = (p: number) => {
+      const [k, f] = blendAt(p);
+      let a = images[k];
+      let b = f > 0 ? images[k + 1] : null;
+      let mix = f;
+      if (!a || (f > 0 && !b)) {
+        // A frame is still on its way: show the nearest one we have, whole.
+        a = nearestLoaded(f < 0.5 ? k : k + 1);
+        b = null;
+        mix = 0;
       }
-      const pose = poseTransform(poseAt(progress, stops));
+      if (!a) return;
+      // 1/256 steps: finer than 8-bit alpha can show.
+      const q = b ? Math.round(mix * 256) / 256 : 0;
+      if (!dirty && a === drawnA && b === drawnB && q === drawnMix) return;
+      ctx.globalAlpha = 1;
+      ctx.drawImage(a, 0, 0, canvas.width, canvas.height);
+      if (b && q > 0) {
+        ctx.globalAlpha = q;
+        ctx.drawImage(b, 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
+      }
+      drawnA = a;
+      drawnB = b;
+      drawnMix = q;
+      dirty = false;
+    };
+
+    const tick = (time: number) => {
+      raf = 0;
+      const dt = lastTime ? Math.min(100, time - lastTime) : 16.7;
+      lastTime = time;
+      // Ease toward the scroll position, the same pace at 60 and 120 Hz.
+      const ease = 1 - Math.pow(1 - EASE_PER_FRAME, dt / 16.7);
+      shown += (target - shown) * ease;
+      if (Math.abs(target - shown) < SNAP) shown = target;
+
+      draw(shown);
+      const pose = poseTransform(poseAt(shown, stops));
       if (pose !== lastPose) {
         phone.style.transform = pose;
         lastPose = pose;
       }
-      const a = lastAtOrBelow(stops, progress);
+      const a = lastAtOrBelow(stops, shown);
       if (a !== lastActive) {
         lastActive = a;
         setActive(a);
       }
+      if (shown !== target) schedule();
+      else lastTime = 0;
     };
     const schedule = () => {
       if (!raf && !disposed) raf = requestAnimationFrame(tick);
     };
 
-    // ── Loading: the first frames first, then whatever is nearest ─────────
+    // ── Loading: the first frames first, then the way the visitor is going ─
     const nextToLoad = (): number => {
       for (let i = 0; i < Math.min(EAGER_FRAMES, n); i++) if (!requested[i]) return i;
+      for (let d = 0; d < LOOKAHEAD; d++) {
+        const i = heading + direction * d;
+        if (i >= 0 && i < n && !requested[i]) return i;
+      }
       for (let d = 0; d < n; d++) {
-        if (target + d < n && !requested[target + d]) return target + d;
-        if (target - d >= 0 && !requested[target - d]) return target - d;
+        if (heading + d < n && !requested[heading + d]) return heading + d;
+        if (heading - d >= 0 && !requested[heading - d]) return heading - d;
       }
       return -1;
     };
@@ -209,6 +278,7 @@ function Journey({
         pending.delete(img);
         if (disposed) return;
         if (ok) {
+          // Redraws only if this frame (or a nearer stand-in) is on screen.
           images[i] = img;
           schedule();
         }
@@ -286,12 +356,19 @@ function Journey({
           invalidateOnRefresh: true,
         },
         onUpdate: () => {
-          progress = state.p;
+          const i = lastAtOrBelow(keys, state.p);
+          if (i !== heading) {
+            direction = i > heading ? 1 : -1;
+            heading = i;
+          }
+          target = state.p;
           schedule();
         },
       });
-      // A reload that restores the scroll position lands mid-story.
-      progress = tween.scrollTrigger?.progress ?? 0;
+      // A reload that restores the scroll position lands mid-story: start
+      // there, not with a long ease from the top.
+      target = shown = tween.scrollTrigger?.progress ?? 0;
+      heading = lastAtOrBelow(keys, target);
       schedule();
     }, wrapper);
 

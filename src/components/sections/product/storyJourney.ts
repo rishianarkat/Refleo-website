@@ -43,10 +43,13 @@ export const JOURNEY_CAPTIONS: readonly JourneyCaption[] = [
 
 /** public/journey/manifest.json, written by refleo-video/scripts/journey. */
 export type JourneyManifest = {
-  version: 1;
+  version: 2;
   frames: number;
   width: number;
   height: number;
+  /** MIME type of the frames, and their file extension. */
+  format: "image/webp" | "image/jpeg";
+  ext: "webp" | "jpg";
   /** Frame URL with `{i}` for the zero-padded index. */
   src: string;
   pad: number;
@@ -54,8 +57,15 @@ export type JourneyManifest = {
   captions: { id: string; activeAt: number }[];
   /** Reduced motion: key frames, each with the captions it illustrates. */
   stills: { frame: number; captions: number[] }[];
-  /** Scroll progress at which each frame becomes the one on screen. */
+  /**
+   * Scroll progress at which each frame is exactly the one on screen. Between
+   * two frames the page blends them.
+   */
   keys: number[];
+  /** Still frames: [frame, progress at which the still ends]. */
+  holds: [number, number][];
+  /** Touch-downs: scroll progress, and the touch point as fractions of the frame. */
+  taps: { at: number; x: number; y: number }[];
 };
 
 export function journeyFrameSrc(m: JourneyManifest, i: number): string {

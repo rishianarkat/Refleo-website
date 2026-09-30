@@ -10,6 +10,11 @@
 //                          (pinSpacing off), so pinning never shifts layout.
 //   under md, motion OK    A plain vertical sequence, portrait media above each
 //                          caption; a video plays only while it is in view.
+//
+// Playback rule while pinned: the chapter on screen plays and every other clip
+// is paused. "On screen" comes from ScrollTrigger itself (the same scroll
+// measure that drives the pin), not from per-video observers: all the chapters
+// share one grid cell, so an observer cannot tell them apart anyway.
 //   reduced motion         The same plain stack at every width. No pinning, no
 //                          video, no transitions: posters or placeholders only.
 //
@@ -69,6 +74,7 @@ export default function ProductStoryClient({
   const stageRef = useRef<HTMLDivElement>(null);
   const view = useView();
   const [active, setActive] = useState(0);
+  const [onScreen, setOnScreen] = useState(false);
 
   const pinned = view !== null && view.wide && !view.reduced;
   const count = chapters.length;
@@ -76,6 +82,7 @@ export default function ProductStoryClient({
   useEffect(() => {
     if (!pinned) {
       setActive(0);
+      setOnScreen(false);
       return;
     }
 
@@ -94,6 +101,16 @@ export default function ProductStoryClient({
         invalidateOnRefresh: true,
         onUpdate: (self) => step(self.progress),
         onRefresh: (self) => step(self.progress),
+      });
+
+      // Is any of the section on screen? Same scroll measure as the pin, so it
+      // is right after an instant jump or a reload that restores scroll too.
+      ScrollTrigger.create({
+        trigger: wrapperRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onToggle: (self) => setOnScreen(self.isActive),
+        onRefresh: (self) => setOnScreen(self.isActive),
       });
     }, wrapperRef);
 
@@ -130,9 +147,11 @@ export default function ProductStoryClient({
                       chapter={chapter}
                       avail={media[chapter.id]}
                       view={view}
-                      // Pinned: only the chapter on screen plays. Stacked: each
-                      // video plays whenever it is itself in view.
-                      active={pinned ? isActive : true}
+                      // Pinned: only the active chapter plays, and only while the
+                      // section is on screen. Stacked: each video plays whenever
+                      // it is itself in view (its own observer).
+                      active={pinned ? isActive && onScreen : true}
+                      observe={!pinned}
                     />
                   </div>
                 )}
@@ -204,11 +223,13 @@ function ChapterMedia({
   avail,
   view,
   active,
+  observe,
 }: {
   chapter: StoryChapter;
   avail: StoryMediaAvailability | undefined;
   view: View | null;
   active: boolean;
+  observe: boolean;
 }) {
   const poster = avail?.poster ? storyMediaSrc(chapter.id, "poster.jpg") : undefined;
   const isScreen = chapter.media === "screen";
@@ -226,7 +247,7 @@ function ChapterMedia({
   }
 
   const content = video ? (
-    <StoryVideo key={video} src={video} poster={poster} active={active} />
+    <StoryVideo key={video} src={video} poster={poster} active={active} observe={observe} />
   ) : poster ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -297,24 +318,36 @@ function StoryVideo({
   src,
   poster,
   active,
+  observe,
 }: {
   src: string;
   poster?: string;
   active: boolean;
+  observe: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
 
+  // Stacked layout only: track this video's own visibility. (Pinned layout
+  // passes `active` already resolved from ScrollTrigger.)
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.25,
-    });
+    if (!observe || !el) return;
+    const io = new IntersectionObserver(
+      (entries) => setInView(entries[entries.length - 1].isIntersecting),
+      { threshold: 0.25 },
+    );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [observe]);
 
+  const wanted = active && (!observe || inView);
+
+  // Make the element match `wanted`, and keep it matching. Anything can pause
+  // or interrupt a clip behind React's back (the browser pausing muted video in
+  // a hidden tab, an interrupted or refused play()), and `wanted` may not
+  // change again afterwards, so the listeners below re-sync instead of leaving
+  // the clip stopped.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -322,14 +355,52 @@ function StoryVideo({
     // without a user gesture is allowed everywhere.
     el.muted = true;
     el.defaultMuted = true;
-    if (active && inView) {
+
+    let retried = false;
+    let resumes = 0;
+    let retryTimer: number | undefined;
+
+    const sync = () => {
+      if (!wanted) {
+        if (!el.paused) el.pause();
+        return;
+      }
+      if (!el.paused) return;
       el.play().catch(() => {
-        // Autoplay refused (e.g. Low Power Mode): the poster stays up.
+        // Refused or interrupted. The `canplay` listener retries when the
+        // media is ready; if it already is, retry once shortly. If that is
+        // refused too (e.g. Low Power Mode) the poster stays up.
+        if (retried) return;
+        retried = true;
+        if (el.readyState >= 3) retryTimer = window.setTimeout(sync, 250);
       });
-    } else {
-      el.pause();
-    }
-  }, [active, inView]);
+    };
+
+    // Paused by someone else while it should be playing: resume, unless the
+    // page is hidden (the browser would only pause it again), and never in a
+    // tight loop.
+    const onPause = () => {
+      if (wanted && document.visibilityState === "visible" && resumes < 3) {
+        resumes += 1;
+        sync();
+      }
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") sync();
+    };
+
+    el.addEventListener("pause", onPause);
+    el.addEventListener("canplay", sync);
+    document.addEventListener("visibilitychange", onVisible);
+    sync();
+
+    return () => {
+      window.clearTimeout(retryTimer);
+      el.removeEventListener("pause", onPause);
+      el.removeEventListener("canplay", sync);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, [wanted]);
 
   return (
     <video
